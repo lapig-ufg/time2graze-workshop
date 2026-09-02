@@ -272,7 +272,7 @@ footer { display: grid; grid-template-columns: 1fr 1.3fr 1fr; align-items: cente
 .footer-brand .brand-copy small { color: rgba(255,255,255,.55); }
 footer > p { margin: 0; color: rgba(255,255,255,.62); font-size: var(--t-meta-lg); line-height: 1.6; text-align: center; }
 footer > a:last-child { justify-self: end; display: inline-flex; align-items: center; gap: 8px; font-size: var(--t-label); font-weight: 800; letter-spacing: .07em; text-transform: uppercase; }
-footer > a:last-child svg { width: 12px; height: 12px; transform: rotate(180deg); }
+footer > a:last-child svg { width: 12px; height: 12px; }
 
 @media (max-width: 1050px) {
   .institutional-hero { grid-template-columns: 1fr; }
