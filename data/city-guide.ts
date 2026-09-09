@@ -3,6 +3,7 @@ export const CITY_STORIES = {
   goiania: {
     title: 'Goiânia',
     subtitle: 'A young capital',
+    workshopContext: 'Goiânia is your base during the workshop week. Outside the programme, its parks, cafés and cultural venues offer places to spend your free time.',
     paragraphs: [
       'Founded in 1933, Goiânia is a relatively young city. It was planned as the new capital of Goiás, more than two centuries after the origins of nearby Cidade de Goiás. The state government moved here in 1937.',
       'Architect Attílio Corrêa Lima designed the new city around a civic centre. Its planned avenues and Art Deco buildings belong to that twentieth-century beginning. The city was built near the older settlement of Campinas, now one of its neighbourhoods.',

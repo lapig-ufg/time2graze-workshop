@@ -232,6 +232,16 @@
   background: var(--forest);
   border-color: var(--forest);
   font-size: 16px;
+  gap: 16px;
+}
+.travel-uber .uber-logo {
+  width: 58px;
+  height: auto;
+  flex: none;
+  filter: brightness(0) invert(1);
+}
+.travel-uber > svg:last-child {
+  flex: none;
 }
 .travel-place-actions a.travel-uber:hover {
   background: var(--forest-dark);

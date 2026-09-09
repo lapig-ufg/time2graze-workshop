@@ -1263,3 +1263,9 @@ grids of unequal cards.
 - Goiânia's heading and history form one block. The duplicated founding-date
   label and introductory navigation prose have been removed; historical facts
   and sources remain in the data, and the Google My Maps is unchanged.
+
+The organiser subsequently asked for the city section's purpose to be explicit:
+its h2 is now **City & free time**, matching the top shortcut. Its introduction
+explains that Goiânia is the participants' base during the workshop; the history
+has its own h3, **Goiânia: a young capital**. Preserve the stable anchors.
+Existing ride buttons now use the Uber wordmark (source: `research/logos/uber.md`).
