@@ -25,12 +25,16 @@ export default function PracticalPage() {
       <header className="travel-heading">
         <h1>Travel &amp; stay</h1>
         <p>Goiânia, Brazil · 14–18 September 2026</p>
+        <p className="travel-summary">
+          Hotel, daily transport and workshop locations, plus the history of
+          Goiânia and Cidade de Goiás and a map for your free time.
+        </p>
       </header>
       <nav className="page-index travel-index" aria-label="Travel information">
         <a href="#hotel">Hotel</a>
         <a href="#transport">Shuttle</a>
         <a href="#maps">Locations</a>
-        <a href="#orientation">Free time</a>
+        <a href="#orientation">City &amp; free time</a>
       </nav>
 
       <section className="travel-part" aria-labelledby="week-title">

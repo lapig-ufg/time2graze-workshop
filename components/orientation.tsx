@@ -16,12 +16,13 @@ export function Orientation() {
     >
       <div className="city-introduction">
         <header className="city-introduction-heading">
-          <p className="travel-eyebrow">{city.subtitle}</p>
           <h2 className="travel-part-title" id="goiania-title">
             Goiânia
           </h2>
+          <p className="city-introduction-label">History &amp; free time</p>
         </header>
         <div className="city-prose">
+          <h3>{city.subtitle}</h3>
           {city.paragraphs.map((paragraph) => (
             <p key={paragraph}>{paragraph}</p>
           ))}
