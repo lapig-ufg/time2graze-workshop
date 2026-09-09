@@ -505,257 +505,31 @@ a.city-source,
   font-size: var(--t-body);
   line-height: 1.6;
 }
-.guide-filters {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin: 0 0 18px;
-  padding: 0;
-  border: 0;
-  min-width: 0;
-}
-.guide-filters button {
-  min-height: 44px;
-  padding: 10px 16px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  background: var(--surface);
-  font-size: var(--t-meta-lg);
-  font-weight: 700;
-  cursor: pointer;
-  transition: background var(--m-quick) var(--m-ease);
-}
-.guide-filters button[aria-pressed='true'] {
-  color: var(--forest-dark);
-  background: var(--accent);
-  border-color: var(--forest);
-}
-.guide-filters button:hover {
-  border-color: var(--forest);
-}
-.guide-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1.5fr) minmax(300px, 1fr);
-  gap: 28px;
-  align-items: start;
-}
-.guide-map-panel {
-  min-width: 0;
-  border: 1px solid var(--line);
-  background: var(--surface);
-}
 .guide-map-toolbar {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 8px 16px;
-  align-items: center;
-  min-height: 58px;
-  padding: 8px 14px;
-  font-size: var(--t-meta-lg);
-  color: var(--forest);
+  justify-content: flex-end;
+  margin-bottom: 10px;
 }
-.guide-map-toolbar > span {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.guide-hotel-key {
-  display: inline-grid;
-  place-items: center;
-  width: 27px;
-  height: 27px;
-  border: 1px solid var(--forest);
-  background: var(--accent);
-  border-radius: 50%;
-  font-weight: 800;
-}
-.guide-map-toolbar button {
+.guide-map-toolbar a {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   min-height: 44px;
-  border: 0;
-  background: transparent;
-  cursor: pointer;
+  color: var(--forest);
   font-size: var(--t-meta-lg);
+  text-underline-offset: 4px;
 }
 .guide-map-toolbar svg {
   width: 16px;
   height: 16px;
+  flex-shrink: 0;
 }
-.guide-map-stage {
-  position: relative;
-  background: var(--surface-soft);
-}
-.guide-map-canvas {
-  height: 530px;
+.guide-google-map {
+  display: block;
   width: 100%;
-  z-index: 0;
-  font-family: var(--font-sans), Arial, sans-serif;
-}
-.guide-map-start {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-content: center;
-  padding: 24px;
-  text-align: center;
-}
-.guide-map-start button {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  min-height: 48px;
-  padding: 12px 20px;
-  border: 1px solid var(--forest);
-  border-radius: var(--radius);
-  color: var(--forest);
-  background: var(--accent);
-  font-weight: 700;
-  cursor: pointer;
-}
-.guide-map-start output,
-.guide-map-error {
-  display: block;
-  color: var(--text);
-  font-size: var(--t-meta-lg);
-  line-height: 1.6;
-}
-.guide-map-error {
-  padding: 12px;
-  margin: 0;
-}
-.guide-layout.is-expanded {
-  grid-template-columns: minmax(0, 1fr);
-}
-.guide-layout.is-expanded .guide-map-canvas {
-  height: 75vh;
-}
-.guide-layout.is-expanded .guide-results {
-  max-height: none;
-}
-/* Outrank Leaflet's display:block regardless of stylesheet load order. */
-.guide-map-canvas .guide-map-pin,
-.guide-map-canvas .guide-map-cluster {
-  display: grid;
-  place-items: center;
-  box-sizing: border-box;
-  line-height: 1;
-  font-family: var(--font-sans), Arial, sans-serif;
-  font-size: 14px;
-  font-weight: 800;
-  text-align: center;
-  box-shadow: 0 1px 4px #0004;
-}
-.guide-map-canvas .guide-map-pin {
-  background: var(--forest);
-  border: 2px solid white;
-  border-radius: 50%;
-  color: white;
-}
-.guide-map-canvas .guide-map-pin.is-hotel {
-  background: var(--accent);
-  color: var(--forest-dark);
-  border-color: var(--forest);
-}
-.guide-map-canvas .guide-map-cluster {
-  background: var(--surface);
-  color: var(--forest);
-  border: 2px solid var(--forest);
-  border-radius: 18px;
-  white-space: nowrap;
-}
-.guide-map-canvas .leaflet-popup-content {
-  font-size: 14px;
-  line-height: 1.6;
-}
-.guide-map-canvas .leaflet-popup-content a {
-  color: var(--forest);
-  text-decoration: underline;
-}
-.guide-map-canvas .leaflet-control-attribution {
-  font-size: 12px;
-}
-.guide-results {
-  max-height: 589px;
-  overflow: auto;
-  padding-inline: 3px 12px;
-  overscroll-behavior: contain;
-}
-.guide-count {
-  display: block;
-  margin: 0 0 12px;
-  color: var(--muted);
-  font-size: var(--t-meta);
-}
-.guide-place-list {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-.guide-place-list li {
-  display: grid;
-  grid-template-columns: 30px minmax(0, 1fr);
-  gap: 12px;
-  padding-block: 18px;
-  border-top: 1px solid var(--line);
-  break-inside: avoid;
-}
-.guide-place-number {
-  display: grid;
-  place-items: center;
-  width: 28px;
-  height: 28px;
-  border: 1px solid var(--forest);
-  border-radius: 50%;
-  color: var(--forest);
-  font-size: var(--t-meta-lg);
-  font-weight: 750;
-  font-variant-numeric: tabular-nums;
-}
-.guide-place-list h4 {
-  margin: 0 0 6px;
-  color: var(--ink);
-  font-size: 16px;
-  line-height: 1.4;
-  font-weight: 750;
-}
-.guide-place-list p {
-  margin: 0;
-  color: var(--text);
-  font-size: var(--t-meta-lg);
-  line-height: 1.6;
-}
-.guide-place-list p.guide-place-area {
-  margin-bottom: 4px;
-  font-size: var(--t-meta);
-  color: var(--muted);
-}
-.guide-place-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0 16px;
-  margin-top: 5px;
-}
-.guide-place-links a,
-.guide-place-links button {
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
-  min-height: 44px;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: var(--forest);
-  font-size: var(--t-meta-lg);
-  text-decoration: underline;
-  text-underline-offset: 4px;
-  cursor: pointer;
-}
-.guide-place-links svg {
-  width: 14px;
-  height: 14px;
+  height: 600px;
+  border: 1px solid var(--line);
+  background: var(--surface-soft);
 }
 .guide-credit {
   margin: 14px 0 0;
@@ -827,27 +601,15 @@ a.city-source,
     grid-template-columns: 85px minmax(0, 1fr);
     gap: 10px;
   }
-  .city-introduction,
-  .guide-layout {
+  .city-introduction {
     grid-template-columns: minmax(0, 1fr);
     gap: 22px;
   }
   .city-introduction {
     padding-bottom: 26px;
   }
-  .guide-filters {
-    gap: 6px;
-  }
-  .guide-filters button {
-    padding-inline: 10px;
-  }
-  .guide-map-canvas {
-    height: 340px;
-  }
-  .guide-results {
-    max-height: none;
-    overflow: visible;
-    padding: 0;
+  .guide-google-map {
+    height: 480px;
   }
 }
 @media print {
@@ -939,18 +701,11 @@ a.city-source,
   .city-prose {
     max-width: none;
   }
-  .guide-layout {
-    display: block;
-  }
-  .guide-map-panel,
-  .guide-filters,
-  .guide-count,
-  .guide-place-links button {
+  .guide-google-map {
     display: none !important;
   }
-  .guide-results {
-    max-height: none;
-    overflow: visible;
+  .guide-map-toolbar {
+    justify-content: flex-start;
   }
   .city-free-time {
     margin-top: 12pt;

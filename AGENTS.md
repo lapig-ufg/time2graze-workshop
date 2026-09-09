@@ -559,7 +559,7 @@ components/programme.tsx     Proportional, chronological and print programmes.
 components/venue-card.tsx    A place you navigate to (hotel, LAPIG): actions, copy, map.
 components/friday-visit.tsx  Cidade de Goiás as one block: the coach, then the town.
 components/orientation.tsx   Travel part two: Goiânia's context and the free-time map.
-components/free-time-map.tsx Clustered Leaflet map of the free-time places.
+components/free-time-map.tsx Embedded reference Google My Maps for free time.
 components/recap.tsx         The day's published record, and the control that flags a line as wrong.
 components/add-to-calendar.tsx  .ics downloads, subscription URL and the share form.
 hooks/use-tab-keys.ts        Arrow-key movement for the day tablist. Horizontal only.
@@ -1231,3 +1231,17 @@ rather than by what a participant is doing when they open the page.
   in the 9 September city guide entry. The content itself is unchanged: nothing
   was written, and `data/city-guide.ts` still holds every paragraph, detail and
   source.
+
+## Original Google My Maps — 9 September 2026
+
+At the organiser's request, the free-time section now embeds the supplied
+GMH Workshop Google My Maps directly. This supersedes the custom Leaflet map,
+filters and selected-place list described in the city guide entry above.
+
+- Preserve the two-part Travel & stay layout and the Friday town history.
+- The embed uses the public map linked by `GUIDE_SOURCE`, with Google's own
+  markers and layers. Do not edit the externally owned map or hide its branding.
+- Keep the descriptive iframe title, lazy loading, responsive sizing and the
+  separate full-map link, which remains available even if the embed cannot load.
+- Print hides the iframe and keeps the map link and attribution.
+- The earlier selected points and research remain as provenance.
