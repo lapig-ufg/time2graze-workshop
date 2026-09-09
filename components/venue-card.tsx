@@ -65,165 +65,169 @@ export function VenueCard({
       id={anchor}
       aria-labelledby={`${anchor}-title`}
     >
-      <p className="travel-eyebrow">
-        <MapPin aria-hidden="true" />
-        {eyebrow}
-      </p>
-      <h3 id={`${anchor}-title`}>{venue.name}</h3>
-      <p className="travel-place-context">
-        {hotel ? venue.arrivalNote : venue.locality}
-      </p>
-      {travel && (
-        <a className="travel-getting-there" href="#transport">
-          <BusFront aria-hidden="true" />
-          {travel}
-        </a>
-      )}
-      <div className="travel-place-actions">
-        {venue.ride === true && (
+      <div className="travel-place-summary">
+        <p className="travel-eyebrow">
+          <MapPin aria-hidden="true" />
+          {eyebrow}
+        </p>
+        <h3 id={`${anchor}-title`}>{venue.name}</h3>
+        <p className="travel-place-context">
+          {hotel ? venue.arrivalNote : venue.locality}
+        </p>
+        {travel && (
+          <a className="travel-getting-there" href="#transport">
+            <BusFront aria-hidden="true" />
+            {travel}
+          </a>
+        )}
+        {venue.photo ? (
+          <figure className="venue-photo">
+            <Image
+              src={withBasePath(venue.photo.src)}
+              alt={venue.photo.alt}
+              width={720}
+              height={420}
+              sizes="(max-width: 900px) 100vw, 40vw"
+              loading="lazy"
+            />
+            <figcaption>
+              {venue.photo.creditHref ? (
+                <a
+                  href={venue.photo.creditHref}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {venue.photo.credit}
+                </a>
+              ) : (
+                venue.photo.credit
+              )}
+            </figcaption>
+          </figure>
+        ) : (
+          <p>Photograph pending.</p>
+        )}
+      </div>
+      <div className="travel-place-details">
+        <div className="travel-place-actions">
+          {venue.ride === true && (
+            <a
+              className="travel-uber"
+              href={uberLink(
+                venue.coords,
+                venue.name,
+                venue.address ?? venue.locality,
+              )}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <Car aria-hidden="true" />
+              Open Uber to {venue.short}
+              <ArrowUpRight aria-hidden="true" />
+            </a>
+          )}
           <a
-            className="travel-uber"
-            href={uberLink(
-              venue.coords,
-              venue.name,
-              venue.address ?? venue.locality,
-            )}
+            href={
+              venue.address
+                ? directionsLink(venue.coords)
+                : googleMapsLink(venue.coords)
+            }
             target="_blank"
             rel="noreferrer"
           >
-            <Car aria-hidden="true" />
-            Open Uber to {venue.short}
+            <MapPin aria-hidden="true" />
+            {venue.address ? 'Directions' : 'Open map'}
+          </a>
+          {venue.phone && (
+            <a href={`tel:${venue.phone.replace(/[^+\d]/g, '')}`}>
+              <Phone aria-hidden="true" />
+              Call {venue.short}
+            </a>
+          )}
+        </div>
+        <div className="travel-address">
+          <p>{copyValue}</p>
+          <button type="button" onClick={copy}>
+            {copyState === 'copied' ? (
+              <Check aria-hidden="true" />
+            ) : (
+              <Copy aria-hidden="true" />
+            )}
+            {copyState === 'copied'
+              ? 'Copied'
+              : venue.address
+                ? 'Copy address'
+                : 'Copy coordinates'}
+          </button>
+          <output
+            className={
+              copyState === 'failed' ? 'travel-copy-error' : 'visually-hidden'
+            }
+          >
+            {copyState === 'failed'
+              ? 'Could not copy. Select and copy the text above.'
+              : copyState === 'copied'
+                ? `${venue.address ? 'Address' : 'Coordinates'} copied`
+                : ''}
+          </output>
+        </div>
+        {hotel && (
+          <dl className="hotel-stay">
+            <div>
+              <dt>Stay</dt>
+              <dd>{ACCOMMODATION_PLAN.dates}</dd>
+            </div>
+            <div>
+              <dt>Booking</dt>
+              <dd>{ACCOMMODATION_PLAN.payment}</dd>
+            </div>
+          </dl>
+        )}
+        {venue.pending && <p className="travel-pending">{venue.pending}</p>}
+        {!hotel && venue.arrivalNote && (
+          <p className="travel-arrival-note">{venue.arrivalNote}</p>
+        )}
+        <details
+          className="place-map"
+          onToggle={(event) => setExpanded(event.currentTarget.open)}
+        >
+          <summary>
+            View location map
+            <ChevronDown aria-hidden="true" />
+          </summary>
+          {expanded && (
+            <div className="place-map-content">
+              <iframe
+                title={`Map of ${venue.name}`}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                src={osmEmbedSrc(venue.coords, venue.mapSpan)}
+              />
+              <p className="map-credit">
+                Map data ©{' '}
+                <a
+                  href="https://www.openstreetmap.org/copyright"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  OpenStreetMap contributors
+                </a>
+              </p>
+            </div>
+          )}
+        </details>
+        {venue.website && (
+          <a
+            className="travel-text-link place-website"
+            href={venue.website}
+            target="_blank"
+            rel="noreferrer"
+          >
+            {venue.short} website
             <ArrowUpRight aria-hidden="true" />
           </a>
         )}
-        <a
-          href={
-            venue.address
-              ? directionsLink(venue.coords)
-              : googleMapsLink(venue.coords)
-          }
-          target="_blank"
-          rel="noreferrer"
-        >
-          <MapPin aria-hidden="true" />
-          {venue.address ? 'Directions' : 'Open map'}
-        </a>
-        {venue.phone && (
-          <a href={`tel:${venue.phone.replace(/[^+\d]/g, '')}`}>
-            <Phone aria-hidden="true" />
-            Call {venue.short}
-          </a>
-        )}
       </div>
-      <div className="travel-address">
-        <p>{copyValue}</p>
-        <button type="button" onClick={copy}>
-          {copyState === 'copied' ? (
-            <Check aria-hidden="true" />
-          ) : (
-            <Copy aria-hidden="true" />
-          )}
-          {copyState === 'copied'
-            ? 'Copied'
-            : venue.address
-              ? 'Copy address'
-              : 'Copy coordinates'}
-        </button>
-        <output
-          className={
-            copyState === 'failed' ? 'travel-copy-error' : 'visually-hidden'
-          }
-        >
-          {copyState === 'failed'
-            ? 'Could not copy. Select and copy the text above.'
-            : copyState === 'copied'
-              ? `${venue.address ? 'Address' : 'Coordinates'} copied`
-              : ''}
-        </output>
-      </div>
-      {hotel && (
-        <dl className="hotel-stay">
-          <div>
-            <dt>Stay</dt>
-            <dd>{ACCOMMODATION_PLAN.dates}</dd>
-          </div>
-          <div>
-            <dt>Booking</dt>
-            <dd>{ACCOMMODATION_PLAN.payment}</dd>
-          </div>
-        </dl>
-      )}
-      {venue.pending && <p className="travel-pending">{venue.pending}</p>}
-      {!hotel && venue.arrivalNote && (
-        <p className="travel-arrival-note">{venue.arrivalNote}</p>
-      )}
-      <details
-        className="place-map"
-        onToggle={(event) => setExpanded(event.currentTarget.open)}
-      >
-        <summary>
-          Map &amp; photograph
-          <ChevronDown aria-hidden="true" />
-        </summary>
-        {expanded && (
-          <div className="place-map-content">
-            <iframe
-              title={`Map of ${venue.name}`}
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              src={osmEmbedSrc(venue.coords, venue.mapSpan)}
-            />
-            {venue.photo ? (
-              <figure>
-                <Image
-                  src={withBasePath(venue.photo.src)}
-                  alt={venue.photo.alt}
-                  width={720}
-                  height={420}
-                  sizes="(max-width: 760px) 100vw, 50vw"
-                  loading="lazy"
-                />
-                <figcaption>
-                  {venue.photo.creditHref ? (
-                    <a
-                      href={venue.photo.creditHref}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      {venue.photo.credit}
-                    </a>
-                  ) : (
-                    venue.photo.credit
-                  )}
-                </figcaption>
-              </figure>
-            ) : (
-              <p>Photograph pending.</p>
-            )}
-            <p className="map-credit">
-              Map data ©{' '}
-              <a
-                href="https://www.openstreetmap.org/copyright"
-                target="_blank"
-                rel="noreferrer"
-              >
-                OpenStreetMap contributors
-              </a>
-            </p>
-          </div>
-        )}
-      </details>
-      {venue.website && (
-        <a
-          className="travel-text-link place-website"
-          href={venue.website}
-          target="_blank"
-          rel="noreferrer"
-        >
-          {venue.short} website
-          <ArrowUpRight aria-hidden="true" />
-        </a>
-      )}
     </article>
   );
 }

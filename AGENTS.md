@@ -1245,3 +1245,21 @@ filters and selected-place list described in the city guide entry above.
   separate full-map link, which remains available even if the embed cannot load.
 - Print hides the iframe and keeps the map link and attribution.
 - The earlier selected points and research remain as provenance.
+
+## Travel composition — 9 September 2026
+
+The organiser requested a more coherent composition on monitors and phones.
+Keep the two page parts and all existing anchors. The hotel, shuttle, LAPIG
+and Friday destination now form successive full-width rows rather than two
+grids of unequal cards.
+
+- On desktop, venue identification and the existing licensed photograph share
+  one column; actions and practical details occupy the other. The shuttle and
+  Goiânia history follow the same column alignment.
+- Below 900px, practical actions precede the photographs. Do not put a large
+  image between a venue's title and its arrival instructions on a phone.
+- Venue photos are visible once. Their disclosures now contain only the map.
+  Friday's disclosure still contains its additional history and map.
+- Goiânia's heading and history form one block. The duplicated founding-date
+  label and introductory navigation prose have been removed; historical facts
+  and sources remain in the data, and the Google My Maps is unchanged.

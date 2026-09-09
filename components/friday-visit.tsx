@@ -30,88 +30,91 @@ export function FridayVisit() {
       id="cidade-de-goias"
       aria-labelledby="cidade-de-goias-title"
     >
-      <p className="travel-eyebrow">
-        <MapPin aria-hidden="true" />
-        Friday 18 September
-      </p>
-      <h3 id="cidade-de-goias-title">{venue.name}</h3>
-      <p className="travel-place-context">{venue.locality}</p>
-      <a className="travel-getting-there" href="#transport">
-        <BusFront aria-hidden="true" />
-        Workshop shuttle from Golden Lis · Friday {FRIDAY.time}
-      </a>
+      <div className="travel-place-summary">
+        <p className="travel-eyebrow">
+          <MapPin aria-hidden="true" />
+          Friday 18 September
+        </p>
+        <h3 id="cidade-de-goias-title">{venue.name}</h3>
+        <p className="travel-place-context">{venue.locality}</p>
 
-      <figure className="city-photo">
-        <Image
-          src={withBasePath(photo.src)}
-          alt={photo.alt}
-          width={1200}
-          height={795}
-          sizes="(max-width: 760px) 100vw, 50vw"
-          loading="lazy"
-        />
-        <figcaption>
-          <a href={photo.creditHref} target="_blank" rel="noreferrer">
-            {photo.credit}
-          </a>
-        </figcaption>
-      </figure>
-
-      <div className="city-prose">
-        <p>{lead}</p>
-      </div>
-      <p className="city-heritage">UNESCO World Heritage · 2001</p>
-
-      <details className="place-map friday-more">
-        <summary>
-          More about Cidade de Goiás
-          <ChevronDown aria-hidden="true" />
-        </summary>
-        <div className="place-map-content">
-          <div className="city-prose">
-            {rest.map((paragraph) => (
-              <p key={paragraph}>{paragraph}</p>
-            ))}
-          </div>
-          <div className="friday-details">
-            {town.details.map((detail) => (
-              <section key={detail.title}>
-                <h4>{detail.title}</h4>
-                <p>{detail.text}</p>
-              </section>
-            ))}
-          </div>
-          <iframe
-            title={`Map of ${venue.name}`}
+        <figure className="city-photo">
+          <Image
+            src={withBasePath(photo.src)}
+            alt={photo.alt}
+            width={1200}
+            height={795}
+            sizes="(max-width: 900px) 100vw, 40vw"
             loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            src={osmEmbedSrc(venue.coords, venue.mapSpan)}
           />
-          <p className="map-credit">
-            Map data ©{' '}
-            <a
-              href="https://www.openstreetmap.org/copyright"
-              target="_blank"
-              rel="noreferrer"
-            >
-              OpenStreetMap contributors
+          <figcaption>
+            <a href={photo.creditHref} target="_blank" rel="noreferrer">
+              {photo.credit}
             </a>
-          </p>
-          <div className="city-sources">
-            {town.sources.map((source) => (
+          </figcaption>
+        </figure>
+      </div>
+      <div className="travel-place-details">
+        <a className="travel-getting-there" href="#transport">
+          <BusFront aria-hidden="true" />
+          Workshop shuttle from Golden Lis · Friday {FRIDAY.time}
+        </a>
+        <div className="city-prose">
+          <p>{lead}</p>
+        </div>
+        <p className="city-heritage">UNESCO World Heritage · 2001</p>
+
+        <details className="place-map friday-more">
+          <summary>
+            More about Cidade de Goiás
+            <ChevronDown aria-hidden="true" />
+          </summary>
+          <div className="place-map-content">
+            <div className="city-prose">
+              {rest.map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
+            </div>
+            <div className="friday-details">
+              {town.details.map((detail) => (
+                <section key={detail.title}>
+                  <h4>{detail.title}</h4>
+                  <p>{detail.text}</p>
+                </section>
+              ))}
+            </div>
+            <iframe
+              title={`Map of ${venue.name}`}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              src={osmEmbedSrc(venue.coords, venue.mapSpan)}
+            />
+            <p className="map-credit">
+              Map data ©{' '}
               <a
-                className="city-source"
-                key={source.href}
-                href={source.href}
+                href="https://www.openstreetmap.org/copyright"
                 target="_blank"
                 rel="noreferrer"
               >
-                {source.label}
+                OpenStreetMap contributors
               </a>
-            ))}
+            </p>
+            <div className="city-sources">
+              {town.sources.map((source) => (
+                <a
+                  className="city-source"
+                  key={source.href}
+                  href={source.href}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {source.label}
+                </a>
+              ))}
+            </div>
           </div>
-        </div>
-      </details>
+        </details>
+      </div>
     </article>
   );
 }

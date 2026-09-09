@@ -1,6 +1,8 @@
 /* Travel is an operational page: destinations and actions stay together.
    Two parts — the week you are booked for, then the city in your own time. */
 .travel-page {
+  --travel-columns: minmax(0, 1fr) minmax(0, 1.35fr);
+  --travel-gap: clamp(28px, 4vw, 64px);
   background: var(--paper);
 }
 .travel-heading {
@@ -70,9 +72,8 @@
 .travel-arrival,
 .travel-places {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 28px;
-  align-items: start;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 32px;
 }
 .travel-arrival {
   margin-bottom: 28px;
@@ -88,12 +89,39 @@
 }
 .travel-place,
 .shuttle-card {
-  padding: clamp(22px, 2.5vw, 36px);
+  display: grid;
+  grid-template-columns: var(--travel-columns);
+  gap: var(--travel-gap);
+  align-items: start;
+  padding: clamp(24px, 3vw, 44px);
   background: var(--surface);
-  border: 1px solid var(--line);
+  border-top: 1px solid var(--line);
 }
-.travel-hotel {
-  border-top: 4px solid var(--forest);
+.travel-place-summary,
+.travel-place-details,
+.shuttle-overview,
+.shuttle-schedule {
+  min-width: 0;
+}
+.venue-photo {
+  margin: 24px 0 0;
+}
+.venue-photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+.venue-photo figcaption {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: var(--t-label);
+  line-height: 1.5;
+}
+.venue-photo figcaption a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 .travel-place h3,
 .shuttle-card h3 {
@@ -121,7 +149,7 @@
   flex: none;
 }
 .travel-place-context,
-.shuttle-card > p:not(.travel-eyebrow) {
+.shuttle-overview > p:not(.travel-eyebrow) {
   margin: 0 0 20px;
   color: var(--text);
   font-size: 15px;
@@ -154,7 +182,7 @@
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 8px;
-  margin: 20px 0;
+  margin: 0 0 20px;
 }
 .travel-place-actions a,
 .travel-address button {
@@ -194,12 +222,12 @@
   min-height: 50px;
   padding-inline: 16px;
   color: #fff;
-  background: #161616;
-  border-color: #161616;
+  background: var(--forest);
+  border-color: var(--forest);
   font-size: 16px;
 }
 .travel-place-actions a.travel-uber:hover {
-  background: #333;
+  background: var(--forest-dark);
 }
 .travel-uber svg:last-child {
   margin-left: auto;
@@ -344,14 +372,19 @@
 }
 .shuttle-card {
   background: var(--surface-soft);
-  border-top: 4px solid var(--forest);
+  border-top: 1px solid var(--line);
+}
+.shuttle-times {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px;
 }
 .shuttle-times > div {
   display: grid;
-  grid-template-columns: 95px minmax(0, 1fr);
-  gap: 16px;
-  padding: 20px 0;
-  border-top: 1px solid var(--line);
+  grid-template-columns: minmax(0, 1fr);
+  gap: 10px;
+  padding: 0 0 20px;
+  border: 0;
 }
 .shuttle-times dt {
   padding-top: 6px;
@@ -364,7 +397,7 @@
 .shuttle-times strong {
   display: block;
   color: var(--forest);
-  font-size: 30px;
+  font-size: 36px;
   line-height: 1.2;
   font-variant-numeric: tabular-nums;
 }
@@ -391,13 +424,13 @@
 
 /* Friday's destination: one block, logistics first, the town's history in it. */
 .friday-visit .city-photo {
-  margin: 16px 0 20px;
+  margin: 24px 0 0;
 }
 .friday-visit .city-photo img {
   display: block;
   width: 100%;
   height: auto;
-  max-height: 260px;
+  aspect-ratio: 16 / 9;
   object-fit: cover;
 }
 .friday-visit .city-photo figcaption {
@@ -409,6 +442,9 @@
 .friday-visit .city-photo figcaption a {
   text-decoration: underline;
   text-underline-offset: 3px;
+}
+.friday-visit .travel-getting-there {
+  margin-bottom: 24px;
 }
 .friday-visit .city-prose > p {
   margin: 0 0 16px;
@@ -465,18 +501,14 @@ a.city-source,
 /* Part two: the city in your own time. */
 .city-introduction {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
-  gap: 32px;
-  padding-bottom: 32px;
+  grid-template-columns: var(--travel-columns);
+  gap: var(--travel-gap);
+  padding: clamp(24px, 3vw, 44px);
+  margin-bottom: 32px;
+  background: var(--surface);
 }
 .city-introduction .travel-eyebrow {
-  margin-bottom: 8px;
-}
-.city-date {
-  margin: 0;
-  color: var(--muted);
-  font-size: var(--t-meta-lg);
-  font-variant-numeric: tabular-nums;
+  margin-bottom: 16px;
 }
 .city-prose {
   max-width: 68ch;
@@ -489,7 +521,7 @@ a.city-source,
 }
 .city-free-time {
   border-top: 1px solid var(--line);
-  padding-top: 28px;
+  padding-top: 32px;
 }
 .city-free-time h3 {
   margin: 0 0 12px;
@@ -533,6 +565,36 @@ a.city-source,
 }
 .guide-credit {
   margin: 14px 0 0;
+}
+
+@media screen and (max-width: 900px) {
+  .travel-place,
+  .shuttle-card,
+  .city-introduction {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+  }
+  .venue-photo,
+  .friday-visit .city-photo {
+    order: 2;
+    width: 100%;
+    margin: 24px 0 0;
+  }
+  .travel-place {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .travel-place-summary {
+    display: contents;
+  }
+  .travel-place-details {
+    order: 1;
+    width: 100%;
+  }
+  .travel-place-summary > .travel-getting-there {
+    margin-bottom: 20px;
+  }
 }
 
 @media screen and (max-width: 760px) {
@@ -595,7 +657,7 @@ a.city-source,
     font-size: 14px;
   }
   .travel-place-actions {
-    margin-block: 16px;
+    margin-block: 0 16px;
   }
   .hotel-stay > div {
     grid-template-columns: 85px minmax(0, 1fr);
@@ -606,7 +668,10 @@ a.city-source,
     gap: 22px;
   }
   .city-introduction {
-    padding-bottom: 26px;
+    padding: 24px 20px;
+  }
+  .shuttle-times {
+    gap: 20px;
   }
   .guide-google-map {
     height: 480px;
@@ -640,6 +705,7 @@ a.city-source,
   }
   .travel-place,
   .shuttle-card {
+    display: flow-root;
     margin-top: 12pt;
     padding: 10pt 0;
     break-inside: avoid;
@@ -666,6 +732,9 @@ a.city-source,
     color: #333;
   }
   /* The disclosure is a screen affordance; on paper the town's history prints. */
+  .travel-place-summary {
+    display: contents;
+  }
   .friday-more[open],
   .friday-more {
     display: block;
@@ -676,6 +745,7 @@ a.city-source,
   .friday-visit {
     break-inside: auto;
   }
+  .venue-photo,
   .friday-visit .city-photo {
     float: right;
     width: 65mm;
@@ -697,6 +767,8 @@ a.city-source,
     display: block;
     break-inside: avoid;
     margin-top: 12pt;
+    padding: 0;
+    background: #fff;
   }
   .city-prose {
     max-width: none;

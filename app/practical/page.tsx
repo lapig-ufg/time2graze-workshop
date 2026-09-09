@@ -51,34 +51,38 @@ export default function PracticalPage() {
             id="transport"
             aria-labelledby="shuttle-title"
           >
-            <p className="travel-eyebrow">
-              <BusFront aria-hidden="true" />
-              Daily transport
-            </p>
-            <h3 id="shuttle-title">Workshop shuttle</h3>
-            <p>
-              Take the workshop shuttle from Golden Lis each day. Transport to
-              the activities and back is organised.
-            </p>
-            <dl className="shuttle-times">
-              {SHUTTLE_PLAN.map((item) => (
-                <div key={item.days}>
-                  <dt>{item.days}</dt>
-                  <dd>
-                    <strong>{item.time}</strong>
-                    <span>{item.detail}</span>
-                    {item.provisional && (
-                      <em className="shuttle-provisional">
-                        Departure time to confirm
-                      </em>
-                    )}
-                  </dd>
-                </div>
-              ))}
-            </dl>
-            <Link className="travel-text-link" href="/programme/">
-              View daily programme <ArrowUpRight aria-hidden="true" />
-            </Link>
+            <div className="shuttle-overview">
+              <p className="travel-eyebrow">
+                <BusFront aria-hidden="true" />
+                Daily transport
+              </p>
+              <h3 id="shuttle-title">Workshop shuttle</h3>
+              <p>
+                Take the workshop shuttle from Golden Lis each day. Transport to
+                the activities and back is organised.
+              </p>
+            </div>
+            <div className="shuttle-schedule">
+              <dl className="shuttle-times">
+                {SHUTTLE_PLAN.map((item) => (
+                  <div key={item.days}>
+                    <dt>{item.days}</dt>
+                    <dd>
+                      <strong>{item.time}</strong>
+                      <span>{item.detail}</span>
+                      {item.provisional && (
+                        <em className="shuttle-provisional">
+                          Departure time to confirm
+                        </em>
+                      )}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+              <Link className="travel-text-link" href="/programme/">
+                View daily programme <ArrowUpRight aria-hidden="true" />
+              </Link>
+            </div>
           </section>
         </div>
 

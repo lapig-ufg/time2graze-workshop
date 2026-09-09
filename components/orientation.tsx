@@ -14,19 +14,13 @@ export function Orientation() {
       id="orientation"
       aria-labelledby="goiania-title"
     >
-      <h2 className="travel-part-title" id="goiania-title">
-        Goiânia
-      </h2>
-      <p className="travel-part-lead">
-        The city around the workshop, and what is within reach of the hotel on a
-        free evening.
-      </p>
-
-      <article className="city-introduction">
-        <div>
+      <div className="city-introduction">
+        <header className="city-introduction-heading">
           <p className="travel-eyebrow">{city.subtitle}</p>
-          <p className="city-date">Founded in 1933</p>
-        </div>
+          <h2 className="travel-part-title" id="goiania-title">
+            Goiânia
+          </h2>
+        </header>
         <div className="city-prose">
           {city.paragraphs.map((paragraph) => (
             <p key={paragraph}>{paragraph}</p>
@@ -40,7 +34,7 @@ export function Orientation() {
             {city.source.label}
           </a>
         </div>
-      </article>
+      </div>
 
       <section
         className="city-free-time"
