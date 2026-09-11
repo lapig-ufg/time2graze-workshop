@@ -97,9 +97,10 @@ npm run dev
 Useful commands:
 
 ```bash
-npm run build   # production build in out/
-npm run lint    # oxlint
-npm run format  # oxfmt
+npm run build        # production build in out/
+npm run lint         # oxlint
+npm test             # node --test over scripts/
+npm run format:check # oxfmt, reporting only — see AGENTS.md before writing
 ```
 
 The generated scaffold still contains 60 unused shadcn components and several

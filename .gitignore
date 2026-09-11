@@ -40,6 +40,9 @@ next-env.d.ts
 # Generated from data/agenda.ts by scripts/build-calendar.mjs
 /public/calendar/
 
+# Generated from data/ by scripts/build-assistant-corpus.mjs
+/public/assistant-corpus.json
+
 # build info
 tsconfig.tsbuildinfo
 

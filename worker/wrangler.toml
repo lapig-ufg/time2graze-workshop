@@ -1,0 +1,45 @@
+# The inference proxy for the site's assistant. Deploy from this directory.
+#
+# Nothing here is a secret: the key is set with `wrangler secret put`, never in
+# this file and never in the repository.
+name = "time2graze-assistant"
+main = "src/index.js"
+compatibility_date = "2026-09-09"
+
+# One public address: https://time2graze-assistant.lapig-ufg.workers.dev.
+# Preview URLs would give every uploaded version an address of its own that
+# can spend the key as well, so they are off.
+workers_dev = true
+preview_urls = false
+
+[vars]
+# The published corpus. This worker holds no copy of the workshop — it reads
+# the one the site publishes, so a programme change needs no redeploy here.
+CORPUS_URL = "https://lapig-ufg.github.io/time2graze-workshop/assistant-corpus.json"
+
+# Every origin allowed to spend the key. The deployed site, and the dev server
+# so the panel can be worked on locally.
+ALLOWED_ORIGINS = "https://lapig-ufg.github.io,https://victorgit10.github.io,http://localhost:3000"
+
+# Confirm the tag against `GET https://ollama.com/api/tags` with your key
+# before changing it: glm-4.6 and glm-4.7 have already been retired.
+OLLAMA_MODEL = "glm-5.2"
+
+# Answers per day, across everyone. Needs the KV namespace below to be bound;
+# without it the burst limiter is the only guard and the worker logs that.
+DAILY_LIMIT = "400"
+
+# Burst protection, per IP. The period must be 10 or 60 seconds.
+[[ratelimits]]
+name = "ASSISTANT_LIMIT"
+namespace_id = "1001"
+
+  [ratelimits.simple]
+  limit = 8
+  period = 60
+
+# The daily counter, created with `npx wrangler kv namespace create ASSISTANT_KV`.
+# The id names a namespace in the Cloudflare account; it grants nothing by itself.
+[[kv_namespaces]]
+binding = "ASSISTANT_KV"
+id = "9ca3fcb98c02438fb913386f0466acc1"

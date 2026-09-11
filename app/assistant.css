@@ -1,0 +1,268 @@
+/*
+ * The question panel.
+ *
+ * Written to disappear into the site rather than announce itself: paper and
+ * forest, the 3px radius everything else uses, one weight of type. The brief
+ * rejects "generic AI aesthetics" by name, so there is no gradient here, no
+ * glow, no circular bubble and no colour the rest of the site does not have.
+ *
+ * It is screen furniture and never prints.
+ */
+
+/* Forest, with the pale lime on a small plate: the header's own two colours,
+   so it is the most visible control on the page without borrowing a colour,
+   a gradient or a glow the site does not have. It arrives once, a beat after
+   the page, and does not pulse — the site keeps a pulse for an answer still
+   owed (the split-session chooser), and a second one would compete with it. */
+.ask-trigger {
+  position: fixed;
+  right: var(--gutter);
+  bottom: 22px;
+  z-index: 60;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 18px 7px 7px;
+  border: 1px solid var(--forest-dark);
+  border-radius: var(--radius);
+  background: var(--forest);
+  color: #fff;
+  font: inherit;
+  font-size: var(--t-meta-lg);
+  font-weight: 700;
+  letter-spacing: .02em;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgb(16 56 43 / .14), 0 12px 28px rgb(16 56 43 / .24);
+  transition:
+    background var(--m-quick) var(--m-ease),
+    box-shadow var(--m-move) var(--m-ease),
+    transform var(--m-move) var(--m-ease);
+}
+
+.ask-trigger-mark {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: var(--forest-dark);
+}
+
+.ask-trigger:hover {
+  background: var(--forest-dark);
+  box-shadow: 0 3px 6px rgb(16 56 43 / .16), 0 16px 34px rgb(16 56 43 / .28);
+  transform: translateY(-2px);
+}
+.ask-trigger:active { transform: translateY(0); }
+.ask-trigger:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+@media screen and (prefers-reduced-motion: no-preference) {
+  .ask-trigger { animation: enter-up var(--m-enter) var(--m-ease) .5s both; }
+}
+
+/* A native `dialog` in the top layer, so it needs its own box back: the UA
+   centres it and gives it a border and padding this design does not want. */
+.ask-panel[open] {
+  position: fixed;
+  z-index: 61;
+  inset: auto var(--gutter) 20px auto;
+  display: flex;
+  padding: 0;
+  margin: 0;
+  flex-direction: column;
+  width: min(400px, calc(100vw - 2 * var(--gutter)));
+  max-height: min(620px, calc(100vh - 40px));
+  overflow: visible;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: 0 2px 6px rgb(24 54 45 / .07), 0 18px 44px rgb(24 54 45 / .14);
+}
+
+/* On a phone the panel is the screen: a 400px card floating over the page
+   leaves neither the answer nor the page usable. */
+@media (max-width: 640px) {
+  .ask-panel[open] {
+    inset: 0;
+    width: 100%;
+    max-width: none;
+    /* The UA gives `dialog` `height: fit-content`, so `inset: 0` alone leaves
+       a half-height card with the page showing under it. `dvh` because the
+       browser chrome on a phone is not part of the viewport it reports. */
+    height: 100dvh;
+    max-height: none;
+    border: 0;
+    border-radius: 0;
+  }
+}
+
+/* Modal, but not a curtain: the page behind stays readable, which is the
+   point of asking a question about the page you are on. */
+.ask-panel::backdrop { background: rgb(24 54 45 / .18); }
+
+.ask-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.ask-head h2 {
+  margin: 0;
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: var(--t-head-sm);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.ask-head button {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius);
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.ask-head button:hover { background: var(--surface-soft); color: var(--ink); }
+
+.ask-log {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  font-size: var(--t-body);
+  line-height: 1.55;
+}
+
+.ask-empty, .ask-busy {
+  margin: 0;
+  color: var(--muted);
+  font-size: var(--t-meta);
+}
+
+.ask-busy { margin-top: 12px; }
+
+.ask-turn + .ask-turn { margin-top: 16px; }
+.ask-turn p { margin: 0 0 8px; color: var(--text); }
+.ask-turn p:last-child { margin-bottom: 0; }
+
+/* The reader's own words, set apart by weight and colour rather than by a
+   coloured bubble on one side of the panel. */
+.ask-user p {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.ask-note {
+  color: var(--muted);
+  font-size: var(--t-label);
+}
+
+/* A place's exact published values, set under the answer from the corpus
+   itself. The model never types them, so they cannot come out misspelt. */
+.ask-details {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-left: 2px solid var(--forest);
+  background: var(--surface-soft);
+}
+
+.ask-details .ask-details-name {
+  margin: 0 0 6px;
+  color: var(--forest);
+  font-size: var(--t-label);
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.ask-details dl { display: grid; gap: 4px; margin: 0; }
+.ask-details dl > div { display: grid; grid-template-columns: 62px minmax(0, 1fr); gap: 8px; }
+.ask-details dt { color: var(--muted); font-size: var(--t-label); }
+.ask-details dd { margin: 0; color: var(--ink); font-size: var(--t-meta); line-height: 1.45; overflow-wrap: anywhere; }
+.ask-details a { color: var(--forest); text-underline-offset: 2px; }
+
+.ask-sources {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.ask-sources a {
+  padding: 5px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface-soft);
+  color: var(--ink);
+  font-size: var(--t-label);
+  text-decoration: none;
+}
+
+.ask-sources a:hover { border-color: var(--forest); }
+
+.ask-form {
+  display: flex;
+  gap: 8px;
+  padding: 12px 16px 0;
+  border-top: 1px solid var(--line);
+}
+
+.ask-form input {
+  flex: 1;
+  min-width: 0;
+  padding: 9px 11px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+  font-size: var(--t-meta);
+}
+
+.ask-form input:focus-visible { border-color: var(--forest); }
+
+.ask-form button {
+  padding: 9px 15px;
+  border: 1px solid var(--forest);
+  border-radius: var(--radius);
+  background: var(--forest);
+  color: var(--paper);
+  font: inherit;
+  font-size: var(--t-meta);
+  cursor: pointer;
+}
+
+.ask-form button:disabled {
+  border-color: var(--line);
+  background: var(--line);
+  color: var(--muted-soft);
+  cursor: default;
+}
+
+.ask-disclosure {
+  margin: 10px 16px 14px;
+  color: var(--muted);
+  font-size: var(--t-label);
+  line-height: 1.45;
+}
+
+/* Following a source changes page under a cross-fade rather than a cut, at
+   the site's own "change the reader asked for" duration. The component skips
+   the transition entirely under prefers-reduced-motion. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: var(--m-move);
+  animation-timing-function: var(--m-ease);
+}
+
+@media print {
+  .ask-trigger, .ask-panel { display: none; }
+  .ask-panel::backdrop { display: none; }
+}

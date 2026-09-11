@@ -1,11 +1,13 @@
 import type { Metadata } from 'next';
 import { SiteFooter } from '@/components/site-footer';
 import { SiteHeader } from '@/components/site-header';
+import { Assistant } from '@/components/assistant';
 import { Cormorant_Garamond, Manrope } from 'next/font/google';
 import { withBasePath } from '@/lib/base-path';
 import './globals.css';
 import './travel.css';
 import './stories.css';
+import './assistant.css';
 
 const sans = Manrope({ variable: '--font-sans', subsets: ['latin'] });
 const serif = Cormorant_Garamond({
@@ -51,6 +53,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <SiteHeader />
         <main id="content">{children}</main>
         <SiteFooter />
+        {/* Over the page, never a destination of its own. */}
+        <Assistant />
       </body>
     </html>
   );
