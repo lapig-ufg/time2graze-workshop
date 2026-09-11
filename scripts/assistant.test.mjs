@@ -106,8 +106,32 @@ test('a venue with no confirmed address says so, and none is invented', () => {
   for (const [id, venue] of Object.entries(VENUES)) {
     const entry = corpus.entries.find((e) => e.id === `venue-${id}`);
     assert.ok(entry, `${id} is missing from the corpus`);
-    if (venue.address) assert.ok(entry.text.includes(venue.address));
-    else assert.match(entry.text, /No confirmed postal address/);
+    if (venue.address) {
+      assert.ok(
+        entry.details?.some((d) => d.label === 'Address' && d.value === venue.address),
+        `${id}: the confirmed address is not in its details verbatim`,
+      );
+    } else {
+      assert.match(entry.text, /No confirmed postal address/);
+      assert.ok(!entry.details?.some((d) => d.label === 'Address'));
+    }
+  }
+});
+
+/**
+ * The worker sends `text` to the model and never `details`. On 11 September
+ * 2026 the model, copying the hotel's address out of the text, wrote "Santa
+ * Genoveza" twice. Anything a reader copies or reads aloud stays out of reach.
+ */
+test('no address, area, phone or website reaches the text the model reads', () => {
+  const guarded = Object.values(VENUES).flatMap((venue) =>
+    [venue.address, venue.locality, venue.phone, venue.website].filter(Boolean),
+  );
+  for (const entry of corpus.entries) {
+    for (const value of guarded) {
+      assert.ok(!entry.text.includes(value), `${entry.id} carries "${value}" in its text`);
+    }
+    assert.doesNotMatch(entry.text, /https?:\/\//, `${entry.id} carries a URL in its text`);
   }
 });
 
@@ -195,6 +219,8 @@ test('the worker still forbids answering outside the corpus', () => {
   );
   assert.match(worker, /Answer ONLY from the entries below/);
   assert.match(worker, /SOURCES:/);
+  assert.match(worker, /Never write any of them, not even\s+from memory/);
+  assert.doesNotMatch(worker, /\.details/, 'the worker must never send details to the model');
 });
 
 /**

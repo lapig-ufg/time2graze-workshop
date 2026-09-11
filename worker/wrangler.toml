@@ -15,7 +15,7 @@ preview_urls = false
 [vars]
 # The published corpus. This worker holds no copy of the workshop — it reads
 # the one the site publishes, so a programme change needs no redeploy here.
-CORPUS_URL = "https://victorgit10.github.io/time2graze-workshop/assistant-corpus.json"
+CORPUS_URL = "https://lapig-ufg.github.io/time2graze-workshop/assistant-corpus.json"
 
 # Every origin allowed to spend the key. The deployed site, and the dev server
 # so the panel can be worked on locally.

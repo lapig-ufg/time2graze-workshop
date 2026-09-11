@@ -43,6 +43,12 @@ export type CorpusEntry = {
   href: string;
   /** The workshop day this belongs to, where it belongs to one. */
   day?: number;
+  /**
+   * Values a reader copies or reads aloud — a place's area, address, phone and
+   * website — exactly as published. The panel sets them under an answer; the
+   * worker never puts them in the prompt, so a model cannot misspell them.
+   */
+  details?: { label: string; value: string }[];
 };
 
 export type Corpus = {

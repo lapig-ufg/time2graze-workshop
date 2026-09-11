@@ -1509,6 +1509,15 @@ reads this in an arrivals hall, and a plausible guess is worse than a blank.
 - **Session entries name no venue.** The programme and the `.ics` have been
   silent on places since 5 September 2026; an assistant naming a room would be
   the only surface on the site contradicting them.
+- **Addresses, phone numbers and websites never pass through the model.** On
+  11 September 2026, with the hotel's address in the corpus verbatim,
+  `glm-5.2` twice wrote "Setor Santa Genoveza" for Santa Genoveva — the one
+  line on the site someone reads aloud to a driver. Asking a model to copy
+  carefully is not a guarantee, so a place's area, address, phone and website
+  live in the entry's `details`, which the worker never puts in the prompt.
+  The panel sets them under the answer straight from the corpus, and the model
+  is told to point at them rather than write them. `scripts/assistant.test.mjs`
+  fails if any of them, or any URL, reaches an entry's `text`.
 - **The model never writes a URL.** It ends an answer with `SOURCES: id, id`,
   and the panel resolves those ids against the corpus the browser already has.
   An id it invents resolves to nothing and is dropped. That is also how the

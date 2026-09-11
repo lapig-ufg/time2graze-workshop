@@ -164,6 +164,30 @@
   font-size: var(--t-label);
 }
 
+/* A place's exact published values, set under the answer from the corpus
+   itself. The model never types them, so they cannot come out misspelt. */
+.ask-details {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-left: 2px solid var(--forest);
+  background: var(--surface-soft);
+}
+
+.ask-details .ask-details-name {
+  margin: 0 0 6px;
+  color: var(--forest);
+  font-size: var(--t-label);
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.ask-details dl { display: grid; gap: 4px; margin: 0; }
+.ask-details dl > div { display: grid; grid-template-columns: 62px minmax(0, 1fr); gap: 8px; }
+.ask-details dt { color: var(--muted); font-size: var(--t-label); }
+.ask-details dd { margin: 0; color: var(--ink); font-size: var(--t-meta); line-height: 1.45; overflow-wrap: anywhere; }
+.ask-details a { color: var(--forest); text-underline-offset: 2px; }
+
 .ask-sources {
   display: flex;
   flex-wrap: wrap;

@@ -63,7 +63,7 @@ const CITY_HREF = {
   goias: '/practical/#cidade-de-goias',
 };
 
-function add(id, kind, title, text, href, day) {
+function add(id, kind, title, text, href, day, details) {
   const body = text.replace(/\s+/g, ' ').trim();
   if (body)
     entries.push({
@@ -73,6 +73,7 @@ function add(id, kind, title, text, href, day) {
       text: body,
       href,
       ...(day ? { day } : {}),
+      ...(details?.length ? { details } : {}),
     });
 }
 
@@ -204,13 +205,28 @@ for (const day of AGENDA) {
    so what is here is safe to repeat to someone standing in an arrivals hall;
    `pending` is what the page itself shows as missing. */
 for (const [id, venue] of Object.entries(VENUES)) {
+  /* What a reader copies or reads aloud goes in `details`, not in the text:
+     the worker sends only the text to the model, and on 11 September 2026 the
+     model wrote "Santa Genoveza" for Santa Genoveva twice while copying it.
+     The panel sets these under the answer verbatim. */
+  const details = [
+    ['Area', venue.locality],
+    ['Address', venue.address],
+    ['Phone', venue.phone],
+    ['Website', venue.website],
+  ]
+    .filter(([, value]) => value)
+    .map(([label, value]) => ({ label, value }));
+
   const parts = [`${venue.name} — ${venue.use}.`];
-  if (venue.locality) parts.push(`Located in ${venue.locality}.`);
-  if (venue.address) parts.push(`Address: ${venue.address}.`);
-  else parts.push('No confirmed postal address is published for this place.');
+  if (!venue.address)
+    parts.push('No confirmed postal address is published for this place.');
+  if (details.length) {
+    parts.push(
+      `Listed with it exactly as published: ${details.map((d) => d.label.toLowerCase()).join(', ')}.`,
+    );
+  }
   if (venue.arrivalNote) parts.push(venue.arrivalNote);
-  if (venue.phone) parts.push(`Phone: ${venue.phone}.`);
-  if (venue.website) parts.push(`Website: ${venue.website}`);
   if (venue.pending) parts.push(`Still to be confirmed: ${venue.pending}`);
   /* The pin itself, not its coordinates: a decimal degree is nothing a reader
      wants read back to them, and nothing a model should be tempted to
@@ -222,7 +238,15 @@ for (const [id, venue] of Object.entries(VENUES)) {
         : 'Travel & stay maps this place. No ride link is offered for it.',
     );
   }
-  add(`venue-${id}`, 'venue', venue.name, parts.join(' '), PLACE_HREF[id] ?? '/practical/');
+  add(
+    `venue-${id}`,
+    'venue',
+    venue.name,
+    parts.join(' '),
+    PLACE_HREF[id] ?? '/practical/',
+    undefined,
+    details,
+  );
 }
 
 add(
@@ -276,8 +300,10 @@ for (const place of GUIDE_PLACES) {
     `guide-${place.id}`,
     'guide',
     place.name,
-    `${place.category} in ${place.area}, Goiânia. ${place.description} A free-time recommendation, not a workshop venue; opening hours are not published here. Website: ${place.website}`,
+    `${place.category} in ${place.area}, Goiânia. ${place.description} A free-time recommendation, not a workshop venue; opening hours are not published here.`,
     '/practical/#recommendations',
+    undefined,
+    place.website ? [{ label: 'Website', value: place.website }] : [],
   );
 }
 

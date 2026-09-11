@@ -35,6 +35,23 @@ type Turn = {
 };
 
 /**
+ * A published detail, verbatim from the corpus. The model never writes these —
+ * it points at them — so what a reader copies or reads to a driver is the
+ * site's own text. A phone dials and a website opens; the rest is plain text.
+ */
+function DetailValue({ label, value }: { label: string; value: string }) {
+  if (label === 'Website') {
+    return (
+      <a href={value} target="_blank" rel="noopener noreferrer">
+        {value.replace(/^https?:\/\//, '').replace(/\/$/, '')}
+      </a>
+    );
+  }
+  if (label === 'Phone') return <a href={`tel:${value.replace(/[^\d+]/g, '')}`}>{value}</a>;
+  return <>{value}</>;
+}
+
+/**
  * Brings a hash into effect on the page already showing.
  *
  * Next does not emit `hashchange` for a same-route navigation (see
@@ -274,6 +291,20 @@ export function Assistant() {
                 {turn.text.split('\n\n').map((paragraph, i) => <p key={i}>{paragraph}</p>)}
 
                 {turn.note && <p className="ask-note">{turn.note}</p>}
+
+                {turn.sources?.filter((entry) => entry.details?.length).map((entry) => (
+                  <div key={entry.id} className="ask-details">
+                    <p className="ask-details-name">{entry.title}</p>
+                    <dl>
+                      {entry.details!.map((detail) => (
+                        <div key={detail.label}>
+                          <dt>{detail.label}</dt>
+                          <dd><DetailValue {...detail} /></dd>
+                        </div>
+                      ))}
+                    </dl>
+                  </div>
+                ))}
 
                 {turn.sources && turn.sources.length > 0 && (
                   <nav className="ask-sources" aria-label="Where this is on the site">

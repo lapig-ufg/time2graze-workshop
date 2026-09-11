@@ -59,6 +59,11 @@ const WEEKDAY_TO_DAY: Record<string, number> = {
 };
 
 /** Lowercased, unaccented words. 'Almoço' and 'almoco' have to meet. */
+/** Everything an entry can be found by: its text and its published details. */
+function bodyOf(entry: CorpusEntry): string {
+  return [entry.text, ...(entry.details ?? []).map((detail) => detail.value)].join(' ');
+}
+
 function words(text: string): string[] {
   return text
     .normalize('NFD')
@@ -124,7 +129,7 @@ function termWeights(corpus: Corpus): Map<string, number> {
 
   const frequency = new Map<string, number>();
   for (const entry of corpus.entries) {
-    for (const word of new Set([...words(entry.title), ...words(entry.text)])) {
+    for (const word of new Set([...words(entry.title), ...words(bodyOf(entry))])) {
       frequency.set(word, (frequency.get(word) ?? 0) + 1);
     }
   }
@@ -174,7 +179,7 @@ export function search(corpus: Corpus, question: string, limit = 4): Match[] {
     if (day !== null && entry.day !== undefined && entry.day !== day) continue;
 
     const title = new Set(words(entry.title));
-    const body = new Set(words(entry.text));
+    const body = new Set(words(bodyOf(entry)));
 
     let score = dayBonus(entry);
     for (const term of terms) {
