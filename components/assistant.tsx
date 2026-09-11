@@ -245,7 +245,9 @@ export function Assistant() {
         aria-expanded={open}
         onClick={() => setOpen((was) => !was)}
       >
-        <MessageCircle aria-hidden size={16} />
+        <span className="ask-trigger-mark" aria-hidden>
+          <MessageCircle size={17} strokeWidth={2.2} />
+        </span>
         Ask
       </button>
 

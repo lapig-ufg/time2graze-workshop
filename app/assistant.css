@@ -9,30 +9,57 @@
  * It is screen furniture and never prints.
  */
 
+/* Forest, with the pale lime on a small plate: the header's own two colours,
+   so it is the most visible control on the page without borrowing a colour,
+   a gradient or a glow the site does not have. It arrives once, a beat after
+   the page, and does not pulse — the site keeps a pulse for an answer still
+   owed (the split-session chooser), and a second one would compete with it. */
 .ask-trigger {
   position: fixed;
   right: var(--gutter);
-  bottom: 20px;
+  bottom: 22px;
   z-index: 60;
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  padding: 9px 14px;
-  border: 1px solid var(--line);
+  gap: 10px;
+  padding: 7px 18px 7px 7px;
+  border: 1px solid var(--forest-dark);
   border-radius: var(--radius);
-  background: var(--surface);
-  color: var(--ink);
+  background: var(--forest);
+  color: #fff;
   font: inherit;
-  font-size: var(--t-meta);
-  letter-spacing: .01em;
+  font-size: var(--t-meta-lg);
+  font-weight: 700;
+  letter-spacing: .02em;
   cursor: pointer;
-  box-shadow: 0 1px 2px rgb(24 54 45 / .06), 0 6px 18px rgb(24 54 45 / .08);
-  transition: border-color var(--m-quick) var(--m-ease), transform var(--m-quick) var(--m-ease);
+  box-shadow: 0 2px 4px rgb(16 56 43 / .14), 0 12px 28px rgb(16 56 43 / .24);
+  transition:
+    background var(--m-quick) var(--m-ease),
+    box-shadow var(--m-move) var(--m-ease),
+    transform var(--m-move) var(--m-ease);
 }
 
-.ask-trigger:hover { border-color: var(--forest); }
-.ask-trigger:active { transform: translateY(1px); }
-.ask-trigger svg { color: var(--muted); }
+.ask-trigger-mark {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: var(--forest-dark);
+}
+
+.ask-trigger:hover {
+  background: var(--forest-dark);
+  box-shadow: 0 3px 6px rgb(16 56 43 / .16), 0 16px 34px rgb(16 56 43 / .28);
+  transform: translateY(-2px);
+}
+.ask-trigger:active { transform: translateY(0); }
+.ask-trigger:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+@media screen and (prefers-reduced-motion: no-preference) {
+  .ask-trigger { animation: enter-up var(--m-enter) var(--m-ease) .5s both; }
+}
 
 /* A native `dialog` in the top layer, so it needs its own box back: the UA
    centres it and gives it a border and padding this design does not want. */

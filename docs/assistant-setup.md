@@ -38,7 +38,7 @@ Merge the branch to `main`, let Pages finish, then confirm the corpus is
 actually there:
 
 ```bash
-curl -s https://victorgit10.github.io/time2graze-workshop/assistant-corpus.json | head -c 200
+curl -s https://lapig-ufg.github.io/time2graze-workshop/assistant-corpus.json | head -c 200
 ```
 
 You should see `{"generated": …, "workshop": "Time2Graze Brazil Workshop …`.
@@ -106,7 +106,7 @@ Two commands. The first should stream an answer back as
 
 ```bash
 curl -i -X POST https://YOUR-WORKER.workers.dev \
-  -H "Origin: https://victorgit10.github.io" \
+  -H "Origin: https://lapig-ufg.github.io" \
   -H "Content-Type: application/json" \
   -d '{"messages":[{"role":"user","content":"Where is the hotel?"}]}'
 ```

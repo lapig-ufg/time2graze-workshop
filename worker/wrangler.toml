@@ -19,7 +19,7 @@ CORPUS_URL = "https://victorgit10.github.io/time2graze-workshop/assistant-corpus
 
 # Every origin allowed to spend the key. The deployed site, and the dev server
 # so the panel can be worked on locally.
-ALLOWED_ORIGINS = "https://victorgit10.github.io,http://localhost:3000"
+ALLOWED_ORIGINS = "https://lapig-ufg.github.io,https://victorgit10.github.io,http://localhost:3000"
 
 # Confirm the tag against `GET https://ollama.com/api/tags` with your key
 # before changing it: glm-4.6 and glm-4.7 have already been retired.
