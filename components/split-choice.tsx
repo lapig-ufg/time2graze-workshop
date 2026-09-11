@@ -109,24 +109,44 @@ function SessionChoice({
             {tracks.map((track) => {
               const presenter = presenterLabel(track);
               return (
-                <label className="split-option" key={track.id}>
-                  <input
-                    type="radio"
-                    name={`split-${session.id}`}
-                    value={track.id}
-                    required
-                    checked={selected === track.id}
-                    disabled={sending}
-                    onChange={() => {
-                      setPicked(track.id);
-                      setState(null);
-                    }}
-                  />
-                  <span>
-                    <strong>{track.title}</strong>
-                    {presenter && <small>{presenter}</small>}
-                  </span>
-                </label>
+                /* The abstract sits outside the label, and folded: a label is
+                   the control's *name*, and a hundred and thirty words of it
+                   is not a name anyone can listen to twice — and two of them
+                   open put the form's own controls a screen and a half below
+                   the question. The programme list above carries both in full
+                   on a phone; this is the same text at the moment of deciding,
+                   a tap away. */
+                <div className="split-choice-option" key={track.id}>
+                  <label className="split-option">
+                    <input
+                      type="radio"
+                      name={`split-${session.id}`}
+                      value={track.id}
+                      required
+                      checked={selected === track.id}
+                      disabled={sending}
+                      onChange={() => {
+                        setPicked(track.id);
+                        setState(null);
+                      }}
+                    />
+                    <span>
+                      <strong>{track.title}</strong>
+                      {presenter && <small>{presenter}</small>}
+                    </span>
+                  </label>
+                  {track.description && (
+                    <details className="split-option-detail">
+                      {/* Two summaries reading alike are one row in a screen
+                          reader's list of controls, so each names its own. */}
+                      <summary>
+                        What this covers
+                        <span className="visually-hidden"> — {track.title}</span>
+                      </summary>
+                      <p>{track.description}</p>
+                    </details>
+                  )}
+                </div>
               );
             })}
           </fieldset>

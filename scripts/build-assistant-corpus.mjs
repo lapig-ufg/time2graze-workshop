@@ -162,7 +162,7 @@ for (const day of AGENDA) {
         `One half of the split session "${session.title}" on Day ${day.index}, ${when}, ${timeLabel(session)} (America/Sao_Paulo).${who ? ` Presented by ${who}.` : ''} Participants choose between this and ${session.tracks
           .filter((t) => t.id !== track.id)
           .map((t) => t.title)
-          .join(', ')}.`,
+          .join(', ')}.${track.description ? ` ${track.description}` : ''}`,
         `/programme/#${session.id}`,
         day.index,
       );

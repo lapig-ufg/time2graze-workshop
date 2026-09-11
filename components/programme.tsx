@@ -352,6 +352,9 @@ function List(
                       <li key={t.id} data-chosen={picks[session.id] === t.id || undefined}>
                         <strong>{t.title}</strong>
                         <PresenterLine item={t} />
+                        {t.description && (
+                          <p className="track-detail">{t.description}</p>
+                        )}
                         {picks[session.id] === t.id && (
                           <em className="split-mark">Your choice</em>
                         )}
