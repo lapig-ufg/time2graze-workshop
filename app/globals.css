@@ -616,6 +616,7 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
 .session-tracks { display: grid; gap: 7px; margin: 0; padding: 0; list-style: none; }
 .session-tracks li { padding-left: 12px; border-left: 2px solid var(--line); }
 .session-tracks strong { display: block; font-size: var(--t-meta-lg); }
+.track-detail { margin: 6px 0 0; max-width: 68ch; color: var(--muted); font-size: var(--t-meta); line-height: 1.65; }
 .session-meta { display: flex; flex-wrap: wrap; gap: 7px 14px; align-items: center; margin: 7px 0 0; }
 
 @media (max-width: 620px) {
@@ -916,7 +917,18 @@ a.split-todo:hover { border-color: var(--forest); }
 /* The whole option is the target, not the 18px dot: this is answered on a
    phone, in a corridor, a minute before the session starts. */
 .split-option { display: flex; gap: 11px; align-items: flex-start; padding: 11px 13px; background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); cursor: pointer; transition: border-color var(--m-quick) var(--m-ease); }
-.split-option + .split-option { margin-top: 8px; }
+.split-choice-option + .split-choice-option { margin-top: 14px; }
+/* Folded, and hanging off its own option on a rule: open, two abstracts put
+   the name field and the send button a screen and a half below the question
+   they answer. The summary is the control, so it takes a touch target. */
+.split-option-detail { margin: 6px 0 0 13px; padding-left: 13px; border-left: 2px solid var(--line); }
+/* display:list-item keeps the native triangle: a bold green line with no
+   marker reads as a link, and a link that expands in place is a lie. */
+.split-option-detail > summary { display: list-item; list-style-position: inside; padding: 12px 0; color: var(--forest); font-size: var(--t-meta); font-weight: 700; cursor: pointer; }
+.split-option-detail > summary::marker { color: var(--muted-soft); }
+.split-option-detail > summary:hover { text-decoration: underline; }
+.split-option-detail > p { margin: 0 0 10px; color: var(--muted); font-size: var(--t-meta); line-height: 1.65; max-width: 68ch; }
+.split-choice-option:has(input:checked) .split-option-detail { border-left-color: var(--forest); }
 .split-option:hover { border-color: var(--forest); }
 .split-option:has(input:checked) { border-color: var(--forest); box-shadow: inset 0 0 0 1px var(--forest); }
 .split-option input { flex: none; width: 18px; height: 18px; margin: 2px 0 0; accent-color: var(--forest); }

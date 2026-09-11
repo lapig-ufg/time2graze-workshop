@@ -37,6 +37,16 @@ export type SessionKind =
 export type Track = {
   id: string;
   title: string;
+  /**
+   * What the activity covers, in the presenter's own words. A participant
+   * picks one of two parallel courses, and a title alone is not enough to
+   * choose on — so this is the substance of the choice, not decoration.
+   *
+   * It is shown by the chooser and by the chronological session list. The
+   * proportional grid is a fixed-height diagram that clips, so it is silent
+   * on this by design.
+   */
+  description?: string;
   speakers?: Speaker[];
   materials?: Material[];
 };

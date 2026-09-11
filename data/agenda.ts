@@ -79,12 +79,16 @@ export const AGENDA: Day[] = [
           {
             id: 'd1-visual-inspection',
             title: 'Visual Inspection Workshop',
+            description:
+              'The Visual Inspection Workshop provides theoretical and practical training in the interpretation of remote sensing imagery for land cover mapping and monitoring. The course introduces key remote sensing concepts, including the interaction of electromagnetic energy with the Earth’s surface, the spectral behavior of vegetation and other land cover types, the use of spectral indices such as NDVI, and the analysis of image time series. Based on these concepts, participants develop skills to recognize patterns and distinguish natural and anthropogenic classes using seven key elements of visual interpretation: color, tone, texture, shape, spatial context, spectral indices, and temporal patterns. These elements are applied in an integrated way to the analysis of different landscapes, helping participants develop a systematic and technical approach to satellite image interpretation and produce more consistent information for environmental monitoring and land cover mapping.',
             speakers: [{ name: 'Ana Paula', org: 'LAPIG' }],
             materials: [{ kind: 'slides' }],
           },
           {
             id: 'd1-gee-course',
             title: 'GEE / GEE App short course',
+            description:
+              'The GEE App / GEE short course introduces participants to the interactive Earth Engine Apps and spatial datasets developed within the Time2Graze initiative (in synergy with the Global Pasture Watch framework). The session focuses on practical navigation and usage of dedicated web applications of Global Pasture Watch and Time2Graze. Participants will get an overview of the metrics and pasture data hosted in these tools, understanding how to visualize, interpret, and inspect high-resolution grassland dynamics directly from the browser. Finally, the course demonstrates how to access, query, and load the underlying Time2Graze data layers directly within the Google Earth Engine Code Editor, enabling attendees to seamlessly plug these collections into their own scripts and workflows.',
             speakers: [{ name: 'Vinícius', org: 'LAPIG' }],
             materials: [{ kind: 'slides' }],
           },

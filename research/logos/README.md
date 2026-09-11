@@ -27,6 +27,7 @@ recorded under [Canvas crops](#canvas-crops) below.
 | Alliance Bioversity International & CIAT | `alliance-bioversity-ciat.svg` | https://commons.wikimedia.org/wiki/File:Alliance_Logo_Refresh_EN_color.svg | Current English mark; Alliance-authored asset, CC BY 4.0 |
 | WWF | `wwf.png` | https://cdnassets.panda.org/_skins/international/img/logo.png | Mark served by WWF's official global site; compact production asset |
 | Time2Graze | `time2graze.png` | Screenshot of a project slide, supplied by the client on 9 September 2026 | **Not an official asset.** Lifted from the screenshot and recoloured — see [The Time2Graze wordmark](#the-time2graze-wordmark) |
+| OpenGeoHub | `opengeohub.svg` | https://opengeohub.org/wp-content/uploads/2023/04/OpenGeoHub_logo_800x350_RGB.pdf | Official published logo; converted from PDF to SVG with `opengeohub-convert.py` |
 
 ## The Time2Graze wordmark
 
@@ -78,6 +79,12 @@ from the source in the table above.
 | `lapig-en-black.png` | 1080 x 1080 | 958 x 407 | Same |
 | `wwf.png` | 186 x 209 | 109 x 163 | White margin around the panda and wordmark |
 
+`opengeohub.svg` was not hand-cropped: `research/logos/opengeohub-convert.py`
+converts the official PDF to SVG and narrows the `viewBox` to the ink box in
+the same step. The source PDF carries outlined type with no embedded raster,
+so the conversion changes the container and not the artwork. Re-download and
+re-run the script to reproduce it.
+
 `global-methane-hub.png`, `inia-uruguay.png` and `ufg-color-horizontal.png`
 already filled their canvas and were left alone.
 
@@ -87,14 +94,16 @@ mark's plate.
 
 ## Marks currently shown
 
-The home page displays Time2Graze, Land & Carbon Lab, UFG and LAPIG. Land &
-Carbon Lab, UFG and LAPIG follow the client's instruction on 4 September 2026;
-Time2Graze was added on 9 September 2026, at the client's request, and leads
-the row because it is the project the workshop belongs to rather than one more
-affiliation. They appear in one neutral institutional row, without unconfirmed
-public-role labels. Every other asset in the candidate set remains unpublished
-until the relevant institution approves its use and the Time2Graze/LAPIG team
-confirms its inclusion.
+The home page displays Time2Graze, Land & Carbon Lab, OpenGeoHub, UFG, LAPIG
+and FUNAPE. Land & Carbon Lab, UFG and LAPIG follow the client's instruction
+on 4 September 2026; Time2Graze was added on 9 September 2026, at the
+client's request, and leads the row because it is the project the workshop
+belongs to rather than one more affiliation; FUNAPE was added the same day at
+the client's request; OpenGeoHub was added on 11 September 2026 with its
+official published logo. They appear in one neutral institutional row,
+without unconfirmed public-role labels. Every other asset in the candidate
+set remains unpublished until the relevant institution approves its use and
+the Time2Graze/LAPIG team confirms its inclusion.
 
 ## The WhatsApp glyph
 
@@ -134,9 +143,10 @@ logo use.
 
 ## Still to obtain or confirm
 
-- OpenGeoHub: replace the 200 x 200 reference with an official high-resolution
-  asset if it is confirmed as a displayed partner.
+- OpenGeoHub: the official published logo is now the production asset. Confirm
+  the institution's role and order in the row with the Time2Graze/LAPIG team.
 - INTA, UNMdP, IIASA, GLAD and Cornell: confirm whether these are partners for
   this event rather than institutions mentioned only in programme content.
-- Obtain approval before displaying any institutional mark beyond Land & Carbon
-  Lab, UFG and LAPIG, and confirm its role and order before adding it.
+- Obtain approval before displaying any institutional mark beyond the ones
+  listed under [Marks currently shown](#marks-currently-shown), and confirm its
+  role and order before adding it.

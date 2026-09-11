@@ -32,6 +32,13 @@ export const DISPLAYED_INSTITUTIONS: Institution[] = [
     height: 176,
   },
   {
+    name: 'OpenGeoHub',
+    href: 'https://opengeohub.org/',
+    logo: '/logos/institutions/opengeohub.svg',
+    width: 542,
+    height: 128,
+  },
+  {
     name: 'Federal University of Goiás',
     href: 'https://ufg.br/',
     logo: '/logos/institutions/ufg-color-horizontal.png',
