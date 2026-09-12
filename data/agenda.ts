@@ -533,6 +533,16 @@ export const AGENDA: Day[] = [
            rides the agenda line as the organiser writes it. */
         venueNote: 'Fazenda Buriti Queimado',
         kind: 'field',
+        /* LAPIG's map sheet of the farm, supplied 12 September 2026.
+           `data/field-visit.ts` reads this href for Travel & stay. */
+        materials: [
+          {
+            kind: 'document',
+            title: 'Farm map sheet',
+            href: '/files/fazenda-buriti-queimado-map.webp',
+            format: 'WebP',
+          },
+        ],
       },
       {
         id: 'd5-lunch',

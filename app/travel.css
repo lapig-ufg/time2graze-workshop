@@ -485,6 +485,168 @@
   font-size: var(--t-meta-lg);
   font-weight: 700;
 }
+
+/* Friday morning's farm: a row of the Friday block, on the same two columns —
+   the sheet where the town's photograph sits, the reading of it beside. */
+.farm-map {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: var(--travel-columns);
+  gap: var(--travel-gap);
+  align-items: start;
+  min-width: 0;
+  margin-top: 8px;
+  padding-top: clamp(24px, 3vw, 40px);
+  border-top: 1px solid var(--line);
+}
+.farm-map-sheet,
+.farm-map-body {
+  min-width: 0;
+  margin: 0;
+}
+.farm-map-sheet a {
+  position: relative;
+  display: block;
+  border: 1px solid var(--line);
+  background: var(--surface-soft);
+}
+.farm-map-sheet img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1000 / 1416;
+}
+.farm-map-zoom {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  color: var(--forest);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  transition: background var(--m-quick) var(--m-ease);
+}
+.farm-map-sheet a:hover .farm-map-zoom {
+  background: var(--accent);
+}
+.farm-map-zoom svg {
+  width: 18px;
+  height: 18px;
+}
+.farm-map-sheet figcaption {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: var(--t-meta);
+  line-height: 1.5;
+}
+.farm-map-body h4 {
+  margin: 0 0 10px;
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: clamp(24px, 2.3vw, 30px);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+.farm-map-context {
+  margin: 0 0 20px;
+  color: var(--text);
+  font-size: var(--t-body);
+  line-height: 1.6;
+}
+.farm-map-context a {
+  color: var(--forest);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.farm-map-open {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 56px;
+  margin: 0 0 28px;
+  padding: 10px 16px;
+  color: #fff;
+  background: var(--forest);
+  border-radius: var(--radius);
+  font-size: var(--t-body-lg);
+  font-weight: 750;
+  line-height: 1.3;
+  transition: background var(--m-quick) var(--m-ease);
+}
+.farm-map-open:hover {
+  background: var(--forest-dark);
+}
+.farm-map-open svg {
+  width: 18px;
+  height: 18px;
+  flex: none;
+}
+.farm-map-open small {
+  display: block;
+  margin-top: 2px;
+  color: var(--accent);
+  font-size: var(--t-label);
+  font-weight: 600;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+.farm-map-body h5 {
+  margin: 0 0 8px;
+  color: var(--forest);
+  font-size: var(--t-label);
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.farm-map-list {
+  margin: 0 0 24px;
+  padding: 0;
+  list-style: none;
+  counter-reset: farm-map;
+}
+.farm-map-list li {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  gap: 8px;
+  padding: 9px 0;
+  color: var(--text);
+  border-top: 1px solid var(--line);
+  font-size: var(--t-body);
+  line-height: 1.5;
+  counter-increment: farm-map;
+}
+.farm-map-list li::before {
+  content: counter(farm-map);
+  color: var(--forest);
+  font-weight: 750;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+.farm-map-facts {
+  margin: 0;
+}
+.farm-map-facts > div {
+  display: grid;
+  grid-template-columns: 110px minmax(0, 1fr);
+  gap: 14px;
+  padding: 10px 0;
+  border-top: 1px solid var(--line);
+}
+.farm-map-facts dt {
+  color: var(--muted);
+  font-size: var(--t-label);
+  font-weight: 700;
+  line-height: 1.6;
+}
+.farm-map-facts dd {
+  margin: 0;
+  color: var(--text);
+  font-size: var(--t-meta-lg);
+  line-height: 1.5;
+}
 .city-source {
   color: var(--muted);
   font-size: var(--t-meta);
@@ -596,6 +758,24 @@ a.city-source,
   }
   .travel-place-summary > .travel-getting-there {
     margin-bottom: 20px;
+  }
+  /* The farm is Friday's first stop, so on a phone it comes before the
+     town's photograph; the button to open the sheet comes before the sheet. */
+  .friday-visit .farm-map {
+    order: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    margin-top: 0;
+    border-top: 0;
+  }
+  .farm-map-sheet {
+    order: 2;
+    width: 100%;
+  }
+  .friday-visit .city-photo {
+    order: 3;
   }
 }
 
@@ -745,6 +925,23 @@ a.city-source,
     width: 65mm;
     margin: 0 0 10pt 14pt;
     break-inside: avoid;
+  }
+  /* The sheet prints small beside its list; the full-size link does nothing on paper. */
+  .farm-map {
+    display: flow-root;
+    margin-top: 10pt;
+    padding-top: 10pt;
+    break-inside: avoid;
+    border-color: #aaa;
+  }
+  .farm-map-sheet {
+    float: right;
+    width: 65mm;
+    margin: 0 0 10pt 14pt;
+  }
+  .farm-map-open,
+  .farm-map-zoom {
+    display: none !important;
   }
   .city-guide,
   .city-free-time {

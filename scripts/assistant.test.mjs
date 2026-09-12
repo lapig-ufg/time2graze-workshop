@@ -57,6 +57,7 @@ const pageSources = [
   'app/practical/page.tsx',
   'components/orientation.tsx',
   'components/friday-visit.tsx',
+  'components/farm-map.tsx',
   'app/materials/page.tsx',
 ].map((file) => readFileSync(new URL(`../${file}`, import.meta.url), 'utf8'));
 

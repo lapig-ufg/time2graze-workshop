@@ -249,6 +249,23 @@ for (const [id, venue] of Object.entries(VENUES)) {
   );
 }
 
+/* Friday's farm has no venue record — nobody navigates there alone — but its
+   map sheet is published on the Friday block, and a reader asking for "the
+   farm map" should be sent to it. */
+const farmVisit = AGENDA.flatMap((day) => day.sessions).find(
+  (s) => s.id === 'd5-farm-morning',
+);
+if (farmVisit?.materials?.some((m) => m.href)) {
+  add(
+    'farm-map',
+    'practical',
+    `Map of ${farmVisit.venueNote}`,
+    `${farmVisit.venueNote} hosts ${farmVisit.title}, Friday 18 September, ${farmVisit.start}–${farmVisit.end}, near Cidade de Goiás. A map sheet of the farm, prepared by LAPIG/UFG, is published on Travel & stay and on Materials: the farm boundary and numbered paddocks over a satellite image, with maps of land use and land cover, pasture vigour, pasture productivity, elevation, terrain slope and median vegetation height.`,
+    '/practical/#fazenda-buriti-queimado',
+    5,
+  );
+}
+
 add(
   'stay-accommodation',
   'practical',

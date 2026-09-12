@@ -2192,3 +2192,40 @@ item by design.
 **If the tour is meant to end at 09:40**, that is a one-line change to
 `d1-ufg-tour` and the lane machinery goes quiet on its own. It is not a
 guess this file should make.
+
+## The farm map sheet — 12 September 2026
+
+LAPIG supplied a map sheet of Fazenda Buriti Queimado, the Day 5 morning
+field visit, prepared by Vinícius V. Mesquita (LAPIG/UFG) on 11 September:
+the farm boundary and numbered paddocks over a CBERS-4A image, a locator map,
+and six panels — land use and land cover, pasture vigour, pasture
+productivity, elevation, slope and median vegetation height.
+
+**It lives in two places, and one of them is the source.** The file is a
+material on `d5-farm-morning` in `data/agenda.ts`, so `/materials/` lists it
+under Day 5 with its session link, and the assistant corpus picks it up.
+`data/field-visit.ts` reads that `href` for the block on Travel & stay,
+`components/farm-map.tsx`, rendered as a row of the Friday block
+(`#fazenda-buriti-queimado`) — the farm is in Cidade de Goiás and the same
+coach reaches both. It is not a venue: no pin, no ride link, no address.
+
+**What ships is two derivatives, not the original.** The supplied sheet is A4
+at 300 dpi — a 7015 × 9933 PNG of 29.7 MB, which no one should download on
+hotel wi-fi. `public/files/fazenda-buriti-queimado-map.webp` is the whole
+sheet at half resolution (3508 × 4967, 3.2 MB): every paddock number and
+legend stays sharp under pinch-zoom. The page shows
+`public/images/farm/fazenda-buriti-queimado-preview.webp` (1000px, 390 KB),
+lazy-loaded, and links it to the full file rather than opening a lightbox, so
+a phone uses its own image viewer and the page ships no script for it. Both
+were resized with Pillow's Lanczos filter, WebP quality 85 and 80. If a
+revised sheet arrives, regenerate both at the same sizes and update the
+dimensions and size in `data/field-visit.ts`.
+
+**Everything written beside the sheet is transcribed from it.** The list of
+maps and the facts (author, date, projection, data sources) are the sheet's
+own lines. The paddock count, the farm's area and any reading of the panels
+are not stated on the sheet and are not stated on the site.
+
+On a phone the farm comes before the town's photograph — it is Friday's first
+stop — and the "Open full-size map" button comes before the sheet. In print
+the sheet floats at 65mm beside its list, and the button is hidden.

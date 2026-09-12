@@ -6,6 +6,7 @@ import { VENUES } from '@/data/venues';
 import { withBasePath } from '@/lib/base-path';
 import { osmEmbedSrc } from '@/lib/places';
 import { OptionalStory } from '@/components/optional-story';
+import { FarmMap } from '@/components/farm-map';
 
 const FRIDAY = SHUTTLE_PLAN[1];
 
@@ -73,6 +74,7 @@ export function FridayVisit() {
           </div>
         </details>
       </div>
+      <FarmMap />
       <div className="friday-stories">
         <OptionalStory id="cidade-de-goias" headingLevel={4} />
         <OptionalStory id="fica" headingLevel={4} />
