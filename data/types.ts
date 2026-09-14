@@ -133,6 +133,8 @@ export type RecapSection = {
  * `/programme/` says "to be published" rather than inventing one.
  */
 export type DayRecap = {
+  /** Rich text for the whole day. Sections remain readable for older recaps. */
+  document?: string;
   /** ISO datetime in America/Sao_Paulo, when the first version went up. */
   published: string;
   /** Set on every revision after the first. Rendered; never back-dated. */

@@ -128,7 +128,7 @@ function saveRecap(body) {
   let recap = null;
   if (body.recap && typeof body.recap === 'object') {
     recap = sanitizeRecap(body.recap);
-    if (!recap || JSON.stringify(recap).length > RECAP_MAX) {
+    if (!recap || recap.day !== day || JSON.stringify(recap).length > RECAP_MAX) {
       return { status: 'invalid' };
     }
   }
@@ -176,6 +176,13 @@ function sanitizeRecap(raw) {
 
   const day = recapDay(raw.day);
   if (day === null) return null;
+
+  // HTML is inert storage: clients must sanitize before rendering it.
+  // Never truncate a document silently, and retain the legacy read format.
+  if (typeof raw.document === 'string') {
+    if (!raw.document.trim() || raw.document.length > 50000) return null;
+    return { day, published: '', document: raw.document, sections: [] };
+  }
 
   const sections = [];
   for (const section of raw.sections.slice(0, 40)) {

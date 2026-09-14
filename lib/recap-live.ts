@@ -99,12 +99,25 @@ export async function saveRecap(
     });
     const data = await response.json();
     const status = SAVE_ANSWERS.includes(data?.status) ? data.status : 'error';
+    // An older deployment can acknowledge a save while dropping the new
+    // document field. Keep the local draft unless the document came back.
+    if (status === 'saved' && recap?.document !== undefined && data?.recap?.recap?.document !== recap.document) {
+      return { status: 'error' };
+    }
     return { status, recap: data?.recap ?? null };
   } catch {
     // The write may have landed even though its answer did not.
     const state = await loadRecaps();
     const stored = state?.recaps[day];
-    const landed = recap === null ? !stored : stored != null;
+    // An existing recap does not prove this write landed. Compare the actual
+    // document, and require a successful read before confirming deletion.
+    const landed = state !== null && (recap === null
+      ? !stored
+      : stored != null && stored.updated !== base && (
+        recap.document !== undefined
+          ? stored.recap.document === recap.document
+          : JSON.stringify(stored.recap.sections) === JSON.stringify(recap.sections)
+      ));
     return landed ? { status: 'saved', recap: stored ?? null } : { status: 'error' };
   } finally {
     timeout.done();

@@ -2329,3 +2329,9 @@ course's deck is a Google Slides link, supplied the same morning; whether it
 opens for a participant depends on that deck's own sharing, not on the site.
 The same pass fixed a pre-existing phone bug: `.resource-file` sat in the 26px
 icon column below 760px and overflowed it.
+
+## Daily summary correction — 14 September 2026
+
+The organiser explicitly rejected the session form and JSON interface described above. The current workflow is **one rich-text document per day**: paste or import Word/text/HTML, publish, then edit the document directly during the group reading. `components/recap-editor.tsx` provides a Tiptap editor, and `lib/recap-document.ts` sanitizes rich text and converts old summaries for reading/editing. Do not restore session selectors, decision/action fields, JSON controls or line-flagging as the editing workflow. See `docs/daily-recap.md` for the current procedure.
+
+The live model adds `document?: string` while retaining `sections` for backwards compatibility. Apps Script stores the document without silent truncation; clients sanitize before rendering. A failed or conflicting save keeps local text. Confirming a timed-out save requires reading back the submitted content, not merely finding any published recap. This is one shared saved document, not simultaneous multi-cursor editing.
