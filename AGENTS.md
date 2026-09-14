@@ -2229,3 +2229,14 @@ are not stated on the sheet and are not stated on the site.
 On a phone the farm comes before the town's photograph — it is Friday's first
 stop — and the "Open full-size map" button comes before the sheet. In print
 the sheet floats at 65mm beside its list, and the button is hidden.
+
+**Replaced on 14 September 2026 with a corrected sheet.** The first sheet
+carried two legends in Portuguese — `Formação Florestal / Formação Savânica /
+Pastagem / Mosaico de Usos / Corpo D'água` and `Baixo / Médio / Alto` — on an
+otherwise English sheet. The corrected PNG reads `Forest Formation / Savanna
+Formation / Pasture / Mosaic of Uses / Waterbody` and `Low / Medium / High`
+(`Mosaic of Uses` is MapBiomas's own English class name). A pixel difference
+between the two originals found nothing else changed: every differing pixel
+sat inside those two legends. Both derivatives were regenerated at the same
+sizes and under the same file names, so no link moved and
+`data/field-visit.ts` did not change.
