@@ -82,7 +82,16 @@ export const AGENDA: Day[] = [
             description:
               'The Visual Inspection Workshop provides theoretical and practical training in the interpretation of remote sensing imagery for land cover mapping and monitoring. The course introduces key remote sensing concepts, including the interaction of electromagnetic energy with the Earth’s surface, the spectral behavior of vegetation and other land cover types, the use of spectral indices such as NDVI, and the analysis of image time series. Based on these concepts, participants develop skills to recognize patterns and distinguish natural and anthropogenic classes using seven key elements of visual interpretation: color, tone, texture, shape, spatial context, spectral indices, and temporal patterns. These elements are applied in an integrated way to the analysis of different landscapes, helping participants develop a systematic and technical approach to satellite image interpretation and produce more consistent information for environmental monitoring and land cover mapping.',
             speakers: [{ name: 'Ana Paula', org: 'LAPIG' }],
-            materials: [{ kind: 'slides' }],
+            /* Ana Paula's deck, supplied 14 September 2026 as a self-contained
+               HTML page; its images were converted to WebP alongside it. */
+            materials: [
+              {
+                kind: 'slides',
+                title: 'Module 1 · Mapping with the Eye',
+                href: '/files/visual-inspection-module-1/index.html',
+                format: 'HTML',
+              },
+            ],
           },
           {
             id: 'd1-gee-course',

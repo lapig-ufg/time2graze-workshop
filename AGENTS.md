@@ -2294,3 +2294,21 @@ between the two originals found nothing else changed: every differing pixel
 sat inside those two legends. Both derivatives were regenerated at the same
 sizes and under the same file names, so no link moved and
 `data/field-visit.ts` did not change.
+
+## The Visual Inspection deck — 14 September 2026
+
+Ana Paula's slides for the Day 1 split session arrived as a self-contained HTML
+deck (`treinamento-time2graze-modulo1.html`) plus a folder of 49 images, minutes
+before the session. They are a material on the `d1-visual-inspection` track in
+`data/agenda.ts`, so `/materials/` lists them under Day 1 with the session link.
+
+**What ships is a copy, not the original.** `public/files/visual-inspection-module-1/`
+holds the page and `assets/`: only the images the page references, capped at
+1920px and converted to WebP (11 MB → 4 MB — the supplied folder held 127 MB of
+unused drafts). Three edits to the HTML and no others: image paths point at
+`assets/*.webp`; "Back to programme" is relative
+(`../../programme/#d1-split-inspection-gee`) instead of the full Pages URL, so
+it works under `npm run dev` and any host; and the footer's template leftover
+"Example slides, fictitious content" was removed at the organiser's request.
+The slides' own text is the presenter's and is not edited here. If a revised deck arrives, rerun the same
+conversion over it rather than patching the copy by hand.
