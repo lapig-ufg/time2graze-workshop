@@ -15,6 +15,7 @@ import {
   dayFromRecapHash,
   dayFromSessionHash,
   highlightSession,
+  ASK_HIGHLIGHT_SESSION,
   scrollToDayPanel,
   scrollToRecap,
   scrollToSession,
@@ -93,8 +94,11 @@ export default function ProgrammePage() {
         // The browser restores the previous scroll position after load, which
         // would land on top of ours. This link decides where the page goes.
         history.scrollRestoration = 'manual';
+        const session = hash.slice(1);
+        const highlight = sessionStorage.getItem(ASK_HIGHLIGHT_SESSION) === session;
+        if (highlight) sessionStorage.removeItem(ASK_HIGHLIGHT_SESSION);
         setPicked(owner);
-        setPending({ session: hash.slice(1) });
+        setPending({ session, ...(highlight ? { highlight: true } : {}) });
         setHashNotFound(false);
         return;
       }
@@ -107,24 +111,6 @@ export default function ProgrammePage() {
     apply();
     addEventListener('hashchange', apply);
     return () => removeEventListener('hashchange', apply);
-  }, []);
-
-  /**
-   * A source followed from Ask arrives through the same hash contract, with
-   * one extra visual cue on the rendered session.
-   */
-  useEffect(() => {
-    const fromAssistant = (event: Event) => {
-      const session = (event as CustomEvent<{ session?: string }>).detail?.session;
-      const owner = session ? dayFromSessionHash(`#${session}`) : null;
-      if (owner === null || !session) return;
-      history.scrollRestoration = 'manual';
-      setPicked(owner);
-      setPending({ session, highlight: true });
-      setHashNotFound(false);
-    };
-    addEventListener('assistant-source-follow', fromAssistant);
-    return () => removeEventListener('assistant-source-follow', fromAssistant);
   }, []);
 
   /**

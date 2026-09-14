@@ -284,7 +284,7 @@ for (const section of VISUAL_INSPECTION_MODULE.sections) {
         {
           type: 'material',
           href: `${VISUAL_INSPECTION_MODULE.href}#s${section.slides.split('–')[0]}`,
-          label: `Open ${VISUAL_INSPECTION_MODULE.title} · slides ${section.slides}`,
+          label: `Open slides ${section.slides}`,
         },
       ],
     },

@@ -61,7 +61,7 @@ test('Module 1 enters as named slide ranges, not as presentation HTML', () => {
   const sections = corpus.entries.filter((entry) => entry.kind === 'presentation');
   assert.ok(sections.length >= 4, 'Module 1 has no searchable sections');
   for (const entry of sections) {
-    assert.match(entry.source ?? '', /slides \d+–\d+/);
+    assert.match(entry.source ?? '', /slides \d+(?:–\d+)?/);
     const action = entry.actions?.find((item) => item.type === 'material');
     assert.ok(action, `${entry.id}: no direct module action`);
     assert.match(action.href, /^\/files\/visual-inspection-module-1\/index\.html#s\d+$/);

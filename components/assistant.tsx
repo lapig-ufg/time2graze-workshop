@@ -3,10 +3,11 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState, type MouseEvent, type SyntheticEvent } from 'react';
-import { ArrowRight, Car, ExternalLink, MapPin, MessageCircle, X } from 'lucide-react';
+import { ArrowRight, Car, ExternalLink, MessageCircle, X } from 'lucide-react';
 import { VENUES } from '@/data/venues';
 import { withBasePath } from '@/lib/base-path';
 import { uberLink } from '@/lib/places';
+import { ASK_HIGHLIGHT_SESSION } from '@/lib/deep-link';
 import {
   assistantEnabled, loadCorpus, splitSources, streamAnswer,
   type ChatMessage, type Corpus, type CorpusEntry,
@@ -76,12 +77,10 @@ function applyHash(
     if (mode === 'push') window.history.pushState(window.history.state, '', url);
     else window.history.replaceState(window.history.state, '', url);
   }
-  window.dispatchEvent(new HashChangeEvent('hashchange'));
   if (highlightSession) {
-    window.dispatchEvent(new CustomEvent('assistant-source-follow', {
-      detail: { session: highlightSession },
-    }));
+    sessionStorage.setItem(ASK_HIGHLIGHT_SESSION, highlightSession);
   }
+  window.dispatchEvent(new HashChangeEvent('hashchange'));
   document.getElementById(hash.slice(1))?.scrollIntoView({ block: 'start' });
 }
 
@@ -364,20 +363,21 @@ export function Assistant() {
                     {turn.sources.map((entry) => (
                       <div className="ask-source" key={entry.id}>
                         <p className="ask-source-location">
-                          <MapPin aria-hidden size={14} />
-                          <span>{entry.location}</span>
+                          {entry.location}
                           {entry.source && <small>{entry.source}</small>}
                         </p>
-                        <Link
-                          href={entry.href}
-                          onClick={(event) => follow(event, entry)}
-                        >
-                          <span>View {entry.title}</span>
-                          <ArrowRight aria-hidden size={15} />
-                        </Link>
+                        <p className="ask-source-title">{entry.title}</p>
                         {entry.actions?.map((action) => (
                           <SourceAction key={`${action.type}-${action.label}`} action={action} />
                         ))}
+                        <Link
+                          href={entry.href}
+                          className={entry.actions?.length ? 'ask-source-link' : 'ask-source-link ask-source-link--primary'}
+                          onClick={(event) => follow(event, entry)}
+                        >
+                          <span>View in {entry.location}</span>
+                          <ArrowRight aria-hidden size={15} />
+                        </Link>
                       </div>
                     ))}
                   </nav>

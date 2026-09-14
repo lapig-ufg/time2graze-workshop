@@ -86,6 +86,10 @@ test('a session result carries the anchor that opens its day', () => {
 });
 
 test('Module 1 questions find a specific published slide range', () => {
+  const structure = top('Qual a estrutura do curso de inspeção visual?');
+  assert.equal(structure?.id, 'visual-inspection-course-structure');
+  assert.match(structure?.source ?? '', /slides 2/);
+
   const elements = top('quais são os sete elementos de interpretação visual?');
   assert.equal(elements?.id, 'visual-inspection-elements');
   assert.match(elements?.source ?? '', /slides 11–20/);

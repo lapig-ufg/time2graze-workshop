@@ -18,9 +18,16 @@ export const VISUAL_INSPECTION_MODULE = {
   href: '/files/visual-inspection-module-1/index.html',
   sections: [
     {
+      id: 'visual-inspection-course-structure',
+      title: 'Course structure',
+      slides: '2',
+      text:
+        'Module 1 moves through four stages: how satellite images are formed; what to observe in an image; how to identify and compare land-cover classes; and practice with real examples.',
+    },
+    {
       id: 'visual-inspection-foundations',
       title: 'Light, cameras and satellite images',
-      slides: '2–10',
+      slides: '3–10',
       text:
         'The module starts with how energy becomes an image. Different wavelengths are perceived as colours; cameras record red, green and blue, while satellites also record wavelengths people cannot see in pixels and spectral bands. Objects absorb and reflect solar energy differently, creating spectral signatures. True-colour composites resemble human vision; false-colour composites can make vegetation or deforestation easier to distinguish.',
     },

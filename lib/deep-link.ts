@@ -1,5 +1,8 @@
 import { AGENDA } from '@/data/agenda';
 
+/** A one-use marker set by Ask before it moves to a programme source. */
+export const ASK_HIGHLIGHT_SESSION = 'time2graze-ask-highlight-session';
+
 /** '#day-3' -> index 2. Null when the hash does not name a day. */
 export function dayFromHash(hash: string) {
   const match = /^#?day-(\d+)$/.exec(hash);

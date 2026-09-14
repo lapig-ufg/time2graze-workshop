@@ -63,6 +63,9 @@ everything you know. Follow these rules exactly.
    SOURCES: id1, id2
    Use ids exactly as written in the entries. If nothing applied, write
    SOURCES: none
+9. A presentation entry is the source for a question about that presentation's
+   teaching content. Prefer it over a broader session description and cite it
+   whenever it directly answers the question.
 
 ENTRIES
 ${corpus.entries.map((e) => `[${e.id}] (${e.kind}) ${e.title} — ${e.text}`).join('\n')}`;
