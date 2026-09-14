@@ -3,7 +3,7 @@ export type StoryFilm = { id: string; title: string; description: string; publis
 /** IDs verified against the official publishers' YouTube oEmbed records, 9 Sep 2026. */
 export const STORY_FILMS: Record<'lapig' | 'fica', StoryFilm[]> = {
   lapig: [
-    { id: '8cmYzFOtJyQ', title: 'Thirty years of LAPIG', description: 'The laboratory’s own film about its history, science and environmental research.', publisher: 'LAPIG UFG' },
+    { id: 'INiMdP37z-E', title: 'Thirty years of LAPIG', description: 'The laboratory’s own anniversary film, with English subtitles.', publisher: 'LAPIG UFG' },
     { id: 'ejSyEkKsdyU', title: 'Native vegetation, seen in the field', description: 'Middle Tocantins, Paranã and Terra Ronca, in the Atlas of Goiás’s Remaining Vegetation series.', publisher: 'LAPIG UFG' },
     { id: 'nihnic0in_o', title: 'Learning with geotechnologies', description: 'TV UFG introduces Geocursos, LAPIG’s training programme.', publisher: 'TV UFG' },
   ],

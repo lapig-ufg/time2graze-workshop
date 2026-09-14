@@ -106,28 +106,38 @@ sharing down with it.
 
 ### Producing the draft
 
-In NotebookLM, with the day's sources selected and nothing from other days:
+In NotebookLM, with the day's sources selected and nothing from other days,
+paste **that day's prompt**. It is on `/programme/`, under the day's summary:
+open *NotebookLM prompt for Day N* and press **Copy prompt**.
 
-```
-You are writing the internal record of one day of the Time2Graze Brazil
-Workshop, from the recordings and notes in this notebook.
+There is one prompt per day, because each day asks for different things — the
+country presentations on Day 3 all use the same headings so they can be
+compared, Day 4's roadmap separates what was agreed from what was only
+proposed, Day 5 works from notes because the audio is outdoors. The session
+list in each prompt is read from `data/agenda.ts`, so it never names a session
+by an old title.
 
-Cover only <day and date>. Work session by session, in the order they were
-held, and for each session give:
+**Every prompt asks for content, not speakers.** A room recording cannot say
+reliably who said a sentence, and a model asked to will guess. The prompt names
+presenters only from the agenda, attributes content to institutions and
+countries where it belongs to them, and takes action owners only from what the
+note-takers wrote — `[Owner not recorded]` otherwise. That is why the
+note-takers' split below matters.
 
-- WHAT HAPPENED: one short paragraph. What was presented or discussed.
-- DECISIONS: only things the room actually settled. One line each.
-- OPEN QUESTIONS: what was raised and left unresolved. One line each.
-- ACTIONS: one line each, and name the person or team who carries it.
+**Editing a prompt.** Press **Edit** on the page, change the text, type the
+edit password and **Save for everyone**. The change is live at once, for
+everyone, with no commit: the edited text is kept by the Apps Script
+(`apps-script/prompts.gs`), and the site shows the original from
+`data/recap-prompts.ts` only when no edit exists or the script cannot be
+reached. **Restore original** and save puts a day back on the repository
+version. If two people edit the same day, the second save is refused and shows
+the first person's text rather than overwriting it.
 
-Rules:
-- English only, even where the room spoke Portuguese or Spanish.
-- Use only what the sources support. If something is unclear in the audio,
-  write it as an open question rather than guessing.
-- No preamble, no conclusion, no praise of the day. This is a record.
-- Names and institutions as they are said: "Lindsey / WRI".
-- If a session produced nothing worth recording, say so and move on.
-```
+The password is the script property `PROMPT_EDIT_PASSWORD`, set in the Apps
+Script editor under *Project Settings → Script properties*. It is never written
+into this repository, which is public. With no password set, the Edit button
+does not appear. After 40 wrong passwords in a day, editing locks until the
+next day. Editing closes after 21 September 2026, with the corrections.
 
 Read the result. It is a draft, not a record.
 

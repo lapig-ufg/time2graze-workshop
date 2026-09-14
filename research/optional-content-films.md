@@ -14,7 +14,7 @@ channel and individually checked against oEmbed metadata.
 
 | ID | Publisher | Subject |
 | --- | --- | --- |
-| `8cmYzFOtJyQ` | LAPIG UFG | Thirty-year anniversary film |
+| `INiMdP37z-E` | LAPIG UFG | Thirty-year anniversary film (English subtitles) |
 | `ejSyEkKsdyU` | LAPIG UFG | Middle Tocantins, Paranã and Terra Ronca vegetation atlas |
 | `nihnic0in_o` | TV UFG | LAPIG Geocursos |
 | `sLEmYh5ZHgg` | TV UFG | FICA 2026 closing report |
@@ -28,6 +28,11 @@ returns to the cover rather than resuming playback. An external viewing link
 remains available if embedding is blocked. English captions are not promised;
 the player exposes the caption options supplied by the publisher/platform.
 Actual playback and caption availability have not been browser-tested.
+
+The anniversary film was replaced on 14 September 2026 at the client's
+request: `8cmYzFOtJyQ` (no English subtitles) gave way to `INiMdP37z-E`,
+the same thirty-year film with English subtitles, verified against oEmbed
+on the laboratory's own channel.
 
 ## Image permissions and dates
 
