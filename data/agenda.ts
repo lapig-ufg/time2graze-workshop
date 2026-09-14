@@ -129,7 +129,16 @@ export const AGENDA: Day[] = [
         speakers: [{ name: 'Nathália', org: 'LAPIG' }],
         venueId: 'lapig',
         kind: 'technical',
-        materials: [{ kind: 'slides' }],
+        /* Nathália's deck, supplied 14 September 2026 as a 48-page PDF; each
+           page rendered to WebP and shown one per screen, fitted whole. */
+        materials: [
+          {
+            kind: 'slides',
+            title: 'Field Protocol Alignment',
+            href: '/files/field-protocol-alignment/index.html',
+            format: 'HTML',
+          },
+        ],
       },
       {
         id: 'd1-coffee',
