@@ -1114,3 +1114,16 @@ a.recap-edit-toggle { text-decoration: none; }
 .recap-document ol { list-style: decimal; }
 .recap-document blockquote { border-left: 3px solid var(--line); padding-left: 1em; }
 .recap-document a { text-decoration: underline; }
+
+/* The Google Doc's main headings form a compact, keyboard-accessible index. */
+.recap-reader-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; padding: 12px 20px; border-bottom: 1px solid var(--line); font-size: var(--t-meta-lg); }
+.recap-reader-tools span { margin-right: auto; color: var(--muted-soft); }
+.recap-reader-tools button { min-height: 44px; padding: 6px 8px; color: var(--forest); font: inherit; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.recap-topic + .recap-topic { border-top: 1px solid var(--line); }
+.recap-topic > h4 { margin: 0; }
+.recap-topic > h4 > button { display: flex; align-items: center; justify-content: space-between; gap: 16px; width: 100%; padding: 20px; text-align: left; color: var(--forest); font-family: var(--font-sans), Arial, sans-serif; font-size: var(--t-body-lg); font-weight: 750; line-height: 1.5; cursor: pointer; }
+.recap-topic > h4 > button:hover { background: var(--surface-soft); }
+.recap-topic > h4 > button svg { flex: none; width: 20px; height: 20px; transition: transform var(--m-quick) var(--m-ease); }
+.recap-topic > h4 > button[aria-expanded='true'] svg { transform: rotate(180deg); }
+.recap-topic > .recap-document { padding-top: 8px; }
+.recap-topic .recap-document h5 { font-family: inherit; font-size: var(--t-head-sm); font-weight: 750; line-height: 1.4; color: var(--forest); }

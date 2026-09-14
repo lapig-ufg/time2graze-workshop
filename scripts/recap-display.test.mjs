@@ -37,6 +37,7 @@ function renderSummary(state, loading = false) {
   const { DayRecap } = load('components/recap.tsx', {
     react: { useState: () => [values.shift(), () => {}], useEffect: () => {} },
     'lucide-react': { ExternalLink: () => null },
+    './recap-reader': { RecapReader: ({ html }) => jsx.jsx('div', { dangerouslySetInnerHTML: { __html: html } }) },
     '@/data/recaps': { RECAPS: {} },
     '@/lib/recap-document': { recapDocument: () => '' },
     '@/lib/recap-doc': { googleDocHtml: html => html === 'header-only' ? '' : html },

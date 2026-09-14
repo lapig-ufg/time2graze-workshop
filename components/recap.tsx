@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { ExternalLink } from 'lucide-react';
+import { RecapReader } from './recap-reader';
 import { RECAPS } from '@/data/recaps';
 import type { Day, DayRecap as Recap } from '@/data/types';
 import type { Clock } from '@/lib/now';
@@ -66,7 +67,7 @@ export function DayRecap({ day }: { day: Day; clock: Clock | null }) {
       {stamp && <p className="recap-stamp">{stamp}</p>}
       {doc && <a className="recap-edit-toggle" href={doc.url} target="_blank" rel="noopener"><ExternalLink aria-hidden="true" />Comment or suggest edits</a>}
     </div>
-    {html ? <div className="recap-document" dangerouslySetInnerHTML={{ __html: html }} />
+    {html ? <RecapReader exported={doc?.html} html={html} />
       : !loading && !unavailable && <p className="recap-pending">The day’s summary has not been published yet.</p>}
     {unavailable && <output className="recap-pending">Could not load the summary. <button onClick={() => window.location.reload()}>Try again</button></output>}
   </section>;

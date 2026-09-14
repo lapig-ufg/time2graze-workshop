@@ -79,3 +79,45 @@ export function googleDocHtml(exported: string): string {
   if (!body.textContent?.trim()) return '';
   return cleanDocument(body.innerHTML);
 }
+
+export type RecapTopic = { key: string; title: string; html: string };
+
+/** Split only on the document's highest heading level; never infer sessions. */
+export function googleDocTopics(exported: string): { introduction: string; topics: RecapTopic[] } {
+  const parsed = new DOMParser().parseFromString(exported, 'text/html');
+  const body = parsed.body;
+  const first = body.querySelector('p, h1, h2, h3, h4, h5, h6');
+  if (first && /^\s*Day\s+\d\s+summary\b/i.test(first.textContent ?? '')) first.remove();
+  const headings = Array.from(body.children).filter(el => /^H[1-6]$/.test(el.tagName) && el.textContent?.trim());
+  if (!headings.length) return { introduction: googleDocHtml(exported), topics: [] };
+  const level = Math.min(...headings.map(el => Number(el.tagName.slice(1))));
+  const head = parsed.head.innerHTML;
+  const convert = (content: string) => googleDocHtml(`<html><head>${head}</head><body>${content}</body></html>`);
+  const topics: RecapTopic[] = [];
+  const counts = new Map<string, number>();
+  let intro = '';
+  let content = '';
+  let current: RecapTopic | null = null;
+  function finish() {
+    if (current) current.html = convert(content).replace(/<(\/?)h4(?=[\s>])/g, '<$1h5');
+    else intro = convert(content);
+    content = '';
+  }
+  for (const node of Array.from(body.childNodes)) {
+    if (node.nodeType === 1 && (node as Element).tagName === `H${level}` && node.textContent?.trim()) {
+      finish();
+      const el = node as Element;
+      const title = el.textContent!.trim();
+      const occurrence = (counts.get(title) ?? 0) + 1;
+      counts.set(title, occurrence);
+      current = { key: el.id || `${title}:${occurrence}`, title, html: '' };
+      topics.push(current);
+    } else {
+      const container = parsed.createElement('div');
+      container.append(node.cloneNode(true));
+      content += container.innerHTML;
+    }
+  }
+  finish();
+  return { introduction: intro, topics };
+}

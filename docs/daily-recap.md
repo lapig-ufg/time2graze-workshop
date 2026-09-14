@@ -33,3 +33,9 @@ A doc that has only its first line counts as unpublished. The site keeps heading
 A day listed in `RECAP_DOCS` shows only its doc. Recaps stored by the earlier password editor are still returned, and a day appears as a stored recap only if it has no doc. The password editor has been removed from the site. Its POST endpoint is still in the script but nothing calls it.
 
 To change a doc, edit `RECAP_DOCS`, then run `clasp push` from `apps-script/` and `clasp deploy -i AKfycbzpmYFJq7WFRxtnGHGZkW0FFhiit9441UHtfZnwfrNZI6Vuku1MY6Rb7JBBIcFwGcBi -d "…"`. The endpoint URL does not change.
+
+## Navigating a long summary
+
+The site's summary starts as a compact list of expandable topics. Each main heading in the Google Doc becomes a topic; lower-level headings remain inside it. Use heading styles in Docs (for example, Heading 2 for activities and Heading 3 for their subsections). The existing Day 1 document already follows this structure. The site does not guess which agenda item a paragraph belongs to.
+
+Readers can open individual topics or use **Expand all** / **Collapse all**. Background refreshes preserve open topics when their Google Docs heading IDs remain unchanged. Text before the first heading remains visible, and documents without headings remain a continuous document.
