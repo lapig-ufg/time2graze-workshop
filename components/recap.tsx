@@ -67,7 +67,7 @@ export function DayRecap({ day }: { day: Day; clock: Clock | null }) {
       {stamp && <p className="recap-stamp">{stamp}</p>}
       {doc && <a className="recap-edit-toggle" href={doc.url} target="_blank" rel="noopener"><ExternalLink aria-hidden="true" />Comment or suggest edits</a>}
     </div>
-    {html ? <RecapReader exported={doc?.html} html={html} />
+    {html ? <RecapReader day={day.index} exported={doc?.html} html={html} />
       : !loading && !unavailable && <p className="recap-pending">The day’s summary has not been published yet.</p>}
     {unavailable && <output className="recap-pending">Could not load the summary. <button onClick={() => window.location.reload()}>Try again</button></output>}
   </section>;

@@ -1127,3 +1127,11 @@ a.recap-edit-toggle { text-decoration: none; }
 .recap-topic > h4 > button[aria-expanded='true'] svg { transform: rotate(180deg); }
 .recap-topic > .recap-document { padding-top: 8px; }
 .recap-topic .recap-document h5 { font-family: inherit; font-size: var(--t-head-sm); font-weight: 750; line-height: 1.4; color: var(--forest); }
+
+/* A summary topic reached from Ask: the same brief cue as a session, and room
+   under the sticky header when it scrolls into view. */
+.recap-topic { scroll-margin-top: 110px; }
+.recap-topic.recap-topic-focus { outline: 2px solid var(--forest); outline-offset: -2px; background: var(--accent-tint); }
+@media screen and (prefers-reduced-motion: no-preference) {
+  .recap-topic.recap-topic-focus { animation: assistant-session-focus calc(var(--m-enter) * 6) var(--m-ease) both; }
+}

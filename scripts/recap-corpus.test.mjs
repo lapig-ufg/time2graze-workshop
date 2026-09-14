@@ -30,7 +30,7 @@ test('a summary becomes one entry per top-level heading, without the title line 
   assert.equal(entries[1].title, 'Day 1 summary: GEE short course — Vinícius (LAPIG)');
   assert.equal(entries[0].text, 'Main points Texture is smooth or rough.');
   assert.equal(entries[1].text, '• Petabyte-scale • Pasto Legal');
-  assert.equal(entries[0].href, '/programme/#recap-day-1');
+  assert.equal(entries[0].href, '/programme/#recap-d1-visual-inspection-workshop-ana-paula-lapig');
   assert.equal(entries[0].day, 1);
 });
 

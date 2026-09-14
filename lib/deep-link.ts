@@ -18,9 +18,10 @@ export function dayFromHash(hash: string) {
  * find anything to scroll to.
  */
 export function dayFromRecapHash(hash: string) {
-  const match = /^#?recap-day-(\d+)$/.exec(hash);
+  // '#recap-day-3', or one topic of it: '#recap-d3-field-protocol-alignment'.
+  const match = /^#?recap-(?:day-(\d+)|d(\d+)(?:-[a-z0-9-]+)?)$/.exec(hash);
   if (!match) return null;
-  const index = AGENDA.findIndex((d) => d.index === Number(match[1]));
+  const index = AGENDA.findIndex((d) => d.index === Number(match[1] ?? match[2]));
   return index >= 0 ? index : null;
 }
 

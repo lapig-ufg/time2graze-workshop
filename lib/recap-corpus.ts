@@ -69,6 +69,24 @@ function slug(text: string): string {
     .replace(/-$/, '');
 }
 
+/**
+ * The anchor of each summary topic, from its heading, in document order.
+ *
+ * The programme gives every expandable topic this id and the assistant links
+ * to it, so a source opens the exact topic that answered. Both call this one
+ * function; repeated headings are told apart by their order.
+ */
+export function recapTopicIds(day: number, titles: string[]): string[] {
+  const used = new Set<string>();
+  return titles.map((title, index) => {
+    const base = `recap-d${day}-${slug(title) || `topic-${index + 1}`}`;
+    let id = base;
+    for (let n = 2; used.has(id); n++) id = `${base}-${n}`;
+    used.add(id);
+    return id;
+  });
+}
+
 /** The entries for one day's exported doc; none while it holds no summary. */
 export function recapDocEntries(day: number, exported: string): CorpusEntry[] {
   const body = (/<body[^>]*>([\s\S]*)<\/body>/i.exec(exported)?.[1] ?? exported)
@@ -86,29 +104,29 @@ export function recapDocEntries(day: number, exported: string): CorpusEntry[] {
   if (top) {
     const split = new RegExp(`(<h${top}[^>]*>[\\s\\S]*?<\\/h${top}>)`, 'gi');
     for (const piece of body.split(split)) {
-      if (new RegExp(`^<h${top}[\\s>]`, 'i').test(piece)) parts.push({ heading: plain(piece), html: '' });
+      // An empty heading is not a topic on the programme either.
+      if (new RegExp(`^<h${top}[\\s>]`, 'i').test(piece) && plain(piece)) parts.push({ heading: plain(piece), html: '' });
       else parts[parts.length - 1].html += piece;
     }
   } else {
     parts[0].html = body;
   }
 
+  // Every heading gets its id, empty topics included, so the ids match the
+  // programme's topics one for one.
+  const ids = [`recap-d${day}`, ...recapTopicIds(day, parts.slice(1).map((part) => part.heading))];
   const entries: CorpusEntry[] = [];
-  const used = new Set<string>();
   for (const [index, part] of parts.entries()) {
     const text = plain(part.html);
     if (!text) continue;
-
-    let id = part.heading ? `recap-d${day}-${slug(part.heading) || index}` : `recap-d${day}`;
-    for (let n = 2; used.has(id); n++) id = `${id.replace(/-\d+$/, '')}-${n}`;
-    used.add(id);
+    const id = ids[index];
 
     entries.push({
       id,
       kind: 'recap',
       title: part.heading ? `Day ${day} summary: ${part.heading}` : `Day ${day} summary`,
       text,
-      href: `/programme/#recap-day-${day}`,
+      href: index ? `/programme/#${id}` : `/programme/#recap-day-${day}`,
       day,
       location: `Programme · Day ${day}`,
     });

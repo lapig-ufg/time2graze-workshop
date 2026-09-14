@@ -161,7 +161,7 @@ export function Assistant() {
         applyHash(
           hash,
           'push',
-          entry.kind === 'session' ? anchor : undefined,
+          entry.kind === 'session' || entry.kind === 'recap' ? anchor : undefined,
         );
         return;
       }
@@ -180,7 +180,7 @@ export function Assistant() {
       const land = () => applyHash(
         hash,
         'replace',
-        entry.kind === 'session' ? anchor : undefined,
+        entry.kind === 'session' || entry.kind === 'recap' ? anchor : undefined,
       );
       const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (still || !('startViewTransition' in document)) {
