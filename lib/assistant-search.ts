@@ -29,6 +29,11 @@ const BRIDGE: Record<string, string> = {
   endereco: 'address', cidade: 'city', parque: 'park', fazenda: 'farm',
   visita: 'visit', campo: 'field', passeio: 'tour', uber: 'ride',
   taxi: 'ride', pagamento: 'payment',
+  interpretacao: 'interpretation', elementos: 'elements', sete: 'seven',
+  indice: 'index', indices: 'indices', vegetacao: 'vegetation',
+  degradacao: 'degradation', desmatamento: 'deforestation',
+  regeneracao: 'regeneration', incendio: 'fire', incendios: 'fire',
+  queimada: 'fire', queimadas: 'fire', cicatriz: 'scars',
   // Spanish, where it differs
   alojamiento: 'accommodation', almuerzo: 'lunch', cena: 'dinner',
   autobus: 'shuttle', llegada: 'arrival', aeropuerto: 'airport',

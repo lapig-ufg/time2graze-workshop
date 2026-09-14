@@ -31,6 +31,7 @@ import {
   TOWN_INTRO,
 } from '../data/geography.ts';
 import { RECAPS } from '../data/recaps.ts';
+import { VISUAL_INSPECTION_MODULE } from '../data/assistant-materials.ts';
 import { dayLabel, presenterLabel, timeLabel } from '../lib/schedule.ts';
 
 const projectRoot = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -50,6 +51,14 @@ const MAX_BYTES = 120_000;
 /** @type {{ id: string, kind: string, title: string, text: string, href: string }[]} */
 const entries = [];
 
+const DESTINATION_LABEL = new Map(DESTINATIONS.map(({ href, label }) => [href, label]));
+
+function locationFor(href, day) {
+  const [path] = href.split('#');
+  const page = DESTINATION_LABEL.get(path) ?? 'Workshop site';
+  return day ? `${page} · Day ${day}` : page;
+}
+
 /* Where each place is drawn on Travel & stay, so a source button lands on the
    card rather than the top of the page. The anchors are the ones the page
    itself renders; `scripts/assistant.test.mjs` checks they still exist. */
@@ -63,7 +72,7 @@ const CITY_HREF = {
   goias: '/practical/#cidade-de-goias',
 };
 
-function add(id, kind, title, text, href, day, details) {
+function add(id, kind, title, text, href, day, details, extra = {}) {
   const body = text.replace(/\s+/g, ' ').trim();
   if (body)
     entries.push({
@@ -73,7 +82,10 @@ function add(id, kind, title, text, href, day, details) {
       text: body,
       href,
       ...(day ? { day } : {}),
+      location: extra.location ?? locationFor(href, day),
       ...(details?.length ? { details } : {}),
+      ...(extra.source ? { source: extra.source } : {}),
+      ...(extra.actions?.length ? { actions: extra.actions } : {}),
     });
 }
 
@@ -234,7 +246,7 @@ for (const [id, venue] of Object.entries(VENUES)) {
   if (venue.coords) {
     parts.push(
       venue.ride
-        ? 'Travel & stay maps this place and offers a ride link to it.'
+        ? 'Travel & stay maps this place and offers an Uber link to it.'
         : 'Travel & stay maps this place. No ride link is offered for it.',
     );
   }
@@ -246,6 +258,36 @@ for (const [id, venue] of Object.entries(VENUES)) {
     PLACE_HREF[id] ?? '/practical/',
     undefined,
     details,
+    {
+      actions: venue.ride
+        ? [{ type: 'uber', venueId: id, label: `Open Uber to ${venue.short}` }]
+        : [],
+    },
+  );
+}
+
+/* Module 1 is a published HTML presentation. Only its useful teaching text
+   enters the corpus, in named slide ranges; its embedded imagery, styles and
+   scripts would inflate every answer without making one more accurate. */
+for (const section of VISUAL_INSPECTION_MODULE.sections) {
+  add(
+    section.id,
+    'presentation',
+    `${section.title} · ${VISUAL_INSPECTION_MODULE.title}`,
+    `${section.text} This is published in ${VISUAL_INSPECTION_MODULE.title}, slides ${section.slides}.`,
+    '/materials/#materials-day-1',
+    1,
+    undefined,
+    {
+      source: `${VISUAL_INSPECTION_MODULE.title} · slides ${section.slides}`,
+      actions: [
+        {
+          type: 'material',
+          href: `${VISUAL_INSPECTION_MODULE.href}#s${section.slides.split('–')[0]}`,
+          label: `Open ${VISUAL_INSPECTION_MODULE.title} · slides ${section.slides}`,
+        },
+      ],
+    },
   );
 }
 

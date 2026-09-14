@@ -619,6 +619,30 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
 .track-detail { margin: 6px 0 0; max-width: 68ch; color: var(--muted); font-size: var(--t-meta); line-height: 1.65; }
 .session-meta { display: flex; flex-wrap: wrap; gap: 7px 14px; align-items: center; margin: 7px 0 0; }
 
+/* A source followed from Ask needs a short, quiet confirmation in the exact
+   representation the reader can see. It is an answer to a deliberate action,
+   not a persistent state like Now or Next, and never reaches print. */
+.tl-block.session-assistant-focus,
+.tl-evening-card.session-assistant-focus,
+.session-list .session.session-assistant-focus {
+  outline: 2px solid var(--forest);
+  outline-offset: 3px;
+  background: var(--accent-tint);
+}
+
+@media screen and (prefers-reduced-motion: no-preference) {
+  .tl-block.session-assistant-focus,
+  .tl-evening-card.session-assistant-focus,
+  .session-list .session.session-assistant-focus {
+    animation: assistant-session-focus calc(var(--m-enter) * 6) var(--m-ease) both;
+  }
+
+  @keyframes assistant-session-focus {
+    0%, 68% { outline-color: var(--forest); background: var(--accent-tint); }
+    100% { outline-color: transparent; background: transparent; }
+  }
+}
+
 @media (max-width: 620px) {
   .session-list .session { grid-template-columns: 1fr; gap: 6px; }
 }

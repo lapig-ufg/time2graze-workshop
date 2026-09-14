@@ -54,6 +54,15 @@ export function scrollToDayPanel() {
  * scroll — on desktop it aimed at the one-pixel clipped copy and stopped in
  * the wrong place.
  */
+function visibleSession(id: string): HTMLElement | null {
+  const gridVisible = window.innerWidth >= 1280;
+  const candidates = [...document.querySelectorAll<HTMLElement>(`[data-session="${CSS.escape(id)}"]`)];
+  const inList = (el: Element) => el.closest('.session-list') !== null;
+  return gridVisible
+    ? candidates.find((el) => !inList(el)) ?? null
+    : candidates.find(inList) ?? null;
+}
+
 export function scrollToSession(id: string) {
   // Scrolling before the page has finished loading misses: the hero image is
   // still going to shift everything below it.
@@ -69,21 +78,28 @@ export function scrollToSession(id: string) {
    * applies, find it `display: block`, and roll to the hidden desktop block
    * instead of the mobile list.
    */
-  const gridVisible = window.innerWidth >= 1280;
-
-  // The session appears in two places. On desktop the one that counts is the
-  // one not in the list — a grid block, or a row of the evening block, which
-  // sits outside the axis; everywhere else, the one in the list.
-  const candidates = [...document.querySelectorAll(`[data-session="${CSS.escape(id)}"]`)];
-  const inList = (el: Element) => el.closest('.session-list') !== null;
-  const target = gridVisible
-    ? candidates.find((el) => !inList(el))
-    : candidates.find(inList);
+  const target = visibleSession(id);
   if (!target) return;
 
   // No `behavior`: the CSS decides, and it already switches to instant under
   // prefers-reduced-motion.
   target.scrollIntoView({ block: 'center' });
+  return target;
+}
+
+/**
+ * Makes the item reached from Ask briefly unmistakable without changing its
+ * address or leaving a marker behind in a copied programme link.
+ */
+export function highlightSession(id: string) {
+  const target = visibleSession(id);
+  if (!target) return;
+
+  target.classList.remove('session-assistant-focus');
+  // Restart the short visual cue when a reader opens the same source twice.
+  void target.getBoundingClientRect();
+  target.classList.add('session-assistant-focus');
+  window.setTimeout(() => target.classList.remove('session-assistant-focus'), 4200);
 }
 
 /** Scrolls to the day's recap, once the day holding it has rendered. */

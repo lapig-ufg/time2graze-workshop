@@ -36,10 +36,36 @@ test('every entry carries an id, a link and something to read', () => {
   for (const entry of corpus.entries) {
     assert.ok(entry.id, `entry without an id: ${JSON.stringify(entry)}`);
     assert.ok(entry.text.length > 10, `${entry.id}: nothing to read`);
+    assert.ok(entry.location, `${entry.id}: no visible source location`);
     assert.ok(
       entry.href.startsWith('/'),
       `${entry.id}: href is not site-rooted`,
     );
+  }
+});
+
+test('Uber actions are explicit, safe actions on the places that offer them', () => {
+  for (const [id, venue] of Object.entries(VENUES)) {
+    const entry = corpus.entries.find((item) => item.id === `venue-${id}`);
+    const action = entry?.actions?.find((item) => item.type === 'uber');
+    if (venue.ride) {
+      assert.ok(action, `${id}: its published Uber action is absent from Ask`);
+      assert.match(entry.text, /Uber link/i, `${id}: the model cannot name the Uber action`);
+    } else {
+      assert.equal(action, undefined, `${id}: Ask offers an unauthorised Uber action`);
+    }
+  }
+});
+
+test('Module 1 enters as named slide ranges, not as presentation HTML', () => {
+  const sections = corpus.entries.filter((entry) => entry.kind === 'presentation');
+  assert.ok(sections.length >= 4, 'Module 1 has no searchable sections');
+  for (const entry of sections) {
+    assert.match(entry.source ?? '', /slides \d+–\d+/);
+    const action = entry.actions?.find((item) => item.type === 'material');
+    assert.ok(action, `${entry.id}: no direct module action`);
+    assert.match(action.href, /^\/files\/visual-inspection-module-1\/index\.html#s\d+$/);
+    assert.doesNotMatch(entry.text, /data:image|<script|<style/i);
   }
 });
 

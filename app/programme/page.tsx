@@ -14,6 +14,7 @@ import {
   dayFromHash,
   dayFromRecapHash,
   dayFromSessionHash,
+  highlightSession,
   scrollToDayPanel,
   scrollToRecap,
   scrollToSession,
@@ -33,7 +34,7 @@ function clockLabel(minutes: number) {
 export default function ProgrammePage() {
   /** What is waiting to be scrolled to, once the day it names has rendered. */
   const [pending, setPending] = useState<
-    { session: string } | { day: true } | { recap: true } | null
+    { session: string; highlight?: boolean } | { day: true } | { recap: true } | null
   >(null);
   const clock = useWorkshopClock();
   const today = todayIndex(AGENDA, clock);
@@ -109,13 +110,34 @@ export default function ProgrammePage() {
   }, []);
 
   /**
+   * A source followed from Ask arrives through the same hash contract, with
+   * one extra visual cue on the rendered session.
+   */
+  useEffect(() => {
+    const fromAssistant = (event: Event) => {
+      const session = (event as CustomEvent<{ session?: string }>).detail?.session;
+      const owner = session ? dayFromSessionHash(`#${session}`) : null;
+      if (owner === null || !session) return;
+      history.scrollRestoration = 'manual';
+      setPicked(owner);
+      setPending({ session, highlight: true });
+      setHashNotFound(false);
+    };
+    addEventListener('assistant-source-follow', fromAssistant);
+    return () => removeEventListener('assistant-source-follow', fromAssistant);
+  }, []);
+
+  /**
    * Scrolling has to wait for the day panel to be in the DOM. An effect runs
    * after the commit; a requestAnimationFrame does not, and looked for the
    * session before React had rendered it.
    */
   useEffect(() => {
     if (!pending) return;
-    if ('session' in pending) scrollToSession(pending.session);
+    if ('session' in pending) {
+      scrollToSession(pending.session);
+      if (pending.highlight) highlightSession(pending.session);
+    }
     else if ('recap' in pending) scrollToRecap();
     else scrollToDayPanel();
     // Not cleared: every link produces a fresh object, and it is that identity

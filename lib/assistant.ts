@@ -13,6 +13,7 @@
  * to nothing and is dropped.
  */
 import { withBasePath } from '@/lib/base-path';
+import type { VenueId } from '@/data/venues';
 
 /**
  * The deployed Cloudflare Worker — see `docs/assistant-setup.md`, whose last
@@ -36,13 +37,26 @@ export type CorpusEntry = {
     | 'practical'
     | 'city'
     | 'guide'
-    | 'recap';
+    | 'recap'
+    | 'presentation';
   title: string;
   text: string;
   /** Site-rooted, and already an anchor the page resolves on load. */
   href: string;
   /** The workshop day this belongs to, where it belongs to one. */
   day?: number;
+  /** The site page and, where relevant, the day that holds this source. */
+  location: string;
+  /** Exact place inside a published material, such as a slide range. */
+  source?: string;
+  /**
+   * Actions are data, not model-written URLs. The panel resolves each against
+   * the same records that render the published page.
+   */
+  actions?: (
+    | { type: 'uber'; venueId: VenueId; label: string }
+    | { type: 'material'; href: string; label: string }
+  )[];
   /**
    * Values a reader copies or reads aloud — a place's area, address, phone and
    * website — exactly as published. The panel sets them under an answer; the

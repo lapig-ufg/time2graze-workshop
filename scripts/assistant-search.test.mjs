@@ -84,3 +84,12 @@ test('a session result carries the anchor that opens its day', () => {
   const lunch = search(corpus, 'lunch on day 3')[0].entry;
   assert.equal(lunch.href, '/programme/#d3-lunch');
 });
+
+test('Module 1 questions find a specific published slide range', () => {
+  const elements = top('quais são os sete elementos de interpretação visual?');
+  assert.equal(elements?.id, 'visual-inspection-elements');
+  assert.match(elements?.source ?? '', /slides 11–20/);
+
+  const ndvi = top('what does Module 1 say about fire scars and NDVI?');
+  assert.equal(ndvi?.id, 'visual-inspection-vegetation-change');
+});

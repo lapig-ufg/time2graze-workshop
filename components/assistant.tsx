@@ -3,7 +3,10 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState, type MouseEvent, type SyntheticEvent } from 'react';
-import { MessageCircle, X } from 'lucide-react';
+import { ArrowRight, Car, ExternalLink, MapPin, MessageCircle, X } from 'lucide-react';
+import { VENUES } from '@/data/venues';
+import { withBasePath } from '@/lib/base-path';
+import { uberLink } from '@/lib/places';
 import {
   assistantEnabled, loadCorpus, splitSources, streamAnswer,
   type ChatMessage, type Corpus, type CorpusEntry,
@@ -62,7 +65,11 @@ function DetailValue({ label, value }: { label: string; value: string }) {
  * day of materials — is scrolled to directly; `scroll-behavior: smooth` on the
  * html makes that a glide, and the reduced-motion rule makes it instant.
  */
-function applyHash(hash: string, mode: 'push' | 'replace') {
+function applyHash(
+  hash: string,
+  mode: 'push' | 'replace',
+  highlightSession?: string,
+) {
   if (!hash) return;
   if (window.location.hash !== hash) {
     const url = window.location.pathname + window.location.search + hash;
@@ -70,7 +77,44 @@ function applyHash(hash: string, mode: 'push' | 'replace') {
     else window.history.replaceState(window.history.state, '', url);
   }
   window.dispatchEvent(new HashChangeEvent('hashchange'));
+  if (highlightSession) {
+    window.dispatchEvent(new CustomEvent('assistant-source-follow', {
+      detail: { session: highlightSession },
+    }));
+  }
   document.getElementById(hash.slice(1))?.scrollIntoView({ block: 'start' });
+}
+
+function SourceAction({ action }: { action: NonNullable<CorpusEntry['actions']>[number] }) {
+  if (action.type === 'uber') {
+    const venue = VENUES[action.venueId];
+    if (!venue.coords) return null;
+    const address = 'address' in venue ? venue.address : undefined;
+    return (
+      <a
+        className="ask-action ask-action--uber"
+        href={uberLink(venue.coords, venue.name, address ?? venue.locality)}
+        target="_blank"
+        rel="noreferrer"
+      >
+        <Car aria-hidden size={15} />
+        {action.label}
+        <ExternalLink aria-hidden size={13} />
+      </a>
+    );
+  }
+
+  return (
+    <a
+      className="ask-action"
+      href={withBasePath(action.href)}
+      target="_blank"
+      rel="noreferrer"
+    >
+      <ExternalLink aria-hidden size={15} />
+      {action.label}
+    </a>
+  );
 }
 
 export function Assistant() {
@@ -104,7 +148,8 @@ export function Assistant() {
    * there instantly and left nothing for the eye to follow.
    */
   const follow = useCallback(
-    (event: MouseEvent<HTMLAnchorElement>, href: string) => {
+    (event: MouseEvent<HTMLAnchorElement>, entry: CorpusEntry) => {
+      const { href } = entry;
       // A new tab or a copied link keeps the plain anchor behaviour.
       if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
       event.preventDefault();
@@ -114,7 +159,11 @@ export function Assistant() {
       dialogRef.current?.close();
 
       if (path === pathname) {
-        applyHash(hash, 'push');
+        applyHash(
+          hash,
+          'push',
+          entry.kind === 'session' ? anchor : undefined,
+        );
         return;
       }
 
@@ -129,7 +178,11 @@ export function Assistant() {
           router.push(path);
         });
 
-      const land = () => applyHash(hash, 'replace');
+      const land = () => applyHash(
+        hash,
+        'replace',
+        entry.kind === 'session' ? anchor : undefined,
+      );
       const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (still || !('startViewTransition' in document)) {
         void arrive().then(land);
@@ -307,11 +360,25 @@ export function Assistant() {
                 ))}
 
                 {turn.sources && turn.sources.length > 0 && (
-                  <nav className="ask-sources" aria-label="Where this is on the site">
+                  <nav className="ask-sources" aria-label="Published sources">
                     {turn.sources.map((entry) => (
-                      <Link key={entry.id} href={entry.href} onClick={(event) => follow(event, entry.href)}>
-                        {entry.title}
-                      </Link>
+                      <div className="ask-source" key={entry.id}>
+                        <p className="ask-source-location">
+                          <MapPin aria-hidden size={14} />
+                          <span>{entry.location}</span>
+                          {entry.source && <small>{entry.source}</small>}
+                        </p>
+                        <Link
+                          href={entry.href}
+                          onClick={(event) => follow(event, entry)}
+                        >
+                          <span>View {entry.title}</span>
+                          <ArrowRight aria-hidden size={15} />
+                        </Link>
+                        {entry.actions?.map((action) => (
+                          <SourceAction key={`${action.type}-${action.label}`} action={action} />
+                        ))}
+                      </div>
                     ))}
                   </nav>
                 )}
