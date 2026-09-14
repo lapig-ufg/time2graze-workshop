@@ -32,7 +32,7 @@
   <span id="count"></span>
 </div>
 <script>
-  const TOTAL = 48;
+  const TOTAL = 47;
   const src = n => 'slides/' + String(n).padStart(2, '0') + '.webp';
   const img = document.getElementById('slide');
   let n = Math.min(TOTAL, Math.max(1, parseInt(location.hash.slice(1)) || 1));

@@ -129,7 +129,8 @@ export const AGENDA: Day[] = [
         speakers: [{ name: 'Nathália', org: 'LAPIG' }],
         venueId: 'lapig',
         kind: 'technical',
-        /* Nathália's deck, supplied 14 September 2026 as a 48-page PDF; each
+        /* Nathália's deck, supplied 14 September 2026 as a 48-page PDF; page 26
+           (a presenter comment) is left out, and each
            page rendered to WebP and shown one per screen, fitted whole. */
         materials: [
           {
