@@ -29,7 +29,7 @@ export function NowNext() {
   // The recap is published live on /programme/; the repository copy is the
   // fallback for a reader arriving before the fetch answers. The hook runs
   // before the early return: rules of hooks, and the fetch is shared anyway.
-  const liveRecap = useLiveRecap(today ?? 0);
+  const liveRecap = useLiveRecap(today === null ? 0 : AGENDA[today].index);
   if (!clock || today === null) return null;
 
   const day = AGENDA[today];

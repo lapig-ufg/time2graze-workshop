@@ -54,7 +54,9 @@ export function DayRecap({ day }: { day: Day; clock: Clock | null }) {
   // Nothing renders from the endpoint before it answers, so the server render
   // and the first client render agree.
   const { doc, html, recap } = loading ? { doc: null, html: '', recap: null } : summaryFor(live, day.index);
+  const unavailable = !loading && (doc?.html === null || (!live && recapLiveEnabled));
   const stamp = loading ? 'Loading summary…'
+    : unavailable ? 'Summary unavailable'
     : !html ? 'To be published'
     : recap ? `${recap.revised ? 'Updated' : 'Published'} ${formatRecapStamp(recap.revised ?? recap.published)}`
     : null;
@@ -65,7 +67,7 @@ export function DayRecap({ day }: { day: Day; clock: Clock | null }) {
       {doc && <a className="recap-edit-toggle" href={doc.url} target="_blank" rel="noopener"><ExternalLink aria-hidden="true" />Comment or suggest edits</a>}
     </div>
     {html ? <div className="recap-document" dangerouslySetInnerHTML={{ __html: html }} />
-      : !loading && <p className="recap-pending">The day’s summary has not been published yet.</p>}
-    {!loading && !live && recapLiveEnabled && <output className="recap-pending">Could not connect to the summaries. <button onClick={() => window.location.reload()}>Try again</button></output>}
+      : !loading && !unavailable && <p className="recap-pending">The day’s summary has not been published yet.</p>}
+    {unavailable && <output className="recap-pending">Could not load the summary. <button onClick={() => window.location.reload()}>Try again</button></output>}
   </section>;
 }
