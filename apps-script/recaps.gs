@@ -73,7 +73,10 @@ function writeRecap(props, day, recap, updated) {
   }
 }
 
-/** GET `?action=recaps`: every published recap, keyed by day. */
+/**
+ * GET `?action=recaps`: every published recap, keyed by day, and each day's
+ * Google Doc (recap-docs.gs), which takes precedence on the site.
+ */
 function getRecaps() {
   const props = PropertiesService.getScriptProperties();
   const recaps = {};
@@ -81,8 +84,17 @@ function getRecaps() {
     const stored = readRecap(props, day);
     if (stored) recaps[day] = stored;
   }
+  let docs = {};
+  try {
+    docs = readRecapDocs();
+  } catch (err) {
+    // The docs are the summaries now; a failed export must not also take
+    // down the stored recaps the site can still fall back on.
+    console.log('recap docs unavailable: %s', err);
+  }
   return {
     status: 'ok',
+    docs,
     editable:
       recapWindowOpen() && Boolean(props.getProperty('RECAP_EDIT_PASSWORD')),
     recaps,

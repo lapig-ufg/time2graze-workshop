@@ -1,36 +1,44 @@
 'use client';
 
-import { useEffect, useState, useSyncExternalStore } from 'react';
-import dynamic from 'next/dynamic';
-import { Pencil } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { ExternalLink } from 'lucide-react';
 import { RECAPS } from '@/data/recaps';
-import type { Day } from '@/data/types';
+import type { Day, DayRecap as Recap } from '@/data/types';
 import type { Clock } from '@/lib/now';
 import { formatRecapStamp } from '@/lib/recap';
+import { googleDocHtml } from '@/lib/recap-doc';
 import { recapDocument } from '@/lib/recap-document';
-import { loadRecaps, recapLiveEnabled, type RecapsState, type StoredRecap } from '@/lib/recap-live';
+import { loadRecaps, recapLiveEnabled, type RecapsState } from '@/lib/recap-live';
 
-const subscribe = () => () => {};
-const clientSnapshot = () => true;
-const serverSnapshot = () => false;
-
-const DocumentEditor = dynamic(() => import('./recap-editor'), { ssr: false, loading: () => <p className="recap-pending">Opening editor…</p> });
 let shared: Promise<RecapsState | null> | null = null;
 export function recaps() {
   shared ??= recapLiveEnabled ? loadRecaps() : Promise.resolve(null);
   return shared;
 }
-export function useLiveRecap(dayIndex: number): StoredRecap | null {
+
+/**
+ * What a day's summary block shows. A day with a Google Doc is that doc and
+ * nothing else — an empty doc is "to be published", never an older stored
+ * recap. Only a day without a doc falls back to the stored or repository one.
+ * Client only: the doc is converted with `DOMParser`.
+ */
+function summaryFor(state: RecapsState | null, dayIndex: number) {
+  const doc = state?.docs[dayIndex];
+  if (doc) return { doc, html: doc.html ? googleDocHtml(doc.html) : '', recap: null };
+  const recap: Recap | null = state?.recaps[dayIndex]?.recap ?? RECAPS[dayIndex] ?? null;
+  return { doc: null, html: recapDocument(recap), recap };
+}
+
+/** Whether a day has a published summary, for the "happening today" band. */
+export function useLiveRecap(dayIndex: number): boolean {
   const [state, setState] = useState<RecapsState | null>(null);
   useEffect(() => { let active = true; void recaps().then(s => { if (active) setState(s); }); return () => { active = false; }; }, []);
-  return state?.recaps[dayIndex] ?? null;
+  return state !== null && summaryFor(state, dayIndex).html !== '';
 }
 
 export function DayRecap({ day }: { day: Day; clock: Clock | null }) {
   const [live, setLive] = useState<RecapsState | null>(null);
   const [loading, setLoading] = useState(recapLiveEnabled);
-  const [editing, setEditing] = useState(false);
-  const hydrated = useSyncExternalStore(subscribe, clientSnapshot, serverSnapshot);
   useEffect(() => {
     let active = true;
     async function refresh() {
@@ -40,22 +48,24 @@ export function DayRecap({ day }: { day: Day; clock: Clock | null }) {
       setLoading(false);
     }
     if (recapLiveEnabled) void refresh();
-    const timer = setInterval(() => { if (!document.hidden && !editing && recapLiveEnabled) void refresh(); }, 30000);
+    const timer = setInterval(() => { if (!document.hidden && recapLiveEnabled) void refresh(); }, 30000);
     return () => { active = false; clearInterval(timer); };
-  }, [day.index, editing]);
-  const stored = live?.recaps[day.index] ?? null;
-  const recap = stored?.recap ?? RECAPS[day.index] ?? null;
-  const html = hydrated ? recapDocument(recap) : '';
+  }, [day.index]);
+  // Nothing renders from the endpoint before it answers, so the server render
+  // and the first client render agree.
+  const { doc, html, recap } = loading ? { doc: null, html: '', recap: null } : summaryFor(live, day.index);
+  const stamp = loading ? 'Loading summary…'
+    : !html ? 'To be published'
+    : recap ? `${recap.revised ? 'Updated' : 'Published'} ${formatRecapStamp(recap.revised ?? recap.published)}`
+    : null;
   return <section className="recap" aria-labelledby={`recap-day-${day.index}`}>
     <div className="recap-head">
       <h3 id={`recap-day-${day.index}`}>Day {day.index} summary</h3>
-      <p className="recap-stamp">{loading ? 'Loading summary…' : recap ? `${recap.revised ? 'Updated' : 'Published'} ${formatRecapStamp(recap.revised ?? recap.published)}` : 'To be published'}</p>
-      {live?.editable && !editing && <button className="recap-edit-toggle" onClick={() => setEditing(true)}><Pencil aria-hidden="true" />{recap ? 'Edit summary' : 'Add summary'}</button>}
+      {stamp && <p className="recap-stamp">{stamp}</p>}
+      {doc && <a className="recap-edit-toggle" href={doc.url} target="_blank" rel="noopener"><ExternalLink aria-hidden="true" />Comment or suggest edits</a>}
     </div>
-    {editing ? <DocumentEditor day={day.index} stored={stored} initial={html} onClose={() => setEditing(false)} onSaved={next => {
-      const state = { editable: true, recaps: { ...live?.recaps, [day.index]: next } };
-      shared = Promise.resolve(state); setLive(state); setEditing(false);
-    }} /> : recap ? <div className="recap-document" dangerouslySetInnerHTML={{ __html: html }} /> : <p className="recap-pending">The day’s summary has not been published yet.</p>}
+    {html ? <div className="recap-document" dangerouslySetInnerHTML={{ __html: html }} />
+      : !loading && <p className="recap-pending">The day’s summary has not been published yet.</p>}
     {!loading && !live && recapLiveEnabled && <output className="recap-pending">Could not connect to the summaries. <button onClick={() => window.location.reload()}>Try again</button></output>}
   </section>;
 }

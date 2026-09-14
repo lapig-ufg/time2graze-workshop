@@ -36,7 +36,7 @@ export function NowNext() {
   const running = day.sessions.find((s) => stateOf(s, clock) === 'running');
   const nextId = nextSessionId(day, clock);
   const session = running ?? day.sessions.find((s) => s.id === nextId);
-  const recap = liveRecap?.recap ?? recapForDay(day.index);
+  const recap = liveRecap || recapForDay(day.index) !== null;
   // The deck for the hour in the room, one line per activity that has one.
   const files = session
     ? [session, ...(session.tracks ?? [])].flatMap((item) =>

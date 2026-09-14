@@ -1,20 +1,35 @@
 # Daily summaries
 
-Each day has one document on `/programme/`, beneath its schedule.
+Each day's summary is a Google Doc. `/programme/` shows it under that day's schedule, with a **Comment or suggest edits** link. The Doc is the official text, and the site only displays it.
 
-1. Open the day and select **Add summary**.
-2. Paste the generated summary directly into the document, or choose **Import file** for a Word (`.docx`), text (`.txt`) or HTML file. No session selection or prescribed structure is needed.
-3. Enter the existing edit password and choose **Publish summary**.
-4. Read the document together. Select **Edit summary**, make corrections directly in the text, and choose **Save changes**.
+| Day | Google Doc |
+| --- | --- |
+| 1 · 14 Sep | https://docs.google.com/document/d/10YecIt3hD6TBvapNhHzjsGllC69Bz7qwV1qP7H4WIpI/edit |
+| 2 · 15 Sep | https://docs.google.com/document/d/1yzRITg8PNnSumo4J3kkgTCYVK3nJUy6fTHsylM0TWVs/edit |
+| 3 · 16 Sep | https://docs.google.com/document/d/1HmwB2trPUC0QzKwrVmvwhY3Coyxm_AstbaXGcqrHXXg/edit |
+| 4 · 17 Sep | https://docs.google.com/document/d/1LF9-MYGmMKYGlKtnc7iskXlTQdeKoyRlANZj_4FuUCk/edit |
+| 5 · 18 Sep | https://docs.google.com/document/d/1FYNJXrWtpiubmHy8vrCkWUkMB6XXE8bcPmd2XQwRdiA/edit |
 
-The toolbar provides headings, bold, italic, underline, lists, undo and redo. Word imports retain supported text formatting; images and complex page layouts are omitted. Files are converted in the browser. Google Docs content can be pasted directly or downloaded as Word and imported.
+The docs are owned by victoramaral.lapig@gmail.com.
 
-Unsaved edits have a recovery copy in this browser when browser storage is available. **Download copy** exports the current document as HTML, including unsaved changes. It can be opened in a browser or imported again. A failed save leaves the editor open. If someone else saves first, the editor preserves your text and shows their published version for comparison; download your work before opening that version and combining the changes. This is a shared saved document, not simultaneous Google Docs collaboration. Readers refresh automatically every 30 seconds while the page is visible.
+## Setup (once per doc)
 
-The edit password and closing date are unchanged. Publishing closes on 21 September 2026. There is no public line-flagging workflow in this editor. Existing structured summaries remain readable and become a single document when edited.
+Each doc is shared **Anyone with the link → Commenter**. That was set on 14 September 2026. The site and the repository are public, so the link must not grant edit access. Anyone signed in to Google can comment or suggest edits, and only named editors can accept them. Add the people who write the summaries as editors by email, and turn off "Editors can change permissions and share".
+
+The site reads each doc anonymously, as any visitor with the link would. That works at Commenter or Viewer access, provided "Viewers and commenters can download" stays on. A doc without link access shows as "To be published". The site shows only accepted text: suggestions and comments do not appear there.
+
+## Procedure
+
+1. Paste or write the summary into the day's doc below its first line, "Day N summary — …". The site omits that first line because the block already has that heading.
+2. The group reads the doc and comments or suggests edits. Editors accept the suggestions.
+3. The site updates on its own. Exports are cached for one minute, and open pages check again every 30 seconds, so a change appears within about 90 seconds.
+
+A doc that has only its first line counts as unpublished. The site keeps headings, paragraphs, bold, italic, underline, lists and links. Images, tables, colours, comments and footnotes are left out.
 
 ## Implementation
 
-The Apps Script endpoint stores a `document` string and empty legacy `sections`; old section records remain compatible. Rich text is sanitized with a restricted tag and attribute allowlist before display, import and save. The server rejects documents above 50,000 characters instead of truncating them, stamps publication/revision times, and checks the revision the edit started from. JSON is an internal transport only.
+`apps-script/recap-docs.gs` lists the doc IDs in `RECAP_DOCS`. For each doc it fetches `…/export?format=html` anonymously, caches the result for 60 seconds in `CacheService`, and returns `docs: { [day]: { url, html } }` from `?action=recaps`. A doc it cannot read comes back as `html: null`. No new OAuth scope is needed, because `script.external_request` was already granted. `lib/recap-doc.ts` converts the export in the browser. It resolves Docs' class and inline styles into `strong`/`em`/`u`, removes the `google.com/url` redirect from links, and passes the result to the shared sanitizer in `lib/recap-document.ts`.
 
-After changing the Apps Script source, push from `apps-script/` with `clasp push`, then redeploy the existing deployment with `clasp deploy -i AKfycbzpmYFJq7WFRxtnGHGZkW0FFhiit9441UHtfZnwfrNZI6Vuku1MY6Rb7JBBIcFwGcBi -d "Daily summary document editor"`. This change introduces no new scopes. Keep the endpoint URL and edit password unchanged.
+A day listed in `RECAP_DOCS` shows only its doc. Recaps stored by the earlier password editor are still returned, and a day appears as a stored recap only if it has no doc. The password editor has been removed from the site. Its POST endpoint is still in the script but nothing calls it.
+
+To change a doc, edit `RECAP_DOCS`, then run `clasp push` from `apps-script/` and `clasp deploy -i AKfycbzpmYFJq7WFRxtnGHGZkW0FFhiit9441UHtfZnwfrNZI6Vuku1MY6Rb7JBBIcFwGcBi -d "…"`. The endpoint URL does not change.

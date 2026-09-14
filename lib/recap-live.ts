@@ -1,53 +1,27 @@
 /**
- * The live recaps: read from, and published to, the Apps Script web app.
+ * The live summaries, read from the Apps Script web app.
  *
- * The recap a reader sees is the live copy when one exists, and the empty
- * repository fallback when it does not — so a day that has not been
- * summarised still says "to be published", exactly as before. Like the
- * prompts, this does not use JSONP: a recap is kilobytes and publishing
- * carries a password, neither of which belongs in a URL. Reads are a plain
- * GET and saves a POST whose body is text/plain — a "simple" request, with
- * no preflight the script could not answer. When a save's response is lost
- * anyway, the recap is read back to find out whether it landed.
+ * Each day's summary is a Google Doc (apps-script/recap-docs.gs); the
+ * endpoint returns each doc's export and edit link. Recaps stored by the
+ * earlier password editor are still returned and still readable for a day
+ * with no doc. Like the prompts, this does not use JSONP: an export is
+ * kilobytes, and a plain GET is enough.
  */
 
 import { APPS_SCRIPT_ENDPOINT, appsScriptEnabled } from './apps-script';
+import type { DayRecap } from '@/data/types';
 
 export const recapLiveEnabled = appsScriptEnabled;
 
-export type StoredRecap = { recap: DayRecapShape; updated: string };
+export type StoredRecap = { recap: DayRecap; updated: string };
+
+/** A day's Google Doc: `html` is null while the doc cannot be read. */
+export type RecapDoc = { url: string; html: string | null };
 
 export type RecapsState = {
-  editable: boolean;
+  docs: Record<number, RecapDoc>;
   recaps: Record<number, StoredRecap>;
 };
-
-export type SaveStatus =
-  | 'saved'
-  | 'conflict'
-  | 'denied'
-  | 'invalid'
-  | 'limit'
-  | 'closed'
-  | 'unconfigured'
-  | 'error';
-
-export type SaveResult = { status: SaveStatus; recap?: StoredRecap | null };
-
-const SAVE_ANSWERS: SaveStatus[] = [
-  'saved',
-  'conflict',
-  'denied',
-  'invalid',
-  'limit',
-  'closed',
-  'unconfigured',
-];
-
-import type { DayRecap } from '@/data/types';
-
-/** What crosses the wire: a recap plus the day it belongs to. */
-export type DayRecapShape = DayRecap & { day: number };
 
 function withTimeout(ms: number) {
   const controller = new AbortController();
@@ -55,7 +29,7 @@ function withTimeout(ms: number) {
   return { signal: controller.signal, done: () => clearTimeout(timer) };
 }
 
-/** Every published recap, or null when the endpoint cannot be reached. */
+/** Every day's doc and stored recap, or null when the endpoint cannot be reached. */
 export async function loadRecaps(): Promise<RecapsState | null> {
   const timeout = withTimeout(20000);
   try {
@@ -65,60 +39,9 @@ export async function loadRecaps(): Promise<RecapsState | null> {
     });
     const data = await response.json();
     if (data?.status !== 'ok' || typeof data.recaps !== 'object') return null;
-    return { editable: Boolean(data.editable), recaps: data.recaps ?? {} };
+    return { docs: data.docs ?? {}, recaps: data.recaps ?? {} };
   } catch {
     return null;
-  } finally {
-    timeout.done();
-  }
-}
-
-/**
- * Publishes a day's recap. `base` is the `updated` stamp the edit started
- * from ('' for a first publication); an empty `recap` unpublishes the day.
- */
-export async function saveRecap(
-  day: number,
-  recap: DayRecapShape | null,
-  password: string,
-  base: string,
-): Promise<SaveResult> {
-  const timeout = withTimeout(30000);
-  try {
-    const response = await fetch(APPS_SCRIPT_ENDPOINT, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify({
-        action: 'recap',
-        day,
-        recap,
-        password,
-        base,
-      }),
-      signal: timeout.signal,
-    });
-    const data = await response.json();
-    const status = SAVE_ANSWERS.includes(data?.status) ? data.status : 'error';
-    // An older deployment can acknowledge a save while dropping the new
-    // document field. Keep the local draft unless the document came back.
-    if (status === 'saved' && recap?.document !== undefined && data?.recap?.recap?.document !== recap.document) {
-      return { status: 'error' };
-    }
-    return { status, recap: data?.recap ?? null };
-  } catch {
-    // The write may have landed even though its answer did not.
-    const state = await loadRecaps();
-    const stored = state?.recaps[day];
-    // An existing recap does not prove this write landed. Compare the actual
-    // document, and require a successful read before confirming deletion.
-    const landed = state !== null && (recap === null
-      ? !stored
-      : stored != null && stored.updated !== base && (
-        recap.document !== undefined
-          ? stored.recap.document === recap.document
-          : JSON.stringify(stored.recap.sections) === JSON.stringify(recap.sections)
-      ));
-    return landed ? { status: 'saved', recap: stored ?? null } : { status: 'error' };
   } finally {
     timeout.done();
   }

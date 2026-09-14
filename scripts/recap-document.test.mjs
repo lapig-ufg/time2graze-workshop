@@ -2,7 +2,6 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import { readFileSync } from 'node:fs';
 import { runInNewContext } from 'node:vm';
-import ts from 'typescript';
 
 const server = readFileSync(new URL('../apps-script/recaps.gs', import.meta.url), 'utf8');
 const sanitize = runInNewContext(server + '\nsanitizeRecap;');
@@ -18,26 +17,30 @@ test('legacy section summaries are still accepted', () => {
   assert.equal(sanitize({ day: 1, sections: [{ title: 'Overview', summary: { id: 'd1-r1', text: 'Existing text' } }] }).sections[0].summary.text, 'Existing text');
 });
 
-const source = ts.transpileModule(readFileSync(new URL('../lib/recap-live.ts', import.meta.url), 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS } }).outputText;
-function client(readback) {
-  const exports = {};
-  runInNewContext(source, {
-    exports, require: () => ({ APPS_SCRIPT_ENDPOINT: 'https://example.invalid', appsScriptEnabled: true }),
-    AbortController, setTimeout, clearTimeout,
-    fetch: async (_url, options) => {
-      if (options.method === 'POST') throw new Error('response lost');
-      if (readback === null) throw new Error('offline');
-      return { json: async () => ({ status: 'ok', editable: true, recaps: readback }) };
-    },
-  });
-  return exports;
+const docs = readFileSync(new URL('../apps-script/recap-docs.gs', import.meta.url), 'utf8');
+function docsServer(answer) {
+  const store = {};
+  const fetched = [];
+  const context = {
+    console: { log() {} },
+    CacheService: { getScriptCache: () => ({
+      getAll: (keys) => Object.fromEntries(keys.filter((k) => k in store).map((k) => [k, store[k]])),
+      put: (k, v) => { store[k] = v; },
+    }) },
+    UrlFetchApp: { fetchAll: (requests) => requests.map((r) => { fetched.push(r.url); return answer(r.url); }) },
+  };
+  const read = runInNewContext(docs + '\nreadRecapDocs;', context);
+  return { read, fetched };
 }
-const document = '<p>New summary</p>';
-const recap = { day: 1, published: '', document, sections: [] };
-test('a lost response confirms only the matching saved document', async () => {
-  const changed = { recap, updated: 'new' };
-  assert.equal((await client({ 1: changed }).saveRecap(1, recap, 'test', 'old')).status, 'saved');
-  assert.equal((await client({ 1: { recap: { ...recap, document: '<p>Other text</p>' }, updated: 'new' } }).saveRecap(1, recap, 'test', 'old')).status, 'error');
-  assert.equal((await client({ 1: { recap, updated: 'old' } }).saveRecap(1, recap, 'test', 'old')).status, 'error');
-  assert.equal((await client(null).saveRecap(1, null, 'test', 'old')).status, 'error');
+const response = (code, body) => ({ getResponseCode: () => code, getContentText: () => body });
+test('each day reads its Google Doc once a minute, and an unshared doc reads as unavailable', () => {
+  const exported = '<html><head><style>.c1{font-weight:700}</style></head><body class="doc-content"><p><span class="c1">Decision</span></p></body></html>';
+  const { read, fetched } = docsServer((url) => url.includes('10YecIt3') ? response(200, exported) : response(302, ''));
+  const first = read();
+  assert.equal(first[1].html, exported);
+  assert.match(first[1].url, /^https:\/\/docs\.google\.com\/document\/d\/10YecIt3.*\/edit$/);
+  assert.equal(first[2].html, null);
+  assert.equal(fetched.length, 5);
+  read();
+  assert.equal(fetched.length, 5, 'a second poll inside the cache window fetches nothing');
 });
