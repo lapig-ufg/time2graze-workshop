@@ -9,7 +9,11 @@ import {
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import type { MaterialKind } from '@/data/types';
-import { materialDetail, materialsByDay } from '@/lib/materials';
+import {
+  materialAction,
+  materialDetail,
+  materialsByDay,
+} from '@/lib/materials';
 import { withBasePath } from '@/lib/base-path';
 import { dayLabel } from '@/lib/schedule';
 
@@ -118,7 +122,7 @@ export default function MaterialsPage() {
                         className="resource-file"
                         href={withBasePath(entry.material.href)}
                       >
-                        Download
+                        {materialAction(entry.material)}
                       </a>
                     ) : (
                       <em>To be published</em>

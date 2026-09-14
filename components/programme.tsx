@@ -4,6 +4,8 @@ import { Clock3 } from 'lucide-react';
 import { AGENDA } from '@/data/agenda';
 import type { Day, Session, Track } from '@/data/types';
 import { useChoices } from '@/hooks/use-track-choice';
+import { withBasePath } from '@/lib/base-path';
+import { materialAction, publishedMaterials } from '@/lib/materials';
 import { type Clock, nextSessionId, stateOf } from '@/lib/now';
 import { choosingOpen, splitAnchor } from '@/lib/split-sessions';
 import {
@@ -125,6 +127,33 @@ function ChooseChip({ href, silent }: { href?: string; silent?: boolean }) {
 }
 
 /**
+ * A published file, on the session that uses it. A participant sitting in the
+ * room looks for the deck on the programme, not on a page of all materials.
+ * `silent` is the grid's copy, kept out of the tab order for the same reason
+ * as `ChooseChip`; the list's copy is dropped above 1280px in globals.css.
+ */
+function MaterialLinks(
+  { item, silent }: { item: Session | Track; silent?: boolean },
+) {
+  const files = publishedMaterials(item);
+  if (files.length === 0) return null;
+  return (
+    <p className="session-files">
+      {files.map((m) => (
+        <a
+          key={m.href}
+          className="session-file"
+          href={withBasePath(m.href)}
+          tabIndex={silent ? -1 : undefined}
+        >
+          {materialAction(m)} →
+        </a>
+      ))}
+    </p>
+  );
+}
+
+/**
  * One activity inside a split session. `chosen` is this browser's own answer
  * to it — the site never shows anyone else's, and never a count.
  */
@@ -133,6 +162,7 @@ function TrackCard({ track, chosen }: { track: Track; chosen: boolean }) {
     <div className="tl-track" data-chosen={chosen || undefined}>
       <p className="tl-track-title">{track.title}</p>
       <PresenterLine item={track} />
+      <MaterialLinks item={track} silent />
       {chosen && <p className="split-mark">Your choice</p>}
     </div>
   );
@@ -192,6 +222,7 @@ function Block(
               <Mark state={state} />
             </h3>
             <PresenterLine item={session} compact={compact} />
+            <MaterialLinks item={session} silent />
           </>
         )}
 
@@ -352,6 +383,7 @@ function List(
                       <li key={t.id} data-chosen={picks[session.id] === t.id || undefined}>
                         <strong>{t.title}</strong>
                         <PresenterLine item={t} />
+                        <MaterialLinks item={t} />
                         {t.description && (
                           <p className="track-detail">{t.description}</p>
                         )}
@@ -366,6 +398,7 @@ function List(
                 <>
                   <h3>{session.title}</h3>
                   <PresenterLine item={session} />
+                  <MaterialLinks item={session} />
                 </>
               )}
 

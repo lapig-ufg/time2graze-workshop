@@ -3,6 +3,8 @@
 import Link from 'next/link';
 import { AGENDA } from '@/data/agenda';
 import { useWorkshopClock } from '@/hooks/use-workshop-clock';
+import { withBasePath } from '@/lib/base-path';
+import { materialAction, publishedMaterials } from '@/lib/materials';
 import { nextSessionId, stateOf, todayIndex } from '@/lib/now';
 import { recapForDay } from '@/lib/recap';
 import { useLiveRecap } from '@/components/recap';
@@ -35,6 +37,12 @@ export function NowNext() {
   const nextId = nextSessionId(day, clock);
   const session = running ?? day.sessions.find((s) => s.id === nextId);
   const recap = liveRecap?.recap ?? recapForDay(day.index);
+  // The deck for the hour in the room, one line per activity that has one.
+  const files = session
+    ? [session, ...(session.tracks ?? [])].flatMap((item) =>
+        publishedMaterials(item).map((m) => ({ item, m })),
+      )
+    : [];
   if (!session && !recap) return null;
 
   return (
@@ -49,6 +57,14 @@ export function NowNext() {
           <Link href={`/programme/#${session.id}`}>{sessionTitle(session)}</Link>
         </p>
       )}
+      {files.map(({ item, m }) => (
+        <p className="now-band-item now-band-file" key={m.href}>
+          <span className="tl-mark tl-mark--next">Material</span>
+          <a href={withBasePath(m.href)}>
+            {item.title} · {materialAction(m)}
+          </a>
+        </p>
+      ))}
       {recap && (
         <p className="now-band-item now-band-recap">
           <span className="tl-mark tl-mark--next">Summary</span>

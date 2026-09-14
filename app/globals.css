@@ -511,7 +511,7 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
   .day-tabs [role='tab'] { min-width: 0; padding: 12px 3px; text-align: center; }
   .resource-group { grid-template-columns: 1fr; gap: 26px; }
   .resource-item { grid-template-columns: 26px 1fr; }
-  .resource-item em { grid-column: 2; justify-self: start; }
+  .resource-item em, .resource-item .resource-file { grid-column: 2; justify-self: start; }
   .document-placeholders { grid-template-columns: 1fr; }
   .document-placeholders article { border-top: 1px solid var(--line); border-left: 0; }
   .document-placeholders article:first-child { border-top: 0; }
@@ -831,7 +831,7 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
   /* The printed programme is all five days; the panel holds one. A recap for
      the open day alone would be a single day's record stapled to a five-day
      agenda, so paper carries the schedule and the recaps stay on screen. */
-  .programme-tools, .programme-resources, .recap, .split-choice, .split-notice, .split-todo { display: none !important; }
+  .programme-tools, .programme-resources, .recap, .split-choice, .split-notice, .split-todo, .session-files { display: none !important; }
   /* The choice itself does print — it is the reader's own agenda — but as
      text, not as a tinted pill. */
   .split-mark { padding: 0; color: #000 !important; background: none !important; }
@@ -892,7 +892,8 @@ a.split-todo:hover { border-color: var(--forest); }
    view there; on smaller screens this list IS the programme, and the chip
    has to work. */
 @media (min-width: 1280px) {
-  .programme > .session-list .split-todo { display: none; }
+  .programme > .session-list .split-todo,
+  .programme > .session-list .session-file { display: none; }
 }
 
 /* --- Split sessions ---------------------------------------------------------
@@ -1060,7 +1061,13 @@ a.split-todo:hover { border-color: var(--forest); }
 /* The evening is when the schedule has nothing left to say and the summary
    does, so the band grows a second row rather than emptying out. */
 .now-band { row-gap: 12px; }
-.now-band-recap { grid-column: 2; }
+.now-band-recap, .now-band-file { grid-column: 2; }
+
+/* A published file on the session that uses it. Underlined text rather than
+   a pill: it sits inside a block that clips, and it is a link, not a state. */
+.session-files { display: flex; flex-wrap: wrap; gap: 4px 14px; margin: 4px 0 0; }
+.session-file { color: var(--forest); font-size: var(--t-meta); font-weight: 750; text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 3px; transition: text-decoration-color var(--m-quick) var(--m-ease); }
+.session-file:hover { text-decoration-color: var(--forest); }
 
 @media screen and (max-width: 760px) {
   .recap-head, .recap-invite, .recap-pending, .recap-section { padding-inline: 16px; }
@@ -1069,5 +1076,5 @@ a.split-todo:hover { border-color: var(--forest); }
      line to put it underneath, and the reading width is worth the rows. */
   .recap-item { grid-template-columns: minmax(0, 1fr); }
   .recap-flag { justify-self: start; margin-left: -10px; border-color: var(--line); }
-  .now-band-recap { grid-column: 1; }
+  .now-band-recap, .now-band-file { grid-column: 1; }
 }

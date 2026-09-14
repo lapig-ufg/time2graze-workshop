@@ -79,3 +79,22 @@ export function materialDetail(entry: MaterialEntry) {
   if (entry.material.restricted) parts.push('Participants only');
   return parts.join(' · ');
 }
+
+/**
+ * What pressing the file does. A deck published as a web page, or hosted
+ * elsewhere (Google Slides), opens in the browser; calling that `Download`
+ * promised a file that never arrives.
+ */
+export function materialAction(material: Material) {
+  const opens =
+    material.format === 'HTML' || /^https?:\/\//.test(material.href ?? '');
+  const verb = opens ? 'Open' : 'Download';
+  return `${verb} ${KIND_LABEL[material.kind].toLowerCase()}`;
+}
+
+/** The files a session or track has actually published, in declared order. */
+export function publishedMaterials(item: { materials?: Material[] }) {
+  return (item.materials ?? []).filter(
+    (m): m is Material & { href: string } => Boolean(m.href),
+  );
+}

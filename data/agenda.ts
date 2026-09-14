@@ -99,7 +99,15 @@ export const AGENDA: Day[] = [
             description:
               'The GEE App / GEE short course introduces participants to the interactive Earth Engine Apps and spatial datasets developed within the Time2Graze initiative (in synergy with the Global Pasture Watch framework). The session focuses on practical navigation and usage of dedicated web applications of Global Pasture Watch and Time2Graze. Participants will get an overview of the metrics and pasture data hosted in these tools, understanding how to visualize, interpret, and inspect high-resolution grassland dynamics directly from the browser. Finally, the course demonstrates how to access, query, and load the underlying Time2Graze data layers directly within the Google Earth Engine Code Editor, enabling attendees to seamlessly plug these collections into their own scripts and workflows.',
             speakers: [{ name: 'Vinícius', org: 'LAPIG' }],
-            materials: [{ kind: 'slides' }],
+            /* Supplied 14 September 2026 as a Google Slides link, not a file:
+               it opens in Google's viewer and depends on that deck's sharing. */
+            materials: [
+              {
+                kind: 'slides',
+                href: 'https://docs.google.com/presentation/d/1xu0INje-lxsp1bSnOhQSYPGIXDlhV2dTg4SOOFrCJTM/edit',
+                format: 'Google Slides',
+              },
+            ],
           },
         ],
       },

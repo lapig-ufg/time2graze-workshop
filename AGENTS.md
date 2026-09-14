@@ -2316,3 +2316,16 @@ it works under `npm run dev` and any host; and the footer's template leftover
 "Example slides, fictitious content" was removed at the organiser's request.
 The slides' own text is the presenter's and is not edited here. If a revised deck arrives, rerun the same
 conversion over it rather than patching the copy by hand.
+
+**Where a deck is found, and what its button says.** A participant sitting in
+the room looks for the slides on the session, not on a page of every file. A
+published material now shows on the session or track that uses it — in the
+grid (`tabIndex={-1}`, as `ChooseChip`) and in the list (dropped above 1280px,
+as the chip is) — and on the home band while its session is running or next.
+The button reads `Open slides` for an HTML deck or an external link, and
+`Download` only for a real file (`materialAction` in `lib/materials.ts`): the
+first deck shipped behind a `Download` button that downloaded nothing. The GEE
+course's deck is a Google Slides link, supplied the same morning; whether it
+opens for a participant depends on that deck's own sharing, not on the site.
+The same pass fixed a pre-existing phone bug: `.resource-file` sat in the 26px
+icon column below 760px and overflowed it.
