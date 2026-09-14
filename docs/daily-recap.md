@@ -140,12 +140,22 @@ Published **live, on the page** — no commit, no build:
 
 1. On `/programme/`, open the day, find **Day N summary** and press
    **Publish** (or **Edit**, once a recap is up).
-2. Paste the corrected draft as JSON — the shape of a `DayRecap` in
-   [The contract](#the-contract): `sections`, each with `sessionId` or `title`,
-   each line an item with its id `d<day>-r<n>`.
+2. Paste the corrected draft **as text, straight from NotebookLM** — the
+   editor takes the same shape the prompt asks for: `## Title [session id]`,
+   then WHAT HAPPENED / DECISIONS / OPEN QUESTIONS / ACTIONS. The page reads
+   it as you type and shows the section and line count plus anything that
+   needs checking (a session id that names no session, an action with no
+   `[Owner]`).
 3. Type the edit password and press **Publish**. Everyone loading the page
    from that moment sees it, including the home page's "Today's summary is
    published" band.
+
+**Item ids are assigned for you** (`d<day>-r1, r2…` in document order) and a
+revision keeps the id of every line that stays word-for-word the same, so
+flags raised the evening before keep pointing at the lines they were raised
+against. A changed line takes a new number; a deleted line's number is never
+reused. Never hand-write ids in the text — the JSON toggle (below) is the
+only place to see or fix one.
 
 The first save stamps `published` itself; every later save stamps `revised`
 and keeps the original `published`. The site sets those — do not write them.
@@ -159,8 +169,8 @@ once, the second save is refused and loads the first person's text, so
 nothing is silently overwritten. **Unpublish** takes the day back to "to be
 published". Publishing closes after 21 September 2026, with the corrections.
 
-The conversion rules are in [The contract](#the-contract) below, and they are
-not negotiable per day — the ids depend on them.
+**Edit as JSON** switches the same box to the raw `sections` JSON — for
+moving one line or fixing one character, not for writing from scratch.
 
 ### The next morning
 
@@ -169,13 +179,14 @@ Open the corrections spreadsheet. For each row that is not yet marked
 
 - Read the item id (`d3-r7`) and find that line in the recap on `/programme/`.
 - Check it against the audio. The reader may be wrong; the recording decides.
-- Fix the text **in place, keeping the id**, through the same **Edit** button.
+- Fix the text **in place, keeping the id** — edit the line's wording in the
+  text box; the id follows automatically as long as nothing else changes it.
 - Mark the row Applied.
 
-If the revision resolves reader-raised points, set `corrections` in the JSON
-to the count before saving: it renders as "N reader corrections applied",
-which is the only reason anyone flags a second line. It counts resolved
-points, not edits — it is rendered, so it has to be true.
+If the revision resolves reader-raised points, fill **Reader corrections
+applied** with the count before saving: it renders as "N reader corrections
+applied", which is the only reason anyone flags a second line. It counts
+resolved points, not edits — it is rendered, so it has to be true.
 
 ---
 

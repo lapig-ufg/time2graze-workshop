@@ -12,6 +12,7 @@ import {
   sectionAnchor,
   sectionHeading,
 } from '@/lib/recap';
+import { parseRecapText } from '@/lib/recap-text';
 import {
   flagRecapItem,
   NAME_MAX,
@@ -85,7 +86,7 @@ const EDIT_MESSAGES: Record<SaveStatus | 'sending', string> = {
     'Someone else saved this summary while you were editing. Their version is loaded below; copy your changes into it and save again.',
   denied: 'Wrong password.',
   invalid:
-    'This summary is not valid JSON of the expected shape — check the text and try again.',
+    'The draft could not be read. Check that every session heading is "## Title [session id]" and the fields are WHAT HAPPENED / DECISIONS / OPEN QUESTIONS / ACTIONS.',
   limit: 'Too many wrong passwords today. Editing is locked until tomorrow.',
   closed: 'Editing has closed for this workshop.',
   unconfigured: 'Editing is not switched on yet.',
@@ -285,18 +286,57 @@ function Section({
   );
 }
 
+/** The recap as the JSON the server stores, without the transport-only `day`. */
 function jsonOfRecap(recap: DayRecapShape): string {
   const { day, ...rest } = recap;
   void day;
   return JSON.stringify(rest, null, 2);
 }
 
+/** The recap as the text the editor edits: the prompt's own shape. */
+function recapToText(recap: DayRecapShape): string {
+  if (recap.sections.length === 0) {
+    return '## <session title> [<session id>]\nWHAT HAPPENED: \nDECISIONS:\n- \nOPEN QUESTIONS:\n- \nACTIONS:\n- [Owner] \n';
+  }
+  return recap.sections
+    .map((section) => {
+      const head = section.sessionId
+        ? `## ${sectionHeading(section)} [${section.sessionId}]`
+        : `## ${section.title ?? 'Across the day'} [day]`;
+      const lines = [head];
+      if (section.summary) lines.push(`WHAT HAPPENED: ${section.summary.text}`);
+      if (section.decisions?.length) {
+        lines.push('DECISIONS:');
+        for (const item of section.decisions) lines.push(`- ${item.text}`);
+      }
+      if (section.questions?.length) {
+        lines.push('OPEN QUESTIONS:');
+        for (const item of section.questions) lines.push(`- ${item.text}`);
+      }
+      if (section.actions?.length) {
+        lines.push('ACTIONS:');
+        for (const item of section.actions)
+          lines.push(`- ${item.owner ? `[${item.owner}] ` : ''}${item.text}`);
+      }
+      return lines.join('\n');
+    })
+    .join('\n\n');
+}
+
 /**
- * The organiser's editor. A JSON textarea rather than a form per line: the
- * draft comes out of NotebookLM shaped like `data/recaps.ts`, and on the
- * evening of a long day a paste-adjust-save beats re-typing thirty lines.
- * The ids (`d2-r4`) are the contract the flag button depends on, so the
- * editor says so in its own label.
+ * The organiser's editor.
+ *
+ * The main field takes the corrected NotebookLM draft as plain text — the
+ * shape the prompt asks for (`## Title [session-id]`, WHAT HAPPENED,
+ * DECISIONS, OPEN QUESTIONS, ACTIONS) — and the conversion, including the
+ * item ids (`d2-r4`) the flag buttons depend on, happens here: on the evening
+ * of a long day a paste-adjust-save beats hand-writing JSON, and the room
+ * corrects text, not data structures. A revision keeps the id of every line
+ * that survives unchanged, so flags raised the evening before keep pointing
+ * at the lines they were raised against.
+ *
+ * The JSON toggle stays for surgical edits: moving one line, fixing one
+ * character, editing on a phone.
  */
 function RecapEditor({
   day,
@@ -307,15 +347,17 @@ function RecapEditor({
   stored: StoredRecap | null;
   onDone: (stored: StoredRecap | null) => void;
 }) {
-  const initial = stored?.recap ?? {
-    day: day.index,
-    published: '',
-    sections: [],
-  };
-  const [draft, setDraft] = useState(jsonOfRecap(initial));
+  const [draft, setDraft] = useState(() =>
+    recapToText(stored?.recap ?? { day: day.index, published: '', sections: [] }),
+  );
+  const [mode, setMode] = useState<'text' | 'json'>('text');
   const [password, setPassword] = useState(storedPassword);
   const [status, setStatus] = useState<SaveStatus | 'sending' | null>(null);
+  const [corrections, setCorrections] = useState('');
   const sending = status === 'sending';
+
+  const parsed = parseRecapText(day.index, draft, stored?.recap);
+  const jsonDraft = mode === 'json' ? draft : parsed.ok ? jsonOfRecap({ ...parsed.recap, day: day.index }) : '';
 
   async function save(event: SyntheticEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -323,23 +365,30 @@ function RecapEditor({
     setStatus('sending');
 
     let recap: DayRecapShape | null = null;
-    try {
-      const parsed = JSON.parse(draft);
-      if (typeof parsed !== 'object' || parsed === null || !Array.isArray(parsed.sections)) {
-        throw new Error('shape');
+    if (mode === 'json') {
+      try {
+        const object = JSON.parse(draft);
+        if (typeof object !== 'object' || object === null || !Array.isArray(object.sections)) {
+          throw new Error('shape');
+        }
+        recap = { ...object, day: day.index };
+      } catch {
+        setStatus('invalid');
+        return;
       }
-      recap = { ...parsed, day: day.index };
-    } catch {
-      setStatus('invalid');
-      return;
+    } else {
+      if (!parsed.ok) {
+        setStatus('invalid');
+        return;
+      }
+      recap = { ...parsed.recap, day: day.index };
     }
 
-    const result = await saveRecap(
-      day.index,
-      recap,
-      password,
-      stored?.updated ?? '',
-    );
+    if (recap && corrections.trim() && !Number.isNaN(Number(corrections))) {
+      recap.corrections = Math.max(0, Math.min(999, Number(corrections)));
+    }
+
+    const result = await saveRecap(day.index, recap, password, stored?.updated ?? '');
     setStatus(result.status);
     if (result.status === 'saved') {
       rememberPassword(password);
@@ -348,37 +397,112 @@ function RecapEditor({
     } else if (result.status === 'conflict' && result.recap) {
       mergeRecap(day.index, result.recap);
       onDone(result.recap);
-      setDraft(jsonOfRecap(result.recap.recap));
+      setDraft(
+        mode === 'json'
+          ? jsonOfRecap(result.recap.recap)
+          : recapToText(result.recap.recap),
+      );
     }
   }
+
+  const itemCount = parsed.ok
+    ? parsed.recap.sections.reduce(
+        (count, section) =>
+          count +
+          (section.summary ? 1 : 0) +
+          (section.decisions?.length ?? 0) +
+          (section.questions?.length ?? 0) +
+          (section.actions?.length ?? 0),
+        0,
+      )
+    : 0;
 
   return (
     <form className="recap-form recap-edit-form" onSubmit={save} aria-busy={sending}>
       <label htmlFor={`recap-edit-${day.index}`}>
-        Day {day.index} summary — JSON (sections, items with ids{' '}
-        <code>d{day.index}-r1, d{day.index}-r2…</code>, never reuse a number)
+        Day {day.index} summary — the corrected NotebookLM draft (
+        <code>## Title [session id]</code>, WHAT HAPPENED / DECISIONS / OPEN
+        QUESTIONS / ACTIONS)
       </label>
       <textarea
         id={`recap-edit-${day.index}`}
-        className="recap-edit-json"
+        className="recap-edit-text"
         rows={22}
-        spellCheck={false}
+        spellCheck
         readOnly={sending}
         value={draft}
         onChange={(event) => setDraft(event.target.value)}
       />
-      <label htmlFor={`recap-edit-password-${day.index}`}>Edit password</label>
-      <input
-        id={`recap-edit-password-${day.index}`}
-        type="password"
-        required
-        autoComplete="current-password"
-        readOnly={sending}
-        value={password}
-        onChange={(event) => setPassword(event.target.value)}
-      />
+      <div className="recap-edit-meta">
+        <button
+          type="button"
+          className="recap-edit-mode"
+          onClick={() => {
+            setMode(mode === 'text' ? 'json' : 'text');
+            setDraft(mode === 'text' ? (jsonDraft || draft) : draft);
+          }}
+        >
+          {mode === 'text' ? 'Edit as JSON' : 'Edit as text'}
+        </button>
+        {parsed.ok ? (
+          <output className="recap-edit-count">
+            {parsed.recap.sections.length} sections · {itemCount} lines
+            {parsed.warnings.length > 0 && (
+              <>
+                {' · '}
+                <span className="recap-edit-warn">{parsed.warnings.length} to check</span>
+              </>
+            )}
+          </output>
+        ) : (
+          <output className="recap-edit-warn">{parsed.error}</output>
+        )}
+      </div>
+      {parsed.ok && parsed.warnings.length > 0 && (
+        <ul className="recap-edit-warnings">
+          {parsed.warnings.map((warning) => (
+            <li key={warning}>{warning}</li>
+          ))}
+        </ul>
+      )}
+      {stored && (
+        <p className="recap-edit-ids">
+          Lines that stay word-for-word the same keep their id, so this
+          morning&rsquo;s flags still point at them. A changed line takes a new
+          number; a deleted line&rsquo;s number is never reused.
+        </p>
+      )}
+      <div className="recap-edit-grid">
+        {stored && (
+          <>
+            <label htmlFor={`recap-edit-corrections-${day.index}`}>
+              Reader corrections applied (optional)
+            </label>
+            <input
+              id={`recap-edit-corrections-${day.index}`}
+              type="number"
+              min={0}
+              max={999}
+              placeholder="3"
+              readOnly={sending}
+              value={corrections}
+              onChange={(event) => setCorrections(event.target.value)}
+            />
+          </>
+        )}
+        <label htmlFor={`recap-edit-password-${day.index}`}>Edit password</label>
+        <input
+          id={`recap-edit-password-${day.index}`}
+          type="password"
+          required
+          autoComplete="current-password"
+          readOnly={sending}
+          value={password}
+          onChange={(event) => setPassword(event.target.value)}
+        />
+      </div>
       <div className="recap-form-actions">
-        <button type="submit" disabled={sending}>
+        <button type="submit" disabled={sending || !parsed.ok}>
           {sending && <LoaderCircle className="calendar-spinner" aria-hidden="true" />}
           {sending ? 'Publishing…' : 'Publish'}
         </button>
@@ -392,12 +516,7 @@ function RecapEditor({
             onClick={async () => {
               if (sending) return;
               setStatus('sending');
-              const result = await saveRecap(
-                day.index,
-                null,
-                password,
-                stored.updated,
-              );
+              const result = await saveRecap(day.index, null, password, stored.updated);
               setStatus(result.status);
               if (result.status === 'saved') {
                 rememberPassword(password);

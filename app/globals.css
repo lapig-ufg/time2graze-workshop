@@ -1003,9 +1003,25 @@ a.split-todo:hover { border-color: var(--forest); }
 .recap-edit-toggle:hover { border-color: var(--forest); }
 .recap-edit-toggle svg { width: 15px; height: 15px; }
 /* The editor sits inside the block, above the sections, and is capped at the
-   same 980px reading width as the lists. */
+   same 980px reading width as the lists. The draft is prose the organiser
+   pastes, so it reads as prose: sans, wrapping, no spell of monospace. */
 .recap-edit-form { max-width: 980px; margin: 0; }
-.recap-edit-json { font-family: ui-monospace, 'Cascadia Mono', Consolas, monospace !important; font-size: var(--t-meta-lg) !important; line-height: 1.6 !important; white-space: pre; overflow-wrap: normal; }
+.recap-edit-text { resize: vertical; line-height: 1.6; }
+.recap-edit-form .recap-edit-text, .recap-edit-form textarea { font-family: inherit; }
+.recap-edit-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; margin-top: 8px; }
+.recap-edit-mode { display: inline-flex; align-items: center; min-height: 44px; padding: 0 12px; color: var(--forest); background: transparent; border: 1px solid var(--line); border-radius: var(--radius); font-size: var(--t-meta); font-weight: 700; cursor: pointer; transition: border-color var(--m-quick) var(--m-ease); }
+.recap-edit-mode:hover { border-color: var(--forest); }
+.recap-edit-count { margin: 0; color: var(--muted-soft); font-size: var(--t-meta); font-variant-numeric: lining-nums tabular-nums; }
+.recap-edit-warn { margin: 0; color: var(--warning); font-size: var(--t-meta); font-weight: 700; }
+.recap-edit-warnings { margin: 8px 0 0; padding: 10px 12px 10px 32px; color: var(--ink); background: var(--warning-bg); border-left: 3px solid var(--warning); font-size: var(--t-meta-lg); line-height: 1.5; }
+.recap-edit-warnings li + li { margin-top: 4px; }
+.recap-edit-ids { margin: 8px 0 0; color: var(--muted-soft); font-size: var(--t-meta); line-height: 1.5; }
+.recap-edit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+.recap-edit-grid label { margin-bottom: 6px; }
+.recap-edit-grid input { width: 100%; padding: 10px 12px; color: var(--ink); background: var(--surface); border: 1px solid var(--muted); border-radius: var(--radius); font-family: inherit; font-size: var(--t-body-lg); }
+@media (max-width: 600px) {
+  .recap-edit-grid { grid-template-columns: 1fr; }
+}
 .recap-form > textarea + label { margin-top: 12px; }
 .recap-form-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
 .recap-form-actions button, .split-actions button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 10px 16px; border-radius: var(--radius); font-size: var(--t-meta-lg); font-weight: 750; cursor: pointer; }
