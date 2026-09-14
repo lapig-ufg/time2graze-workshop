@@ -12,7 +12,8 @@ import {
   sectionAnchor,
   sectionHeading,
 } from '@/lib/recap';
-import { parseRecapText } from '@/lib/recap-text';
+import { parseRecapText, idAssigner } from '@/lib/recap-text';
+import { sessionTitle } from '@/lib/schedule';
 import {
   flagRecapItem,
   NAME_MAX,
@@ -86,7 +87,7 @@ const EDIT_MESSAGES: Record<SaveStatus | 'sending', string> = {
     'Someone else saved this summary while you were editing. Their version is loaded below; copy your changes into it and save again.',
   denied: 'Wrong password.',
   invalid:
-    'The draft could not be read. Check that every session heading is "## Title [session id]" and the fields are WHAT HAPPENED / DECISIONS / OPEN QUESTIONS / ACTIONS.',
+    'Nothing to publish yet — choose a session and write at least one line, or paste the NotebookLM draft.',
   limit: 'Too many wrong passwords today. Editing is locked until tomorrow.',
   closed: 'Editing has closed for this workshop.',
   unconfigured: 'Editing is not switched on yet.',
@@ -286,57 +287,59 @@ function Section({
   );
 }
 
-/** The recap as the JSON the server stores, without the transport-only `day`. */
-function jsonOfRecap(recap: DayRecapShape): string {
-  const { day, ...rest } = recap;
-  void day;
-  return JSON.stringify(rest, null, 2);
-}
+/** One editable section: a session chosen from the day, or a titled block. */
+type EditSection = {
+  key: string;
+  /** A session id from the day's agenda, or '' for a titled day-block. */
+  sessionId: string;
+  title: string;
+  summary: string;
+  decisions: { key: string; text: string }[];
+  questions: { key: string; text: string }[];
+  actions: { key: string; owner: string; text: string }[];
+};
 
-/** The recap as the text the editor edits: the prompt's own shape. */
-function recapToText(recap: DayRecapShape): string {
-  if (recap.sections.length === 0) {
-    return '## <session title> [<session id>]\nWHAT HAPPENED: \nDECISIONS:\n- \nOPEN QUESTIONS:\n- \nACTIONS:\n- [Owner] \n';
-  }
-  return recap.sections
-    .map((section) => {
-      const head = section.sessionId
-        ? `## ${sectionHeading(section)} [${section.sessionId}]`
-        : `## ${section.title ?? 'Across the day'} [day]`;
-      const lines = [head];
-      if (section.summary) lines.push(`WHAT HAPPENED: ${section.summary.text}`);
-      if (section.decisions?.length) {
-        lines.push('DECISIONS:');
-        for (const item of section.decisions) lines.push(`- ${item.text}`);
-      }
-      if (section.questions?.length) {
-        lines.push('OPEN QUESTIONS:');
-        for (const item of section.questions) lines.push(`- ${item.text}`);
-      }
-      if (section.actions?.length) {
-        lines.push('ACTIONS:');
-        for (const item of section.actions)
-          lines.push(`- ${item.owner ? `[${item.owner}] ` : ''}${item.text}`);
-      }
-      return lines.join('\n');
-    })
-    .join('\n\n');
+let sectionKey = 0;
+const nextKey = () => `s${++sectionKey}`;
+let lineKey = 0;
+const nextLineKey = () => `l${++lineKey}`;
+
+const emptySection = (): EditSection => ({
+  key: nextKey(),
+  sessionId: '',
+  title: '',
+  summary: '',
+  decisions: [],
+  questions: [],
+  actions: [],
+});
+
+function sectionsOfRecap(recap: DayRecapShape | null): EditSection[] {
+  if (!recap?.sections.length) return [emptySection()];
+  return recap.sections.map((section) => ({
+    key: nextKey(),
+    sessionId: section.sessionId ?? '',
+    title: section.title ?? '',
+    summary: section.summary?.text ?? '',
+    decisions: (section.decisions ?? []).map((i) => ({ key: nextLineKey(), text: i.text })),
+    questions: (section.questions ?? []).map((i) => ({ key: nextLineKey(), text: i.text })),
+    actions: (section.actions ?? []).map((i) => ({
+      key: nextLineKey(),
+      owner: i.owner ?? '',
+      text: i.text,
+    })),
+  }));
 }
 
 /**
- * The organiser's editor.
+ * The organiser's editor: a form, not a markup language.
  *
- * The main field takes the corrected NotebookLM draft as plain text — the
- * shape the prompt asks for (`## Title [session-id]`, WHAT HAPPENED,
- * DECISIONS, OPEN QUESTIONS, ACTIONS) — and the conversion, including the
- * item ids (`d2-r4`) the flag buttons depend on, happens here: on the evening
- * of a long day a paste-adjust-save beats hand-writing JSON, and the room
- * corrects text, not data structures. A revision keeps the id of every line
- * that survives unchanged, so flags raised the evening before keep pointing
- * at the lines they were raised against.
- *
- * The JSON toggle stays for surgical edits: moving one line, fixing one
- * character, editing on a phone.
+ * Each session is a card; the session is chosen from the day's programme by
+ * title (never typed as an id), the four fields are plain text areas with
+ * add/remove, and the item ids — the contract the flag buttons depend on —
+ * are assigned invisibly at save time. The corrected NotebookLM draft can
+ * still be pasted in one box to fill the whole form, because the room
+ * corrects prose; and JSON stays as the last resort for surgical fixes.
  */
 function RecapEditor({
   day,
@@ -347,47 +350,86 @@ function RecapEditor({
   stored: StoredRecap | null;
   onDone: (stored: StoredRecap | null) => void;
 }) {
-  const [draft, setDraft] = useState(() =>
-    recapToText(stored?.recap ?? { day: day.index, published: '', sections: [] }),
+  const [sections, setSections] = useState<EditSection[]>(() =>
+    sectionsOfRecap(stored?.recap ?? null),
   );
-  const [mode, setMode] = useState<'text' | 'json'>('text');
   const [password, setPassword] = useState(storedPassword);
   const [status, setStatus] = useState<SaveStatus | 'sending' | null>(null);
   const [corrections, setCorrections] = useState('');
+  const [importOpen, setImportOpen] = useState(false);
+  const [importText, setImportText] = useState('');
+  const [importError, setImportError] = useState<string | null>(null);
+  const [jsonOpen, setJsonOpen] = useState(false);
+  const [jsonText, setJsonText] = useState('');
+  const [jsonError, setJsonError] = useState<string | null>(null);
   const sending = status === 'sending';
 
-  const parsed = parseRecapText(day.index, draft, stored?.recap);
-  const jsonDraft = mode === 'json' ? draft : parsed.ok ? jsonOfRecap({ ...parsed.recap, day: day.index }) : '';
+  // The day's technical and field sessions, in programme order, as the picker.
+  const daySessions = day.sessions.filter(
+    (s) => s.kind === 'technical' || s.kind === 'field',
+  );
+
+  function update(index: number, patch: Partial<EditSection>) {
+    setSections((list) =>
+      list.map((section, i) => (i === index ? { ...section, ...patch } : section)),
+    );
+  }
+
+  function moveSection(index: number, by: -1 | 1) {
+    setSections((list) => {
+      const next = [...list];
+      const target = index + by;
+      if (target < 0 || target >= next.length) return list;
+      [next[index], next[target]] = [next[target], next[index]];
+      return next;
+    });
+  }
+
+  /** Builds the recap, assigning every id at the last moment. */
+  function buildRecap(): DayRecapShape | null {
+    const idFor = idAssigner(day.index, stored?.recap);
+    const built: RecapSection[] = [];
+    for (const section of sections) {
+      if (!section.sessionId && !section.title.trim()) continue;
+      const decisions = section.decisions.filter((d) => d.text.trim());
+      const questions = section.questions.filter((q) => q.text.trim());
+      const actions = section.actions.filter((a) => a.text.trim());
+      if (!section.summary.trim() && !decisions.length && !questions.length && !actions.length) {
+        continue;
+      }
+      const clean: RecapSection = section.sessionId
+        ? { sessionId: section.sessionId }
+        : { title: section.title.trim() };
+      if (section.summary.trim())
+        clean.summary = { id: idFor(section.summary.trim()), text: section.summary.trim() };
+      if (decisions.length)
+        clean.decisions = decisions.map((d) => ({ id: idFor(d.text.trim()), text: d.text.trim() }));
+      if (questions.length)
+        clean.questions = questions.map((q) => ({ id: idFor(q.text.trim()), text: q.text.trim() }));
+      if (actions.length)
+        clean.actions = actions.map((a) => {
+          const item: RecapItem = { id: idFor(a.text.trim()), text: a.text.trim() };
+          if (a.owner.trim()) item.owner = a.owner.trim();
+          return item;
+        });
+      built.push(clean);
+    }
+    if (built.length === 0) return null;
+    return { day: day.index, published: '', sections: built };
+  }
 
   async function save(event: SyntheticEvent<HTMLFormElement>) {
     event.preventDefault();
     if (sending) return;
-    setStatus('sending');
-
-    let recap: DayRecapShape | null = null;
-    if (mode === 'json') {
-      try {
-        const object = JSON.parse(draft);
-        if (typeof object !== 'object' || object === null || !Array.isArray(object.sections)) {
-          throw new Error('shape');
-        }
-        recap = { ...object, day: day.index };
-      } catch {
-        setStatus('invalid');
-        return;
-      }
-    } else {
-      if (!parsed.ok) {
-        setStatus('invalid');
-        return;
-      }
-      recap = { ...parsed.recap, day: day.index };
+    const recap = buildRecap();
+    if (!recap) {
+      setStatus('invalid');
+      return;
     }
-
-    if (recap && corrections.trim() && !Number.isNaN(Number(corrections))) {
+    setStatus('sending');
+    if (corrections.trim() && !Number.isNaN(Number(corrections))) {
       recap.corrections = Math.max(0, Math.min(999, Number(corrections)));
     }
-
     const result = await saveRecap(day.index, recap, password, stored?.updated ?? '');
     setStatus(result.status);
     if (result.status === 'saved') {
@@ -396,82 +438,336 @@ function RecapEditor({
       onDone(result.recap ?? null);
     } else if (result.status === 'conflict' && result.recap) {
       mergeRecap(day.index, result.recap);
-      onDone(result.recap);
-      setDraft(
-        mode === 'json'
-          ? jsonOfRecap(result.recap.recap)
-          : recapToText(result.recap.recap),
-      );
+      setSections(sectionsOfRecap(result.recap.recap));
     }
   }
 
-  const itemCount = parsed.ok
-    ? parsed.recap.sections.reduce(
-        (count, section) =>
-          count +
-          (section.summary ? 1 : 0) +
-          (section.decisions?.length ?? 0) +
-          (section.questions?.length ?? 0) +
-          (section.actions?.length ?? 0),
-        0,
-      )
-    : 0;
+  function applyImport() {
+    const parsed = parseRecapText(day.index, importText, stored?.recap);
+    if (!parsed.ok) {
+      setImportError(parsed.error);
+      return;
+    }
+    setImportError(null);
+    setSections(sectionsOfRecap({ ...parsed.recap, day: day.index }));
+    setImportOpen(false);
+    setImportText('');
+  }
+
+  const itemCount = sections.reduce(
+    (count, s) =>
+      count +
+      (s.summary.trim() ? 1 : 0) +
+      s.decisions.filter((d) => d.text.trim()).length +
+      s.questions.filter((q) => q.text.trim()).length +
+      s.actions.filter((a) => a.text.trim()).length,
+    0,
+  );
 
   return (
     <form className="recap-form recap-edit-form" onSubmit={save} aria-busy={sending}>
-      <label htmlFor={`recap-edit-${day.index}`}>
-        Day {day.index} summary — the corrected NotebookLM draft (
-        <code>## Title [session id]</code>, WHAT HAPPENED / DECISIONS / OPEN
-        QUESTIONS / ACTIONS)
-      </label>
-      <textarea
-        id={`recap-edit-${day.index}`}
-        className="recap-edit-text"
-        rows={22}
-        spellCheck
-        readOnly={sending}
-        value={draft}
-        onChange={(event) => setDraft(event.target.value)}
-      />
-      <div className="recap-edit-meta">
-        <button
-          type="button"
-          className="recap-edit-mode"
-          onClick={() => {
-            setMode(mode === 'text' ? 'json' : 'text');
-            setDraft(mode === 'text' ? (jsonDraft || draft) : draft);
-          }}
-        >
-          {mode === 'text' ? 'Edit as JSON' : 'Edit as text'}
+      <div className="recap-edit-toolbar">
+        <button type="button" className="recap-edit-mode" onClick={() => setImportOpen(!importOpen)}>
+          {importOpen ? 'Close the paste box' : 'Paste the NotebookLM draft'}
         </button>
-        {parsed.ok ? (
-          <output className="recap-edit-count">
-            {parsed.recap.sections.length} sections · {itemCount} lines
-            {parsed.warnings.length > 0 && (
+        <button type="button" className="recap-edit-mode" onClick={() => setJsonOpen(!jsonOpen)}>
+          {jsonOpen ? 'Close JSON' : 'JSON'}
+        </button>
+        <output className="recap-edit-count">
+          {sections.length} {sections.length === 1 ? 'section' : 'sections'} · {itemCount}{' '}
+          {itemCount === 1 ? 'line' : 'lines'}
+        </output>
+      </div>
+
+      {importOpen && (
+        <div className="recap-edit-import">
+          <label htmlFor={`recap-import-${day.index}`}>
+            Paste the draft here and it fills the form below — one box per
+            session, each line in its field.
+          </label>
+          <textarea
+            id={`recap-import-${day.index}`}
+            rows={10}
+            spellCheck
+            readOnly={sending}
+            value={importText}
+            onChange={(event) => setImportText(event.target.value)}
+          />
+          {importError && <p className="recap-edit-warn">{importError}</p>}
+          <div className="recap-form-actions">
+            <button type="button" onClick={applyImport} disabled={sending || !importText.trim()}>
+              Fill the form
+            </button>
+            <button type="button" onClick={() => setImportOpen(false)}>
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
+
+      {jsonOpen && (
+        <div className="recap-edit-import">
+          <label htmlFor={`recap-json-${day.index}`}>
+            The stored summary as JSON, for surgical fixes. This replaces the
+            whole form.
+          </label>
+          <textarea
+            id={`recap-json-${day.index}`}
+            className="recap-edit-json"
+            rows={14}
+            spellCheck={false}
+            readOnly={sending}
+            value={jsonText}
+            onChange={(event) => setJsonText(event.target.value)}
+            placeholder="Paste the JSON here…"
+          />
+          {jsonError && <p className="recap-edit-warn">{jsonError}</p>}
+          <div className="recap-form-actions">
+            <button
+              type="button"
+              disabled={sending}
+              onClick={() => {
+                const current = buildRecap();
+                setJsonText(current ? JSON.stringify({ sections: current.sections }, null, 2) : '');
+              }}
+            >
+              Load the form as JSON
+            </button>
+            <button
+              type="button"
+              disabled={sending || !jsonText.trim()}
+              onClick={() => {
+                try {
+                  const object = JSON.parse(jsonText);
+                  if (typeof object !== 'object' || object === null || !Array.isArray(object.sections)) {
+                    throw new Error('shape');
+                  }
+                  setSections(sectionsOfRecap({ day: day.index, published: '', sections: object.sections }));
+                  setJsonError(null);
+                  setJsonOpen(false);
+                } catch {
+                  setJsonError('That is not the expected JSON — it needs a "sections" list.');
+                }
+              }}
+            >
+              Apply to the form
+            </button>
+            <button type="button" onClick={() => setJsonOpen(false)}>
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+
+      {sections.map((section, index) => (
+        <fieldset className="recap-edit-section" key={section.key}>
+          <legend>Session {index + 1}</legend>
+          <div className="recap-edit-section-head">
+            <label htmlFor={`recap-session-${section.key}`}>Which session is this?</label>
+            <select
+              id={`recap-session-${section.key}`}
+              value={section.sessionId || (section.title ? '__day' : '')}
+              disabled={sending}
+              onChange={(event) => {
+                const value = event.target.value;
+                update(index, value === '__day' ? { sessionId: '' } : { sessionId: value });
+              }}
+            >
+              <option value="">Choose a session…</option>
+              {daySessions.map((session) => (
+                <option key={session.id} value={session.id}>
+                  {sessionTitle(session)}
+                </option>
+              ))}
+              <option value="__day">Not one session — a block about the day</option>
+            </select>
+            {!section.sessionId && (
               <>
-                {' · '}
-                <span className="recap-edit-warn">{parsed.warnings.length} to check</span>
+                <label htmlFor={`recap-title-${section.key}`}>Block title</label>
+                <input
+                  id={`recap-title-${section.key}`}
+                  type="text"
+                  placeholder="Across the day"
+                  readOnly={sending}
+                  value={section.title}
+                  onChange={(event) => update(index, { title: event.target.value })}
+                />
               </>
             )}
-          </output>
-        ) : (
-          <output className="recap-edit-warn">{parsed.error}</output>
-        )}
-      </div>
-      {parsed.ok && parsed.warnings.length > 0 && (
-        <ul className="recap-edit-warnings">
-          {parsed.warnings.map((warning) => (
-            <li key={warning}>{warning}</li>
+            <div className="recap-edit-section-tools">
+              <button type="button" onClick={() => moveSection(index, -1)} disabled={index === 0 || sending} aria-label="Move this section up">
+                ↑
+              </button>
+              <button type="button" onClick={() => moveSection(index, 1)} disabled={index === sections.length - 1 || sending} aria-label="Move this section down">
+                ↓
+              </button>
+              <button
+                type="button"
+                disabled={sending || sections.length === 1}
+                aria-label="Remove this section"
+                onClick={() => setSections((list) => list.filter((_, i) => i !== index))}
+              >
+                Remove
+              </button>
+            </div>
+          </div>
+
+          <label htmlFor={`recap-summary-${section.key}`}>What happened</label>
+          <textarea
+            id={`recap-summary-${section.key}`}
+            rows={3}
+            readOnly={sending}
+            value={section.summary}
+            onChange={(event) => update(index, { summary: event.target.value })}
+          />
+
+          <p className="recap-edit-field-label">Decisions</p>
+          {section.decisions.map((line, lineIndex) => (
+            <div className="recap-edit-line" key={line.key}>
+              <textarea
+                rows={2}
+                readOnly={sending}
+                value={line.text}
+                aria-label={`Decision ${lineIndex + 1}`}
+                onChange={(event) =>
+                  update(index, {
+                    decisions: section.decisions.map((d, i) =>
+                      i === lineIndex ? { ...d, text: event.target.value } : d,
+                    ),
+                  })
+                }
+              />
+              <button
+                type="button"
+                aria-label={`Remove decision ${lineIndex + 1}`}
+                disabled={sending}
+                onClick={() =>
+                  update(index, {
+                    decisions: section.decisions.filter((_, i) => i !== lineIndex),
+                  })
+                }
+              >
+                ✕
+              </button>
+            </div>
           ))}
-        </ul>
-      )}
-      {stored && (
-        <p className="recap-edit-ids">
-          Lines that stay word-for-word the same keep their id, so this
-          morning&rsquo;s flags still point at them. A changed line takes a new
-          number; a deleted line&rsquo;s number is never reused.
-        </p>
-      )}
+          <button
+            type="button"
+            className="recap-edit-add"
+            disabled={sending}
+            onClick={() => update(index, { decisions: [...section.decisions, { key: nextLineKey(), text: '' }] })}
+          >
+            + Add a decision
+          </button>
+
+          <p className="recap-edit-field-label">Open questions</p>
+          {section.questions.map((line, lineIndex) => (
+            <div className="recap-edit-line" key={line.key}>
+              <textarea
+                rows={2}
+                readOnly={sending}
+                value={line.text}
+                aria-label={`Open question ${lineIndex + 1}`}
+                onChange={(event) =>
+                  update(index, {
+                    questions: section.questions.map((q, i) =>
+                      i === lineIndex ? { ...q, text: event.target.value } : q,
+                    ),
+                  })
+                }
+              />
+              <button
+                type="button"
+                aria-label={`Remove open question ${lineIndex + 1}`}
+                disabled={sending}
+                onClick={() =>
+                  update(index, {
+                    questions: section.questions.filter((_, i) => i !== lineIndex),
+                  })
+                }
+              >
+                ✕
+              </button>
+            </div>
+          ))}
+          <button
+            type="button"
+            className="recap-edit-add"
+            disabled={sending}
+            onClick={() => update(index, { questions: [...section.questions, { key: nextLineKey(), text: '' }] })}
+          >
+            + Add an open question
+          </button>
+
+          <p className="recap-edit-field-label">Actions</p>
+          {section.actions.map((line, lineIndex) => (
+            <div className="recap-edit-line recap-edit-action" key={line.key}>
+              <input
+                type="text"
+                placeholder="Owner (e.g. LAPIG)"
+                readOnly={sending}
+                value={line.owner}
+                aria-label={`Owner of action ${lineIndex + 1}`}
+                onChange={(event) =>
+                  update(index, {
+                    actions: section.actions.map((a, i) =>
+                      i === lineIndex ? { ...a, owner: event.target.value } : a,
+                    ),
+                  })
+                }
+              />
+              <textarea
+                rows={2}
+                placeholder="What they will do"
+                readOnly={sending}
+                value={line.text}
+                aria-label={`Action ${lineIndex + 1}`}
+                onChange={(event) =>
+                  update(index, {
+                    actions: section.actions.map((a, i) =>
+                      i === lineIndex ? { ...a, text: event.target.value } : a,
+                    ),
+                  })
+                }
+              />
+              <button
+                type="button"
+                aria-label={`Remove action ${lineIndex + 1}`}
+                disabled={sending}
+                onClick={() =>
+                  update(index, {
+                    actions: section.actions.filter((_, i) => i !== lineIndex),
+                  })
+                }
+              >
+                ✕
+              </button>
+            </div>
+          ))}
+          <button
+            type="button"
+            className="recap-edit-add"
+            disabled={sending}
+            onClick={() =>
+              update(index, {
+                actions: [...section.actions, { key: nextLineKey(), owner: '', text: '' }],
+              })
+            }
+          >
+            + Add an action
+          </button>
+        </fieldset>
+      ))}
+
+      <button
+        type="button"
+        className="recap-edit-add recap-edit-add-section"
+        disabled={sending}
+        onClick={() => setSections((list) => [...list, emptySection()])}
+      >
+        + Add a session
+      </button>
+
       <div className="recap-edit-grid">
         {stored && (
           <>
@@ -502,7 +798,7 @@ function RecapEditor({
         />
       </div>
       <div className="recap-form-actions">
-        <button type="submit" disabled={sending || !parsed.ok}>
+        <button type="submit" disabled={sending}>
           {sending && <LoaderCircle className="calendar-spinner" aria-hidden="true" />}
           {sending ? 'Publishing…' : 'Publish'}
         </button>

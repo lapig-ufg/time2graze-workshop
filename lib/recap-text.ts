@@ -83,17 +83,16 @@ function serialOf(id: string): number | null {
  * `previous` is the currently published recap, when there is one: its ids
  * are preserved for lines that survive the revision.
  */
-export function parseRecapText(
-  day: number,
-  text: string,
-  previous?: DayRecap | null,
-): ParseResult {
-  const warnings: string[] = [];
-  const sections: RecapSection[] = [];
-
-  // Ids from the published version, so a surviving line keeps its id and a
-  // serial is never reused: `map` is text -> id, `retired` is every serial
-  // that has ever existed on this day.
+/**
+ * Assigns the item ids for a day's recap under the rules of
+ * `docs/daily-recap.md`: serials only grow, a line that still reads the same
+ * as the published version keeps its id, and a serial is never reused.
+ *
+ * Both the text importer and the structured editor build their recap
+ * through this one function, so a line's id means the same thing however
+ * the recap was edited.
+ */
+export function idAssigner(day: number, previous?: DayRecap | null) {
   const map = new Map<string, string>();
   let highest = 0;
   for (const section of previous?.sections ?? []) {
@@ -117,7 +116,7 @@ export function parseRecapText(
     serial += 1;
     return `d${day}-r${serial}`;
   };
-  const idFor = (content: string): string => {
+  return function idFor(content: string): string {
     const existing = map.get(content);
     if (existing) {
       // A reused id must not be handed to two lines in one save.
@@ -126,6 +125,19 @@ export function parseRecapText(
     }
     return nextId();
   };
+}
+
+export function parseRecapText(
+  day: number,
+  text: string,
+  previous?: DayRecap | null,
+): ParseResult {
+  const warnings: string[] = [];
+  const sections: RecapSection[] = [];
+
+  // Ids from the published version, so a surviving line keeps its id and a
+  // serial is never reused.
+  const idFor = idAssigner(day, previous);
 
   let section: RecapSection | null = null;
   let label: Field | null = null;

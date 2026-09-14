@@ -1111,22 +1111,26 @@ commit in the loop. Seven things hold it together:
 - **`published` is stamped by the server on the first save and never
   rewritten; every later save stamps `revised`.** The editor never writes
   stamps, which ends back-dating by construction.
-- **The editor takes the corrected draft as text, not JSON.** The first
-  version of the live editor demanded JSON and the organiser's first real save
-  failed on it — the draft comes out of NotebookLM in the prompt's own shape
-  (`## Title [session id]`, WHAT HAPPENED / DECISIONS / OPEN QUESTIONS /
-  ACTIONS), and the room corrects text, not data structures.
-  `lib/recap-text.ts` is the conversion: it parses that shape, assigns the
-  `d<day>-r<serial>` ids in document order, and on a revision keeps the id of
-  every line that survives word-for-word (a changed line takes a fresh
-  serial; a deleted serial is never reused), so flags raised the evening
-  before keep pointing at the lines they were raised against. It also
-  warns instead of guessing: a session id that names no session, an action
-  with no `[Owner]`. `scripts/recap-text.test.mjs` guards the id rules; the
+- **The editor is a structured form, not a markup language.** The first
+  version demanded JSON; the second took the NotebookLM text but still made
+  the organiser *write* that format by hand in a box. Both missed the point:
+  the room corrects prose, on the evening of a long day. The editor now shows
+  one card per session — session picked from the day's programme by title,
+  never typed as an id — with plain fields for what happened / decisions /
+  open questions / actions and add/remove buttons. **Paste the NotebookLM
+  draft** fills the whole form from the corrected text in one click
+  (`parseRecapText` in `lib/recap-text.ts`, which warns instead of guessing:
+  a session id that names no session, an action with no `[Owner]`); **JSON**
+  stays as the last resort for surgical fixes. Ids are invisible by design.
+  `idAssigner` in the same module assigns them at save time, and on a
+  revision keeps the id of every line that survives word-for-word (a changed
+  line takes a fresh serial; a deleted serial is never reused), so flags
+  raised the evening before keep pointing at the lines they were raised
+  against. `scripts/recap-text.test.mjs` guards the id rules; the
   VM-context arrays from the fixture need value comparison, not
-  `deepStrictEqual`. **Edit as JSON** stays as a toggle for surgical fixes.
-  `scripts/recap.test.mjs` no longer sees live recaps — its rules apply by
-  hand in the editor, and the test still guards the repository copy.
+  `deepStrictEqual`. `scripts/recap.test.mjs` no longer sees live recaps —
+  its rules apply by hand in the editor, and the test still guards the
+  repository copy.
 
 **A day with no recap still renders its block**, saying one is due. That is how
 a reader learns the record exists. Never write a recap for a day that has not

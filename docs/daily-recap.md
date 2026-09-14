@@ -136,26 +136,26 @@ Run the summary session from the draft. Mark the corrections people call out.
 
 ### Publishing
 
-Published **live, on the page** — no commit, no build:
+Published **live, on the page** — no commit, no build, and no markup to
+write:
 
 1. On `/programme/`, open the day, find **Day N summary** and press
    **Publish** (or **Edit**, once a recap is up).
-2. Paste the corrected draft **as text, straight from NotebookLM** — the
-   editor takes the same shape the prompt asks for: `## Title [session id]`,
-   then WHAT HAPPENED / DECISIONS / OPEN QUESTIONS / ACTIONS. The page reads
-   it as you type and shows the section and line count plus anything that
-   needs checking (a session id that names no session, an action with no
-   `[Owner]`).
+2. Press **Paste the NotebookLM draft**, paste it in the box, press **Fill
+   the form** — the whole summary appears as cards, one per session, with
+   every line in its field. Then edit like any form: change text, add or
+   remove a line, add a session, pick which session a card belongs to from
+   the day's programme by title. No ids, no `##`, no JSON.
 3. Type the edit password and press **Publish**. Everyone loading the page
    from that moment sees it, including the home page's "Today's summary is
    published" band.
 
-**Item ids are assigned for you** (`d<day>-r1, r2…` in document order) and a
-revision keeps the id of every line that stays word-for-word the same, so
-flags raised the evening before keep pointing at the lines they were raised
-against. A changed line takes a new number; a deleted line's number is never
-reused. Never hand-write ids in the text — the JSON toggle (below) is the
-only place to see or fix one.
+**Item ids are assigned invisibly for you** and a revision keeps the id of
+every line that stays word-for-word the same, so flags raised the evening
+before keep pointing at the lines they were raised against. A changed line
+takes a new number; a deleted line's number is never reused. You never see
+an id unless you open **JSON**, which is there only for surgical fixes —
+move one line, fix one character.
 
 The first save stamps `published` itself; every later save stamps `revised`
 and keeps the original `published`. The site sets those — do not write them.
@@ -165,12 +165,10 @@ Script editor under *Project Settings → Script properties*. It is never
 written into this repository, which is public. With no password set, the
 Publish button does not appear at all. After 40 wrong passwords in a day,
 editing locks until the next day. If two organisers save the same day at
-once, the second save is refused and loads the first person's text, so
-nothing is silently overwritten. **Unpublish** takes the day back to "to be
-published". Publishing closes after 21 September 2026, with the corrections.
-
-**Edit as JSON** switches the same box to the raw `sections` JSON — for
-moving one line or fixing one character, not for writing from scratch.
+once, the second save is refused and loads the first person's version into
+the form, so nothing is silently overwritten. **Unpublish** takes the day
+back to "to be published". Publishing closes after 21 September 2026, with
+the corrections.
 
 ### The next morning
 
@@ -179,8 +177,8 @@ Open the corrections spreadsheet. For each row that is not yet marked
 
 - Read the item id (`d3-r7`) and find that line in the recap on `/programme/`.
 - Check it against the audio. The reader may be wrong; the recording decides.
-- Fix the text **in place, keeping the id** — edit the line's wording in the
-  text box; the id follows automatically as long as nothing else changes it.
+- Press **Edit**, change the line's wording in its field, and save — the id
+  follows automatically.
 - Mark the row Applied.
 
 If the revision resolves reader-raised points, fill **Reader corrections
