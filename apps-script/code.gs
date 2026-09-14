@@ -8,9 +8,9 @@
  * so every programme change pushed to the site reaches subscribers on its own.
  *
  * The same web app also receives reader corrections to the daily recaps
- * (flags.gs), split-session choices (tracks.gs) and the live recap prompts
- * (prompts.gs). Every endpoint here is anonymous and capped; editing a prompt
- * additionally needs a password.
+ * (flags.gs), split-session choices (tracks.gs) and the published recaps
+ * themselves (recaps.gs). Every endpoint here is anonymous and capped;
+ * publishing a recap additionally needs a password.
  */
 
 const CALENDAR_NAME = 'Time2Graze Brazil Workshop';
@@ -71,7 +71,7 @@ function listWorkshopEventsByCalendar() {
 
 /**
  * Web-app entry point. `action` is `share` (default), `flag`, `choose`,
- * `prompts` or `ping`.
+ * `recaps` or `ping`.
  */
 function doGet(e) {
   const action = String(e.parameter.action || 'share').toLowerCase();
@@ -90,8 +90,8 @@ function doGet(e) {
       payload = recordFlag(e.parameter);
     } else if (action === 'choose') {
       payload = recordChoice(e.parameter);
-    } else if (action === 'prompts') {
-      payload = getPrompts();
+    } else if (action === 'recaps') {
+      payload = getRecaps();
     } else {
       payload = { status: 'error', message: 'Unknown action.' };
     }
@@ -111,17 +111,18 @@ function doGet(e) {
 }
 
 /**
- * POST entry point, for the one write too large or too private for a URL:
- * saving a recap prompt. The body is JSON sent as text/plain, which keeps the
- * request "simple" so the browser sends no preflight Apps Script cannot answer.
+ * POST entry point, for writes too large or too private for a URL:
+ * publishing a day's recap. The body is JSON sent as text/plain, which keeps
+ * the request "simple" so the browser sends no preflight Apps Script cannot
+ * answer.
  */
 function doPost(e) {
   let payload;
   try {
     const body = JSON.parse((e.postData && e.postData.contents) || '{}');
     payload =
-      body.action === 'prompt'
-        ? savePrompt(body)
+      body.action === 'recap'
+        ? saveRecap(body)
         : { status: 'error', message: 'Unknown action.' };
   } catch (err) {
     payload = { status: 'error', message: String(err) };

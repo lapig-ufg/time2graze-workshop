@@ -18,10 +18,10 @@ Day 1; after that, [Each day](#each-day) is the whole procedure.
    sources. That draft is what runs the session in the room.
 4. The room corrects it out loud. **That corrected version is what gets
    published**, after the session — not the draft that went in.
-5. It goes on the site the same evening. Readers flag lines they think are
-   wrong; those land in a private spreadsheet.
-6. The next morning, before 08:30, the flagged lines are fixed and the recap is
-   republished with `revised` set.
+5. It goes on the site the same evening, published live from `/programme/`.
+   Readers flag lines they think are wrong; those land in a private spreadsheet.
+6. The next morning, before 08:30, the flagged lines are fixed through the
+   same editor and the recap is saved again.
 
 A day's recap therefore *settles* on the following morning. Say so in the room
 on Day 1, or the first correction will read like a failure.
@@ -107,15 +107,19 @@ sharing down with it.
 ### Producing the draft
 
 In NotebookLM, with the day's sources selected and nothing from other days,
-paste **that day's prompt**. It is on `/programme/`, under the day's summary:
-open *NotebookLM prompt for Day N* and press **Copy prompt**.
+paste **that day's prompt**. The prompts live in
+[`data/recap-prompts.ts`](../data/recap-prompts.ts) — they are the organiser's
+drafting tool and never render on the site. To get one as text, log
+`RECAP_PROMPTS[<day>]` from a scratch file, or ask the assistant:
+
+> Print the Day 3 NotebookLM prompt from data/recap-prompts.ts.
 
 There is one prompt per day, because each day asks for different things — the
 country presentations on Day 3 all use the same headings so they can be
 compared, Day 4's roadmap separates what was agreed from what was only
 proposed, Day 5 works from notes because the audio is outdoors. The session
 list in each prompt is read from `data/agenda.ts`, so it never names a session
-by an old title.
+by an old title. If the day's sessions changed, edit the `FOCUS` map there.
 
 **Every prompt asks for content, not speakers.** A room recording cannot say
 reliably who said a sentence, and a model asked to will guess. The prompt names
@@ -123,21 +127,6 @@ presenters only from the agenda, attributes content to institutions and
 countries where it belongs to them, and takes action owners only from what the
 note-takers wrote — `[Owner not recorded]` otherwise. That is why the
 note-takers' split below matters.
-
-**Editing a prompt.** Press **Edit** on the page, change the text, type the
-edit password and **Save for everyone**. The change is live at once, for
-everyone, with no commit: the edited text is kept by the Apps Script
-(`apps-script/prompts.gs`), and the site shows the original from
-`data/recap-prompts.ts` only when no edit exists or the script cannot be
-reached. **Restore original** and save puts a day back on the repository
-version. If two people edit the same day, the second save is refused and shows
-the first person's text rather than overwriting it.
-
-The password is the script property `PROMPT_EDIT_PASSWORD`, set in the Apps
-Script editor under *Project Settings → Script properties*. It is never written
-into this repository, which is public. With no password set, the Edit button
-does not appear. After 40 wrong passwords in a day, editing locks until the
-next day. Editing closes after 21 September 2026, with the corrections.
 
 Read the result. It is a draft, not a record.
 
@@ -147,13 +136,28 @@ Run the summary session from the draft. Mark the corrections people call out.
 
 ### Publishing
 
-Paste the corrected text into Claude Code with one sentence:
+Published **live, on the page** — no commit, no build:
 
-> Publish the Day 3 recap. Here is the corrected text: …
+1. On `/programme/`, open the day, find **Day N summary** and press
+   **Publish** (or **Edit**, once a recap is up).
+2. Paste the corrected draft as JSON — the shape of a `DayRecap` in
+   [The contract](#the-contract): `sections`, each with `sessionId` or `title`,
+   each line an item with its id `d<day>-r<n>`.
+3. Type the edit password and press **Publish**. Everyone loading the page
+   from that moment sees it, including the home page's "Today's summary is
+   published" band.
 
-It converts the text to [`data/recaps.ts`](../data/recaps.ts), runs
-`node --test scripts/recap.test.mjs`, and commits. GitHub Actions republishes in
-about two minutes.
+The first save stamps `published` itself; every later save stamps `revised`
+and keeps the original `published`. The site sets those — do not write them.
+
+The password is the script property `RECAP_EDIT_PASSWORD`, set in the Apps
+Script editor under *Project Settings → Script properties*. It is never
+written into this repository, which is public. With no password set, the
+Publish button does not appear at all. After 40 wrong passwords in a day,
+editing locks until the next day. If two organisers save the same day at
+once, the second save is refused and loads the first person's text, so
+nothing is silently overwritten. **Unpublish** takes the day back to "to be
+published". Publishing closes after 21 September 2026, with the corrections.
 
 The conversion rules are in [The contract](#the-contract) below, and they are
 not negotiable per day — the ids depend on them.
@@ -163,24 +167,15 @@ not negotiable per day — the ids depend on them.
 Open the corrections spreadsheet. For each row that is not yet marked
 **Applied**:
 
-- Read the item id (`d3-r7`) and find that line in `data/recaps.ts`.
+- Read the item id (`d3-r7`) and find that line in the recap on `/programme/`.
 - Check it against the audio. The reader may be wrong; the recording decides.
-- Fix the text **in place, keeping the id**.
+- Fix the text **in place, keeping the id**, through the same **Edit** button.
 - Mark the row Applied.
 
-Then bump the recap's header:
-
-```ts
-published: '2026-09-16T18:12',
-revised: '2026-09-17T07:50',
-corrections: 3,
-```
-
-`corrections` counts the reader-raised points the revision resolved, not the
-number of edits. It is rendered, so it has to be true.
-
-Push. Readers see `Revised 17 September, 07:50 · 3 reader corrections applied`
-under the summary — which is the only reason anyone flags a second line.
+If the revision resolves reader-raised points, set `corrections` in the JSON
+to the count before saving: it renders as "N reader corrections applied",
+which is the only reason anyone flags a second line. It counts resolved
+points, not edits — it is rendered, so it has to be true.
 
 ---
 
@@ -209,10 +204,9 @@ the other, never neither.
 `questions` and `actions` are lists. Every action carries an `owner`. Omit an
 empty field rather than writing an empty array.
 
-**Stamps** are `YYYY-MM-DDTHH:MM` in Goiânia time, no timezone suffix —
-the site formats them without touching a timezone, on purpose. `published` is
-the first publication and never changes afterwards. `revised` is the latest
-revision.
+**Stamps** are set by the site when you save: `published` at the first
+publication and never changed afterwards, `revised` on every later save. Never
+write them by hand and never back-date.
 
 **English**, and the register of the rest of the site: institutional, factual,
 no promotional phrasing. Names as the agenda writes them.
@@ -220,9 +214,10 @@ no promotional phrasing. Names as the agenda writes them.
 **Never invent.** If the corrected text is silent on a session, that session
 gets no block. A thin recap is honest; a padded one is not.
 
-`scripts/recap.test.mjs` enforces the id format, uniqueness, the day match, the
-session references, action owners and the stamp ordering. Run it before
-committing. It will not catch a wrong fact — only you and the room can.
+`scripts/recap.test.mjs` still guards the repository copy of the contract — the
+id format, uniqueness, the day match, the session references and action owners.
+Live recaps do not pass through it, so the same rules apply by hand in the
+editor. The test will not catch a wrong fact — only you and the room can.
 
 ---
 
@@ -242,13 +237,19 @@ was deployed before `setup()` was run, so the web app is asking for scopes you
 have not granted and every action fails, not just flagging. Run `setup()` in
 the editor and accept the consent screen.
 
-**A reader reports the flag button does nothing.** After 21 September the
-window is closed by design, in both the site and the script.
+**A save answers `conflict`.** Someone else published this day while you were
+editing. Their version is loaded into the editor; copy your changes into it
+and save again. Nobody's text is ever silently overwritten.
 
-**The build fails after a recap edit.** Almost always the test: a duplicated id
-or a `sessionId` that does not exist. Read the assertion message; it names the
-id.
+**There is no time to publish tonight.** Publish tomorrow; the stamp will say
+so, and that is fine. A recap stamped with a time it did not go up is not —
+the site sets the stamps, so this cannot happen by accident any more.
 
-**There is no time to publish tonight.** Publish tomorrow with the real
-`published` stamp. A late recap is fine. A recap stamped with a time it did not
-go up is not.
+**The build fails after a recap edit.** Live recaps never touch the build; if
+the build fails, it is the repository copy — a duplicated id or a `sessionId`
+that does not exist. Read the assertion message; it names the id.
+
+**The Publish button does not appear.** `RECAP_EDIT_PASSWORD` is not set as a
+script property, the workshop window has closed, or the endpoint is
+unreachable and the site fell back to the repository copy. Check
+`?action=recaps` on the `/exec` URL answers `{"status":"ok",…}`.

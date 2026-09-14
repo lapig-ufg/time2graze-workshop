@@ -4,11 +4,11 @@ import type { Day, Session } from './types';
 /**
  * The NotebookLM prompt that drafts each day's recap, one per day.
  *
- * These are the **original** versions, kept in the repository. The organisers
- * edit the live copy on `/programme/` during the week (password-protected, see
- * `apps-script/prompts.gs`); the site shows the live copy when the endpoint
- * answers and falls back to these when it does not, so a prompt is always on
- * the page.
+ * These never render on the site: the prompt is the organiser's drafting
+ * tool. To use one, log the day's text (or read it from this module in a
+ * scratch file) and paste it into NotebookLM; the draft that comes out is
+ * reviewed and then published live on `/programme/` — see
+ * `docs/daily-recap.md`, which is the whole procedure.
  *
  * The prompt is written for content, not for speakers. A recording of a room
  * cannot say reliably who said a sentence, and a recap that tries will guess.
@@ -151,13 +151,7 @@ RULES
 - No preamble, no conclusion, no praise of the day or of the presenters. This is a record, not a report of how the day went.`;
 }
 
-/** The original prompt for every day, keyed by `Day.index`. */
+/** The prompt for every day, keyed by `Day.index`. Never rendered anywhere. */
 export const RECAP_PROMPTS: Record<number, string> = Object.fromEntries(
   AGENDA.map((day) => [day.index, promptFor(day)]),
 );
-
-/** Live edits close with the recap corrections. `PROMPT_CLOSES` in the script enforces it. */
-export const RECAP_PROMPT_EDIT_CLOSES = '2026-09-21';
-
-/** A prompt longer than this is refused by the script too. */
-export const RECAP_PROMPT_MAX = 20000;

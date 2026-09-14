@@ -615,8 +615,7 @@ components/friday-visit.tsx  Cidade de Goiás as one block: the coach, then the 
 components/orientation.tsx   Travel part two: Goiânia's context and the free-time map.
 components/free-time-map.tsx Embedded reference Google My Maps for free time.
 components/whatsapp-mark.tsx The WhatsApp glyph, inlined. lucide carries no brand marks.
-components/recap.tsx         The day's published record, and the control that flags a line as wrong.
-components/recap-prompt.tsx  The day's NotebookLM prompt, copied from and edited on the page.
+components/recap.tsx         The day's published record, the control that flags a line as wrong, and the organiser's live editor.
 components/add-to-calendar.tsx  .ics downloads, subscription URL and the share form.
 hooks/use-tab-keys.ts        Arrow-key movement for the day tablist. Horizontal only.
 data/agenda.ts               The five days, sessions, tracks and materials.
@@ -625,7 +624,7 @@ data/venues.ts               The single venue registry: names, pins, addresses.
 data/practical.ts            Accommodation, contracted shuttle and selected guide links.
 data/contact.ts              The participants' WhatsApp group: the one link that leaves the site.
 data/recaps.ts               The daily recaps, one entry per day, written the evening of that day.
-data/recap-prompts.ts        The original NotebookLM prompt per day. The live copy is in the Apps Script.
+data/recap-prompts.ts        The NotebookLM prompt per day. The organiser's drafting tool; never rendered.
 data/geography.ts            The two towns: figures, chronologies, map markers, drawn geometry.
 data/institutions.ts         The marks cleared for display, with their artwork sizes.
 data/navigation.ts           The four destinations. The header and the 404 share it.
@@ -636,8 +635,8 @@ lib/deep-link.ts             Day/session hash resolution and scrolling.
 lib/materials.ts             Materials view derived from the agenda.
 lib/recap.ts                 Recap lookup, section headings and stamps.
 lib/recap-feedback.ts        A reader's correction, sent to the Apps Script.
+lib/recap-live.ts           Reads and publishes the live recaps: a GET and a POST, not JSONP.
 lib/apps-script.ts           The web app URL and the JSONP transport both endpoints share.
-lib/recap-prompt.ts          Reads and saves the live prompts: a GET and a POST, not JSONP.
 lib/now.ts                   Goiânia clock and Today/Now/Next rules.
 lib/places.ts                Map embed, map link and ride link, from coordinates.
 lib/schedule.ts              Time, duration and programme-axis helpers.
@@ -650,7 +649,7 @@ research/logos/              Logo provenance and previous-site references.
 research/venues.md           Where every address, pin and photo licence came from.
 research/geography.md        Sources for every figure in that section, and the map licences.
 research/build-maps.py       Regenerates the two map outlines. Not part of the build.
-apps-script/                clasp project: live calendar sharing, daily .ics sync, recap corrections.
+apps-script/                clasp project: live calendar sharing, daily .ics sync, recap corrections, live recaps.
 docs/daily-recap.md         How a day gets summarised, published and corrected. The nightly procedure.
 lib/calendar-sharing.ts     Calendar access request to the Apps Script web app.
 ```
@@ -1078,35 +1077,49 @@ courtesy so a reader is not offered a control that would be refused; the script
 is what actually enforces it. A public write endpoint left open on a site
 nobody is watching any more is the thing being avoided.
 
-**The prompt that drafts each recap is on the page and edited live**, one
-per day, under the recap. Decided 14 September 2026: the organisers wanted to
-change the prompts during the week without a commit and without a suggestion
-round, behind a simple password. Four things hold it together:
+**Recaps are published and edited live, on the page.** Decided 14 September
+2026, replacing both the same-day prompt-editing feature and the older
+publish-by-commit procedure: the summary is generated the same day, and the
+organisers publish it straight from `/programme/`, behind a password, with no
+commit in the loop. Seven things hold it together:
 
-- **The originals stay in `data/recap-prompts.ts`** and the page falls back to
-  them whenever the script has no edit or cannot be reached, so a prompt is
-  always on the page. The session list inside each prompt is built from the
-  agenda; only the per-session focus is hand-written.
-- **The prompts ask for content, not speakers.** Do not add speaker
-  attribution back: a recording cannot support it, and the recap contract's
-  action owners come from the note-takers.
-- **It is not JSONP.** A prompt is kilobytes and a save carries a password;
-  neither belongs in a URL. Apps Script JSON *is* readable cross-origin when
-  the script answers normally — a `fetch` GET of `?action=ping` was checked
-  from the live site on 14 September 2026 — so reads are a GET and saves a
-  `text/plain` POST to `doPost`, which needs no preflight. The paragraph under
-  [The live Google Calendar](#the-live-google-calendar) saying otherwise
-  describes what was seen before; JSONP stays for the endpoints already built
-  on it.
+- **The prompts never render on the site.** They are the organiser's drafting
+  tool: `data/recap-prompts.ts` holds them, the session list in each is built
+  from the agenda, and the draft they produce is reviewed by a person before
+  anything is published. Do not put them back on a page.
+- **The recap a reader sees is the live copy when one exists**, and the
+  repository fallback (`data/recaps.ts`, currently empty) when it does not —
+  so a day with nothing published still says "to be published". The same
+  shared fetch feeds `DayRecap` and the home page's `NowNext` band.
+- **It is not JSONP.** A recap is kilobytes and publishing carries a password;
+  neither belongs in a URL. Reads are a GET of `?action=recaps` and saves a
+  `text/plain` POST to `doPost`, which needs no preflight. This transport was
+  checked cross-origin from the live site on 14 September 2026; JSONP stays
+  for the endpoints already built on it.
 - **The password is a script property, never in the repository.** Without
-  `PROMPT_EDIT_PASSWORD` the script reports `editable: false` and the page
-  shows no Edit button. Saves carry the `updated` stamp they started from and
-  a stale one is refused as `conflict`, so two editors cannot silently
-  overwrite each other.
+  `RECAP_EDIT_PASSWORD` the script reports `editable: false` and the page shows
+  no Publish button. Saves carry the `updated` stamp they started from and a
+  stale one is refused as `conflict`, so two organisers cannot silently
+  overwrite each other. Wrong passwords are capped per day; publishing closes
+  with the corrections after the workshop, in both the site and the script.
+- **The server sanitises before it stores.** `sanitizeRecap` in
+  `apps-script/recaps.gs` accepts only the fields the site renders, requires
+  the `d<day>-r<n>` id contract on every line (flags depend on it) and caps
+  sizes; a hand-written payload cannot smuggle arbitrary JSON into the
+  properties store.
+- **`published` is stamped by the server on the first save and never
+  rewritten; every later save stamps `revised`.** The editor never writes
+  stamps, which ends back-dating by construction.
+- **The editor is a JSON textarea**, not a form per line: the draft comes out
+  of NotebookLM shaped like the contract, and on the evening of a long day a
+  paste-adjust-save beats re-typing thirty lines. `scripts/recap.test.mjs`
+  no longer sees live recaps — its rules apply by hand in the editor, and the
+  test still guards the repository copy.
 
 **A day with no recap still renders its block**, saying one is due. That is how
 a reader learns the record exists. Never write a recap for a day that has not
-been held, and never back-date `published`.
+been held; with the server stamping `published`, back-dating is no longer
+possible anyway.
 
 ## Waiting on the LAPIG team
 

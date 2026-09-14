@@ -6,7 +6,6 @@ import { FileText, Printer } from 'lucide-react';
 import { AddToCalendar } from '@/components/add-to-calendar';
 import { Programme, ProgrammeForPrint } from '@/components/programme';
 import { DayRecap } from '@/components/recap';
-import { RecapPrompt } from '@/components/recap-prompt';
 import { SplitChoice, SplitNotice } from '@/components/split-choice';
 import { AGENDA } from '@/data/agenda';
 import { useTabKeys } from '@/hooks/use-tab-keys';
@@ -251,8 +250,6 @@ export default function ProgrammePage() {
       <SplitChoice day={day} clock={clock} />
 
       <DayRecap day={day} clock={clock} />
-
-      <RecapPrompt key={`prompt-${activeDay}`} day={day} clock={clock} />
 
       {resources.length > 0 && (
         <details className="programme-resources">

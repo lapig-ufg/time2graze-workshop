@@ -831,7 +831,7 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
   /* The printed programme is all five days; the panel holds one. A recap for
      the open day alone would be a single day's record stapled to a five-day
      agenda, so paper carries the schedule and the recaps stay on screen. */
-  .programme-tools, .programme-resources, .recap, .recap-prompt, .split-choice, .split-notice, .split-todo { display: none !important; }
+  .programme-tools, .programme-resources, .recap, .split-choice, .split-notice, .split-todo { display: none !important; }
   /* The choice itself does print — it is the reader's own agenda — but as
      text, not as a tinted pill. */
   .split-mark { padding: 0; color: #000 !important; background: none !important; }
@@ -997,6 +997,15 @@ a.split-todo:hover { border-color: var(--forest); }
 .recap-form label + textarea, .recap-form label + input { width: 100%; padding: 10px 12px; color: var(--ink); background: var(--surface); border: 1px solid var(--muted); border-radius: var(--radius); font-family: inherit; font-size: var(--t-body-lg); }
 .recap-form textarea { resize: vertical; line-height: 1.5; }
 .recap-form input:read-only, .recap-form textarea:read-only { background: var(--surface-soft); }
+
+/* The organiser's publish/edit control, in the recap head beside the stamp. */
+.recap-edit-toggle { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 12px; color: var(--forest); background: transparent; border: 1px solid var(--line); border-radius: var(--radius); font-size: var(--t-meta); font-weight: 700; cursor: pointer; transition: border-color var(--m-quick) var(--m-ease); }
+.recap-edit-toggle:hover { border-color: var(--forest); }
+.recap-edit-toggle svg { width: 15px; height: 15px; }
+/* The editor sits inside the block, above the sections, and is capped at the
+   same 980px reading width as the lists. */
+.recap-edit-form { max-width: 980px; margin: 0; }
+.recap-edit-json { font-family: ui-monospace, 'Cascadia Mono', Consolas, monospace !important; font-size: var(--t-meta-lg) !important; line-height: 1.6 !important; white-space: pre; overflow-wrap: normal; }
 .recap-form > textarea + label { margin-top: 12px; }
 .recap-form-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
 .recap-form-actions button, .split-actions button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 10px 16px; border-radius: var(--radius); font-size: var(--t-meta-lg); font-weight: 750; cursor: pointer; }
@@ -1010,20 +1019,6 @@ a.split-todo:hover { border-color: var(--forest); }
 .recap-form-status svg, .split-status svg { flex: none; width: 20px; height: 20px; margin-top: 1px; }
 .recap-form-status[data-state='success'], .split-status[data-state='success'] { color: var(--forest-dark); background: var(--accent); border-left: 3px solid var(--forest); }
 .recap-form-status[data-state='error'], .split-status[data-state='error'] { color: var(--warning); background: var(--warning-bg); border-left: 3px solid var(--warning); }
-
-/* The NotebookLM prompt under each day's recap. A disclosure, like the day's
-   materials: organisers open it, participants can pass it by. */
-.recap-prompt { margin-top: 24px; border-block: 1px solid var(--line); }
-.recap-prompt summary { padding: 16px; cursor: pointer; font-size: var(--t-body); font-weight: 700; }
-.recap-prompt summary span { margin-left: 12px; color: var(--muted); font-size: var(--t-meta); font-weight: 500; }
-.recap-prompt-body { padding: 0 16px 16px; }
-.recap-prompt-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
-.recap-prompt-actions button { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 10px 16px; color: var(--forest); background: transparent; border: 1px solid var(--line); border-radius: var(--radius); font-size: var(--t-meta-lg); font-weight: 750; cursor: pointer; transition: border-color var(--m-quick) var(--m-ease); }
-.recap-prompt-actions button:hover { border-color: var(--forest); }
-.recap-prompt-actions button svg { width: 17px; height: 17px; }
-.recap-prompt-text { max-height: 32rem; overflow: auto; margin: 0; padding: 16px; color: var(--ink); background: var(--surface); border: 1px solid var(--line); font-family: var(--font-sans), Arial, sans-serif; font-size: var(--t-meta-lg); line-height: 1.6; white-space: pre-wrap; overflow-wrap: anywhere; }
-.recap-prompt .recap-form { margin: 0; }
-.recap-prompt .recap-prompt-editor { font-size: var(--t-meta-lg); line-height: 1.6; }
 
 /* The evening is when the schedule has nothing left to say and the summary
    does, so the band grows a second row rather than emptying out. */

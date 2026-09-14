@@ -5,6 +5,7 @@ import { AGENDA } from '@/data/agenda';
 import { useWorkshopClock } from '@/hooks/use-workshop-clock';
 import { nextSessionId, stateOf, todayIndex } from '@/lib/now';
 import { recapForDay } from '@/lib/recap';
+import { useLiveRecap } from '@/components/recap';
 import { dayLabel, sessionTitle, timeLabel } from '@/lib/schedule';
 
 /**
@@ -23,13 +24,17 @@ import { dayLabel, sessionTitle, timeLabel } from '@/lib/schedule';
 export function NowNext() {
   const clock = useWorkshopClock();
   const today = todayIndex(AGENDA, clock);
+  // The recap is published live on /programme/; the repository copy is the
+  // fallback for a reader arriving before the fetch answers. The hook runs
+  // before the early return: rules of hooks, and the fetch is shared anyway.
+  const liveRecap = useLiveRecap(today ?? 0);
   if (!clock || today === null) return null;
 
   const day = AGENDA[today];
   const running = day.sessions.find((s) => stateOf(s, clock) === 'running');
   const nextId = nextSessionId(day, clock);
   const session = running ?? day.sessions.find((s) => s.id === nextId);
-  const recap = recapForDay(day.index);
+  const recap = liveRecap?.recap ?? recapForDay(day.index);
   if (!session && !recap) return null;
 
   return (
