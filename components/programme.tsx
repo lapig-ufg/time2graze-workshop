@@ -1,11 +1,12 @@
 'use client';
 
 import { Clock3 } from 'lucide-react';
+import { Fragment } from 'react';
 import { AGENDA } from '@/data/agenda';
 import type { Day, Session, Track } from '@/data/types';
 import { useChoices } from '@/hooks/use-track-choice';
 import { withBasePath } from '@/lib/base-path';
-import { materialAction, publishedMaterials } from '@/lib/materials';
+import { isPdf, materialAction, publishedMaterials } from '@/lib/materials';
 import { type Clock, nextSessionId, stateOf } from '@/lib/now';
 import { choosingOpen, splitAnchor } from '@/lib/split-sessions';
 import {
@@ -140,14 +141,27 @@ function MaterialLinks(
   return (
     <p className="session-files">
       {files.map((m) => (
-        <a
-          key={m.href}
-          className="session-file"
-          href={withBasePath(m.href)}
-          tabIndex={silent ? -1 : undefined}
-        >
-          {materialAction(m)} →
-        </a>
+        <Fragment key={m.href}>
+          <a
+            className="session-file"
+            href={withBasePath(m.href)}
+            target={isPdf(m) ? '_blank' : undefined}
+            rel={isPdf(m) ? 'noopener' : undefined}
+            tabIndex={silent ? -1 : undefined}
+          >
+            {materialAction(m)} →
+          </a>
+          {isPdf(m) && (
+            <a
+              className="session-file"
+              href={withBasePath(m.href)}
+              download
+              tabIndex={silent ? -1 : undefined}
+            >
+              Download PDF ↓
+            </a>
+          )}
+        </Fragment>
       ))}
     </p>
   );

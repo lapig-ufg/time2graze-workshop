@@ -511,7 +511,7 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
   .day-tabs [role='tab'] { min-width: 0; padding: 12px 3px; text-align: center; }
   .resource-group { grid-template-columns: 1fr; gap: 26px; }
   .resource-item { grid-template-columns: 26px 1fr; }
-  .resource-item em, .resource-item .resource-file { grid-column: 2; justify-self: start; }
+  .resource-item em, .resource-item .resource-file, .resource-item .resource-actions { grid-column: 2; justify-self: start; }
   .document-placeholders { grid-template-columns: 1fr; }
   .document-placeholders article { border-top: 1px solid var(--line); border-left: 0; }
   .document-placeholders article:first-child { border-top: 0; }
@@ -754,6 +754,7 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
 /* Each material points at the session that produces it. */
 .resource-session { font-size: var(--t-body); font-weight: 700; line-height: 1.4; text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 3px; transition: text-decoration-color var(--m-quick) var(--m-ease); }
 .resource-session:hover { text-decoration-color: var(--forest); }
+.resource-actions { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; }
 .resource-file { padding: 5px 12px; color: #fff; background: var(--forest); border-radius: 99px; font-size: var(--t-label); font-weight: 800; letter-spacing: .05em; text-transform: uppercase; white-space: nowrap; }
 
 /* --- Scroll entrances -------------------------------------------------------

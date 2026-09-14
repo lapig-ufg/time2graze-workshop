@@ -87,9 +87,20 @@ export function materialDetail(entry: MaterialEntry) {
  */
 export function materialAction(material: Material) {
   const opens =
-    material.format === 'HTML' || /^https?:\/\//.test(material.href ?? '');
+    material.format === 'HTML' ||
+    isPdf(material) ||
+    /^https?:\/\//.test(material.href ?? '');
   const verb = opens ? 'Open' : 'Download';
   return `${verb} ${KIND_LABEL[material.kind].toLowerCase()}`;
+}
+
+/**
+ * A PDF hosted on the site opens in the browser's own viewer, and also carries
+ * a second, explicit Download link: reading it in the room and keeping a copy
+ * are both expected.
+ */
+export function isPdf(material: Material) {
+  return material.format === 'PDF' && !/^https?:\/\//.test(material.href ?? '');
 }
 
 /** The files a session or track has actually published, in declared order. */

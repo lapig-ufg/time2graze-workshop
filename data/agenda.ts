@@ -139,6 +139,16 @@ export const AGENDA: Day[] = [
             href: '/files/field-protocol-alignment/index.html',
             format: 'HTML',
           },
+          /* Teles et al. (2025), Land Degradation & Development 36:6539–6548,
+             doi:10.1002/ldr.70089 — open access under CC BY, so it is hosted
+             here as published. Supplied 14 September 2026. */
+          {
+            kind: 'document',
+            title:
+              'Pasture Degradation Estimates Through Field Data in the State of Goiás, Brazil (Teles et al., 2025)',
+            href: '/files/field-protocol-alignment/teles-2025-pasture-degradation-goias.pdf',
+            format: 'PDF',
+          },
         ],
       },
       {

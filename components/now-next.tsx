@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { AGENDA } from '@/data/agenda';
 import { useWorkshopClock } from '@/hooks/use-workshop-clock';
 import { withBasePath } from '@/lib/base-path';
-import { materialAction, publishedMaterials } from '@/lib/materials';
+import { isPdf, materialAction, publishedMaterials } from '@/lib/materials';
 import { nextSessionId, stateOf, todayIndex } from '@/lib/now';
 import { recapForDay } from '@/lib/recap';
 import { useLiveRecap } from '@/components/recap';
@@ -60,7 +60,11 @@ export function NowNext() {
       {files.map(({ item, m }) => (
         <p className="now-band-item now-band-file" key={m.href}>
           <span className="tl-mark tl-mark--next">Material</span>
-          <a href={withBasePath(m.href)}>
+          <a
+            href={withBasePath(m.href)}
+            target={isPdf(m) ? '_blank' : undefined}
+            rel={isPdf(m) ? 'noopener' : undefined}
+          >
             {item.title} · {materialAction(m)}
           </a>
         </p>

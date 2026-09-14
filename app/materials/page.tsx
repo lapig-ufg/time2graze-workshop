@@ -10,6 +10,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import type { MaterialKind } from '@/data/types';
 import {
+  isPdf,
   materialAction,
   materialDetail,
   materialsByDay,
@@ -118,12 +119,25 @@ export default function MaterialsPage() {
                       )}
                     </span>
                     {entry.material.href ? (
-                      <a
-                        className="resource-file"
-                        href={withBasePath(entry.material.href)}
-                      >
-                        {materialAction(entry.material)}
-                      </a>
+                      <span className="resource-actions">
+                        <a
+                          className="resource-file"
+                          href={withBasePath(entry.material.href)}
+                          target={isPdf(entry.material) ? '_blank' : undefined}
+                          rel={isPdf(entry.material) ? 'noopener' : undefined}
+                        >
+                          {materialAction(entry.material)}
+                        </a>
+                        {isPdf(entry.material) && (
+                          <a
+                            className="resource-file"
+                            href={withBasePath(entry.material.href)}
+                            download
+                          >
+                            Download PDF
+                          </a>
+                        )}
+                      </span>
                     ) : (
                       <em>To be published</em>
                     )}
