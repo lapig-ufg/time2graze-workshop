@@ -2339,3 +2339,5 @@ The live model adds `document?: string` while retaining `sections` for backwards
 ## Daily summaries move to Google Docs — 14 September 2026
 
 The organiser replaced the in-site rich-text editor with **one Google Doc per day**, shared "Anyone with the link → Commenter", with editors named by email. The site and the repository are public, so link access must never be Editor. The Doc is the official text, and the site displays only accepted text, with a "Comment or suggest edits" link. `apps-script/recap-docs.gs` exports each doc anonymously and caches it for 60 s. `lib/recap-doc.ts` converts the export into the summary's own typography. The Tiptap editor, `components/recap-editor.tsx`, and the `@tiptap/*` and `mammoth` dependencies were removed. Do not restore an in-site editor or a password workflow. See `docs/daily-recap.md` for the doc links and the procedure.
+
+The Ask assistant reads the same summaries live and in full. The worker and the panel both turn the Apps Script response into corpus entries with `lib/recap-corpus.ts`, so the ids the model cites resolve in the panel. Do not move that conversion into only one of them.

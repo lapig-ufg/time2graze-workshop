@@ -14,6 +14,8 @@
  */
 import { withBasePath } from '@/lib/base-path';
 import type { VenueId } from '@/data/venues';
+import { withRecaps } from '@/lib/recap-corpus';
+import { loadRecaps, recapLiveEnabled, type RecapsState } from '@/lib/recap-live';
 
 /**
  * The deployed Cloudflare Worker — see `docs/assistant-setup.md`, whose last
@@ -75,14 +77,29 @@ export type Corpus = {
 export type ChatMessage = { role: 'user' | 'assistant'; content: string };
 
 let pending: Promise<Corpus> | null = null;
+let recaps: { at: number; loaded: Promise<RecapsState | null> } | null = null;
 
-/** Fetched once per page load. It is 30 kB, and every answer reads from it. */
-export function loadCorpus(): Promise<Corpus> {
+/** Seconds the live summaries are trusted, matching the worker and the Apps Script. */
+const RECAP_TTL = 60_000;
+
+/**
+ * The published corpus, fetched once per page load, with the live daily
+ * summaries added (`lib/recap-corpus.ts`). The summaries are refreshed at
+ * most once a minute, so a source the worker cites from a doc edited while
+ * the panel is open still resolves here. Without them the corpus still
+ * answers.
+ */
+export async function loadCorpus(): Promise<Corpus> {
   pending ??= fetch(withBasePath('/assistant-corpus.json')).then((response) => {
     if (!response.ok) throw new Error(`corpus ${response.status}`);
     return response.json() as Promise<Corpus>;
   });
-  return pending;
+  pending.catch(() => { pending = null; });
+  if (!recaps || Date.now() - recaps.at > RECAP_TTL) {
+    recaps = { at: Date.now(), loaded: recapLiveEnabled ? loadRecaps() : Promise.resolve(null) };
+  }
+  const [published, live] = await Promise.all([pending, recaps.loaded]);
+  return withRecaps(published, live);
 }
 
 /**

@@ -39,3 +39,9 @@ To change a doc, edit `RECAP_DOCS`, then run `clasp push` from `apps-script/` an
 The site's summary starts as a compact list of expandable topics. Each main heading in the Google Doc becomes a topic; lower-level headings remain inside it. Use heading styles in Docs (for example, Heading 2 for activities and Heading 3 for their subsections). The existing Day 1 document already follows this structure. The site does not guess which agenda item a paragraph belongs to.
 
 Readers can open individual topics or use **Expand all** / **Collapse all**. Background refreshes preserve open topics when their Google Docs heading IDs remain unchanged. Text before the first heading remains visible, and documents without headings remain a continuous document.
+
+## The assistant
+
+The Ask assistant uses the summaries in full. The worker (`worker/src/index.js`, `RECAPS_URL`) and the panel (`lib/assistant.ts`) both read `?action=recaps` and add entries with `lib/recap-corpus.ts`. There is one entry per top-level heading, with an id such as `recap-d1-visual-inspection-workshop-ana-paula-lapig`, plus one for any text before the first heading. Both sides build the ids with that same module, so every source the model cites resolves in the panel. The summaries are cached for 60 seconds, the site does not need redeploying, and accepted edits reach the assistant within about a minute and a half.
+
+Each summary adds its full text to every question's prompt. Five days of summaries at Day 1's length add about 17,000 input tokens per question, roughly 2.5 times the corpus alone. The worker's `DAILY_LIMIT` bounds that. If usage becomes a problem, send only the summary sections that match the question.

@@ -250,9 +250,15 @@ export function Assistant() {
         return;
       }
       if (!corpus) setCorpus(loaded);
+      // Refreshed alongside the answer rather than before it: the daily
+      // summaries change during the week, and the sources the model cites are
+      // resolved against this copy once it finishes.
+      const fresh = loadCorpus().catch(() => loaded);
 
       if (!assistantEnabled) {
-        setTurns((prior) => [...prior, searchTurn(asked, loaded, 'From the site’s own pages.')]);
+        const current = await fresh;
+        setCorpus(current);
+        setTurns((prior) => [...prior, searchTurn(asked, current, 'From the site’s own pages.')]);
         return;
       }
 
@@ -277,16 +283,18 @@ export function Assistant() {
       }, controller.signal);
 
       abortRef.current = null;
+      const current = await fresh;
+      setCorpus(current);
 
       if (!result.ok) {
         setTurns((prior) => [
           ...prior.slice(0, -1),
-          searchTurn(asked, loaded, `The assistant is unavailable (${result.reason}). From the site’s own pages instead.`),
+          searchTurn(asked, current, `The assistant is unavailable (${result.reason}). From the site’s own pages instead.`),
         ]);
         return;
       }
 
-      const { text, sources } = splitSources(streamed, loaded);
+      const { text, sources } = splitSources(streamed, current);
       setTurns((prior) => prior.map((turn, i) => (i === prior.length - 1 ? { role: 'assistant', text, sources } : turn)));
     },
     [corpus, searchTurn, turns],

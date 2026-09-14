@@ -10,7 +10,14 @@
  * site and cached, the same way the calendar sync treats the published .ics as
  * the single source of truth — changing the agenda and pushing the site is the
  * whole update procedure, and this worker is not redeployed for it.
+ *
+ * The daily summaries are the exception to "published with the site": they
+ * are Google Docs edited during the week. They are read live from the Apps
+ * Script endpoint and added to the corpus by `lib/recap-corpus.ts`, the
+ * same module the panel uses, so the ids the model cites resolve there too.
  */
+
+import { withRecaps } from '../../lib/recap-corpus.ts';
 
 /** Ollama Cloud. Confirm the model tag against /api/tags before changing it. */
 const OLLAMA_CHAT = 'https://ollama.com/api/chat';
@@ -25,6 +32,8 @@ const LIMITS = {
   answer: 700,
   /** Seconds a cached corpus is trusted before the site is asked again. */
   corpusTtl: 300,
+  /** Seconds the summaries are trusted; the Apps Script caches its exports as long. */
+  recapTtl: 60,
 };
 
 /**
@@ -66,6 +75,9 @@ everything you know. Follow these rules exactly.
 9. A presentation entry is the source for a question about that presentation's
    teaching content. Prefer it over a broader session description and cite it
    whenever it directly answers the question.
+10. A recap entry is the organisers' summary of what a session presented,
+   discussed and agreed. It is the source for questions about what happened
+   or was decided; cite it for those. Report what it says, not more.
 
 ENTRIES
 ${corpus.entries.map((e) => `[${e.id}] (${e.kind}) ${e.title} — ${e.text}`).join('\n')}`;
@@ -88,6 +100,29 @@ async function loadCorpus(env) {
     throw new Error('corpus is empty');
   }
   return corpus;
+}
+
+/**
+ * The live summaries, or null. A failure here must not take the assistant
+ * down: it answers from the published corpus and the log says why.
+ */
+async function loadRecaps(env) {
+  if (!env.RECAPS_URL) return null;
+  try {
+    const response = await fetch(env.RECAPS_URL, {
+      cf: {
+        cacheEverything: true,
+        cacheTtlByStatus: { '200-299': LIMITS.recapTtl, '300-599': 0 },
+      },
+    });
+    if (!response.ok) throw new Error(`status ${response.status}`);
+    const data = await response.json();
+    if (data?.status !== 'ok') throw new Error('not ok');
+    return data;
+  } catch (error) {
+    console.log(`assistant: summaries unavailable — ${error.message}`);
+    return null;
+  }
 }
 
 function allowedOrigins(env) {
@@ -232,7 +267,8 @@ const worker = {
 
     let corpus;
     try {
-      corpus = await loadCorpus(env);
+      const [published, recaps] = await Promise.all([loadCorpus(env), loadRecaps(env)]);
+      corpus = withRecaps(published, recaps);
     } catch (error) {
       console.log(`assistant: corpus unavailable — ${error.message}`);
       return refuse(503, 'the workshop content could not be loaded', cors);

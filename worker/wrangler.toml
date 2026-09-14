@@ -17,6 +17,11 @@ preview_urls = false
 # the one the site publishes, so a programme change needs no redeploy here.
 CORPUS_URL = "https://lapig-ufg.github.io/time2graze-workshop/assistant-corpus.json"
 
+# The daily summaries, read live from the Apps Script web app (the same /exec
+# as lib/apps-script.ts). They are Google Docs edited during the week, so they
+# cannot wait for a site deploy.
+RECAPS_URL = "https://script.google.com/macros/s/AKfycbzpmYFJq7WFRxtnGHGZkW0FFhiit9441UHtfZnwfrNZI6Vuku1MY6Rb7JBBIcFwGcBi/exec?action=recaps"
+
 # Every origin allowed to spend the key. The deployed site, and the dev server
 # so the panel can be worked on locally.
 ALLOWED_ORIGINS = "https://lapig-ufg.github.io,https://victorgit10.github.io,http://localhost:3000"
