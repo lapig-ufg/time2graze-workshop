@@ -204,7 +204,17 @@ export const AGENDA: Day[] = [
         speakers: [{ name: 'Santiago', org: 'GMH' }],
         venueId: null,
         kind: 'technical',
-        materials: [{ kind: 'slides' }],
+        /* Santiago's deck, supplied 15 September 2026 as a 22-slide PowerPoint;
+           converted to PDF and rendered page by page to WebP, as the others
+           were. The file's own two hidden slides stay hidden: the export
+           carries the 20 the presenter shows. */
+        materials: [
+          {
+            kind: 'slides',
+            href: '/files/time2graze-vision/index.html',
+            format: 'HTML',
+          },
+        ],
       },
       {
         id: 'd2-priorities-barriers',

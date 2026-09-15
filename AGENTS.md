@@ -2378,3 +2378,28 @@ Three decisions there are deliberate:
   exist to draw. The names carry the site's external-link arrow instead.
 - **Facebook is left out.** The icon row on lapig.iesa.ufg.br opens with one,
   but it points at UFG's page rather than the laboratory's.
+
+## Santiago's Time2Graze vision deck — 15 September 2026
+
+The Day 2 opening talk `Project Overview & Theory of Change`
+(`d2-overview-toc`) was supplied as a PowerPoint file and ships like the
+others: converted to PDF, rendered to WebP at 2400px, served by the
+full-screen viewer (`public/files/time2graze-vision/`).
+
+Two things about converting a `.pptx` that are easy to get wrong:
+
+- **Install the fonts before converting.** LibreOffice needs
+  `libreoffice-impress` (the core package alone refuses the file with "source
+  file could not be loaded"), and the deck's Arial, Calibri, Montserrat and
+  Roboto need `fonts-liberation`, `fonts-crosextra-carlito`,
+  `fonts-montserrat` and `fonts-roboto`. Without them the export silently
+  substitutes and the line breaks move.
+- **Hidden slides stay hidden.** The file holds 22 slides, two of them hidden
+  by the presenter; the PDF export drops those on its own and the published
+  deck is the 20 that are shown. Check the count against
+  `p:sld … show="0"` before assuming an export lost something.
+
+A local `npx serve` is not a faithful preview of these decks: it redirects
+`…/index.html` to `…/index`, which re-bases every relative `slides/NN.webp`
+and 404s the lot. GitHub Pages serves the file as asked. Preview with
+`python3 -m http.server` inside `out/`.
