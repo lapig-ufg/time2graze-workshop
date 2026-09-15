@@ -2448,3 +2448,17 @@ mentions an Open Agenda on Day 2.
 Emily's deck is shared `Anyone with the link → Editor`, like Laerte's. Serving a
 copy is what keeps that off a public page; Lindsey's is `Anyone with the link →
 Viewer`, which is the setting to ask for.
+
+## Leandro's two decks, published without a PDF — 15 September 2026
+
+`Remote sensing overview and grassland biomass monitoring` (34 slides, on
+`d2-biomass-methodology`) and `Pasto Legal` (19 slides, on `d2-pasto-legal`)
+went up as viewers only: both were still being edited when they were supplied,
+and the organiser asked for no PDF copy.
+
+That is the right default for a deck in flux. A PDF is a file a participant
+keeps, so it is the one version nobody can correct afterwards; the viewer is
+re-rendered in place from the same folder. `Material.pdfCopy` is simply
+omitted, and the viewer is copied without the `PDF` link in its bar — the
+template carries one now, so delete that line rather than leaving it pointing
+at a file that does not exist. Add both when the decks are final.

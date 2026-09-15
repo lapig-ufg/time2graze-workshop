@@ -285,7 +285,17 @@ export const AGENDA: Day[] = [
         speakers: [{ name: 'Leandro', org: 'OGH' }],
         venueId: null,
         kind: 'technical',
-        materials: [{ kind: 'slides' }],
+        /* Leandro's deck, supplied 15 September 2026 as Google Slides and
+           still being edited, so no PDF copy goes up with it: a downloaded
+           fallback would be the one version nobody could correct. Rerun the
+           same export when the deck is final. */
+        materials: [
+          {
+            kind: 'slides',
+            href: '/files/remote-sensing-biomass/index.html',
+            format: 'HTML',
+          },
+        ],
       },
       {
         id: 'd2-coffee',
@@ -308,7 +318,17 @@ export const AGENDA: Day[] = [
         ],
         venueId: null,
         kind: 'technical',
-        materials: [{ kind: 'slides' }],
+        /* Leandro's deck, supplied 15 September 2026 as Google Slides and
+           still being edited, so no PDF copy goes up with it: a downloaded
+           fallback would be the one version nobody could correct. Rerun the
+           same export when the deck is final. */
+        materials: [
+          {
+            kind: 'slides',
+            href: '/files/pasto-legal/index.html',
+            format: 'HTML',
+          },
+        ],
       },
       /**
        * The id still says open-agenda: this hour was one until the organiser
