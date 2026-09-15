@@ -2584,3 +2584,18 @@ test only admits links to the four destinations — so a participant asking
 where to add themselves is sent to it rather than told a directory exists.
 `components/team-directory-invite.tsx` is among the page sources
 `scripts/assistant.test.mjs` checks anchors against.
+
+## Laerte's talk moves to Day 3; Nathália's biomass talk is dropped — 15 September 2026
+
+The organiser cancelled *On the ground biomass estimation* (Nathália, Day 3,
+09:00–09:45) for good, and moved *A few lessons from recent field campaigns in
+Brazil* (Laerte) from Day 2, 16:45–17:30, into that hour.
+
+- **`d3-state-of-the-art` keeps its id** and now holds Laerte's talk, deck and
+  recap prompt. The deck's "Back to programme" link points at it.
+- **The Day 2 hour was not reopened.** `d2-open-agenda-afternoon` is gone:
+  Pasto Legal runs 16:00–17:00 and the Daily Summary 17:00–18:00, as the
+  organiser asked. Do not put an Open Agenda back there.
+- **Nathália's biomass deck is not published.** It was built as
+  `public/files/on-the-ground-biomass/` but never shipped, and nothing
+  references it. Her Day 1 Field Protocol session and deck are unaffected.

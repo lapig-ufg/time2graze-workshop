@@ -42,11 +42,9 @@ const FOCUS: Record<string, string> = {
     'Sensors, models and methods covered for grassland biomass, their current limits, and the applications proposed for the project.',
   'd2-pasto-legal':
     'What Pasto Legal is, what it delivers, and how it relates to Time2Graze data and users.',
-  'd2-open-agenda-afternoon':
-    'The concrete lessons from the field campaigns: logistics, sampling, data quality and what should be done differently.',
   'd3-checkin': 'Only anything that changes the day or the week. Omit if there is nothing.',
   'd3-state-of-the-art':
-    'The field methods for biomass estimation presented, their requirements and trade-offs, and anything proposed as the project standard.',
+    'The concrete lessons from the field campaigns: logistics, sampling, data quality and what should be done differently.',
   'd4-checkin': 'Only anything that changes the day or the week. Omit if there is nothing.',
   'd4-collaboration-map':
     'A three-hour interactive workshop. Record, by country, the actors and partnerships identified, the steps of the uptake journey, and the gaps or dependencies found. Use the boards and group outputs in the notes as the main source.',

@@ -319,7 +319,7 @@ export const AGENDA: Day[] = [
         id: 'd2-pasto-legal',
         date: '2026-09-15',
         start: '16:00',
-        end: '16:45',
+        end: '17:00',
         title: 'Pasto Legal',
         speakers: [
           { name: 'Leandro', org: 'OGH' },
@@ -342,38 +342,10 @@ export const AGENDA: Day[] = [
           },
         ],
       },
-      /**
-       * The id still says open-agenda: this hour was one until the organiser
-       * filled it on 11 September 2026, and an id is the address a shared link
-       * and a recap point at. The slot did not move; only what happens in it.
-       */
-      {
-        id: 'd2-open-agenda-afternoon',
-        date: '2026-09-15',
-        start: '16:45',
-        end: '17:30',
-        title: 'A few lessons from recent field campaigns in Brazil',
-        speakers: [{ name: 'Laerte', org: 'LAPIG' }],
-        venueId: null,
-        kind: 'technical',
-        /* Laerte's deck, supplied 15 September 2026 as Google Slides; exported
-           to PDF and rendered page by page to WebP, as Nathália's was, so the
-           site serves it without depending on that deck's sharing. */
-        materials: [
-          {
-            kind: 'slides',
-            href: '/files/field-lessons-brazil/index.html',
-            format: 'HTML',
-            /* The same pages as one PDF: offline, and a fallback if the
-               viewer fails a reader. */
-            pdfCopy: '/files/field-lessons-brazil/deck.pdf',
-          },
-        ],
-      },
       {
         id: 'd2-daily-summary',
         date: '2026-09-15',
-        start: '17:30',
+        start: '17:00',
         end: '18:00',
         title: 'Daily Summary',
         venueId: null,
@@ -404,16 +376,34 @@ export const AGENDA: Day[] = [
         venueId: null,
         kind: 'technical',
       },
+      /**
+       * The id still says state-of-the-art: an id is the address a shared link
+       * and a recap point at. Nathália's biomass talk was dropped on
+       * 15 September 2026 and Laerte's moved here from Day 2, 16:45.
+       */
       {
         id: 'd3-state-of-the-art',
         date: '2026-09-16',
         start: '09:00',
         end: '09:45',
-        title: 'On the ground biomass estimation: Key concepts and methodologies',
-        speakers: [{ name: 'Nathália', org: 'LAPIG' }],
+        title: 'A few lessons from recent field campaigns in Brazil',
+        speakers: [{ name: 'Laerte', org: 'LAPIG' }],
         venueId: null,
         kind: 'technical',
-        materials: [{ kind: 'slides' }],
+        /* Laerte's deck, supplied 15 September 2026 as Google Slides; exported
+           to PDF and rendered page by page to WebP, as Nathália's Field
+           Protocol deck was, so the site serves it without depending on that
+           deck's sharing. */
+        materials: [
+          {
+            kind: 'slides',
+            href: '/files/field-lessons-brazil/index.html',
+            format: 'HTML',
+            /* The same pages as one PDF: offline, and a fallback if the
+               viewer fails a reader. */
+            pdfCopy: '/files/field-lessons-brazil/deck.pdf',
+          },
+        ],
       },
       {
         id: 'd3-country-uruguay',
