@@ -8,9 +8,10 @@
  * so every programme change pushed to the site reaches subscribers on its own.
  *
  * The same web app also receives reader corrections to the daily recaps
- * (flags.gs), split-session choices (tracks.gs) and the published recaps
- * themselves (recaps.gs). Every endpoint here is anonymous and capped;
- * publishing a recap additionally needs a password.
+ * (flags.gs), split-session choices (tracks.gs), team directory entries
+ * (directory.gs) and the published recaps themselves (recaps.gs). Every
+ * endpoint here is anonymous and capped; publishing a recap additionally needs
+ * a password.
  */
 
 const CALENDAR_NAME = 'Time2Graze Brazil Workshop';
@@ -111,19 +112,23 @@ function doGet(e) {
 }
 
 /**
- * POST entry point, for writes too large or too private for a URL:
- * publishing a day's recap. The body is JSON sent as text/plain, which keeps
- * the request "simple" so the browser sends no preflight Apps Script cannot
- * answer.
+ * POST entry point, for writes too large or too private for a URL: publishing
+ * a day's recap, and a team directory entry — a paragraph and a photograph,
+ * neither of which fits in a query string. The body is JSON sent as
+ * text/plain, which keeps the request "simple" so the browser sends no
+ * preflight Apps Script cannot answer.
  */
 function doPost(e) {
   let payload;
   try {
     const body = JSON.parse((e.postData && e.postData.contents) || '{}');
-    payload =
-      body.action === 'recap'
-        ? saveRecap(body)
-        : { status: 'error', message: 'Unknown action.' };
+    if (body.action === 'recap') {
+      payload = saveRecap(body);
+    } else if (body.action === 'directory') {
+      payload = recordDirectoryEntry(body);
+    } else {
+      payload = { status: 'error', message: 'Unknown action.' };
+    }
   } catch (err) {
     payload = { status: 'error', message: String(err) };
   }
@@ -197,6 +202,7 @@ function setup() {
   const calendarId = getWorkshopCalendarId();
   const flagSheet = getFlagSheet().getParent().getUrl();
   const choiceSheet = getChoiceSheet().getParent().getUrl();
+  const directory = directorySetup();
   const sync = syncFromSite();
   const armed = ScriptApp.getProjectTriggers().some(
     (trigger) => trigger.getHandlerFunction() === 'syncFromSite',
@@ -209,11 +215,13 @@ function setup() {
       .create();
   }
   console.log(
-    'Setup complete. Calendar %s, sync %s, daily trigger %s. Recap corrections: %s. Split-session choices: %s',
+    'Setup complete. Calendar %s, sync %s, daily trigger %s. Recap corrections: %s. Split-session choices: %s. Team directory: %s, photos %s',
     calendarId,
     JSON.stringify(sync),
     armed ? 'already armed' : 'armed',
     flagSheet,
     choiceSheet,
+    directory.sheet,
+    directory.folder,
   );
 }

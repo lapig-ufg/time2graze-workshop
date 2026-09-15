@@ -1,0 +1,119 @@
+/* --- Team directory ---------------------------------------------------------
+   The one long form on the site, and the only place a participant is asked for
+   something about themselves rather than about the workshop.
+
+   It follows the split-session chooser's grammar — a card on a rule, a pale
+   head, forest for the one action — because that is the other control that
+   asks for something back, and two forms on one site should not have two
+   vocabularies. What it does not borrow is the pulse: the chooser beats
+   because a room has to be sized before an hour that is already in the
+   programme, and a directory has no such hour.
+
+   Folded, the card is its lede and one button. Ten questions expanded on the
+   home page would add about three screens to a phone, on the page that was
+   split into four to stop exactly that. */
+
+.team-directory .section-title { margin-bottom: 26px; }
+
+.td-card { max-width: 780px; background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--forest); scroll-margin-top: 110px; }
+.td-head { padding: 22px clamp(18px, 2.2vw, 26px); background: var(--surface-soft); }
+.td-card[data-open] .td-head { border-bottom: 1px solid var(--line); }
+.td-intro { max-width: 62ch; margin: 0; color: var(--text); font-size: var(--t-body); line-height: 1.6; }
+
+/* An answer already sent is a statement, not a blank form: most returns to
+   this card are to check what was sent, as they are on the chooser. */
+.td-sent { display: flex; gap: 10px; align-items: flex-start; margin: 14px 0 0; color: var(--ink); font-size: var(--t-meta-lg); line-height: 1.5; }
+.td-sent svg { flex: none; width: 19px; height: 19px; margin-top: 1px; color: var(--forest); }
+.td-sent strong { overflow-wrap: anywhere; }
+
+.td-toggle { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; min-height: 44px; margin-top: 16px; padding: 10px 20px; color: #fff; background: var(--forest); border: 0; border-radius: var(--radius); font-family: inherit; font-size: var(--t-meta-lg); font-weight: 750; cursor: pointer; transition: background var(--m-quick) var(--m-ease); }
+.td-toggle:hover { background: var(--forest-dark); }
+.td-toggle-note { color: var(--accent); font-size: var(--t-label); font-weight: 600; letter-spacing: .04em; }
+/* Open, the control is no longer the thing being offered — "Send entry" is.
+   A second filled button beside it would ask the reader which one is the way
+   forward, so this one steps back to an outline. */
+.td-card[data-open] .td-toggle { color: var(--forest); background: var(--surface); border: 1px solid var(--muted); }
+.td-card[data-open] .td-toggle:hover { color: #fff; background: var(--forest); border-color: var(--forest); }
+
+.td-body { padding: 24px clamp(18px, 2.2vw, 26px) 26px; }
+.td-form { display: grid; gap: 22px; }
+.td-required-note { margin: 0; color: var(--muted); font-size: var(--t-meta); }
+
+.td-field { display: grid; gap: 7px; margin: 0; padding: 0; border: 0; }
+.td-field > label, .td-field > legend { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; padding: 0; color: var(--ink); font-size: var(--t-meta-lg); font-weight: 700; line-height: 1.45; }
+/* A legend is not a grid item, so the gap above does not apply to it. */
+.td-group > legend { margin-bottom: 7px; }
+.td-optional { color: var(--muted); font-size: var(--t-label); font-weight: 600; letter-spacing: .05em; text-transform: uppercase; }
+.td-help { max-width: 64ch; margin: 0; color: var(--muted); font-size: var(--t-meta); line-height: 1.55; }
+.td-count { font-variant-numeric: lining-nums tabular-nums; }
+
+.td-field input[type='text'], .td-field input[type='email'], .td-field select, .td-field textarea { width: 100%; max-width: 46ch; padding: 10px 12px; color: var(--ink); background: var(--surface); border: 1px solid var(--muted); border-radius: var(--radius); font-family: inherit; font-size: var(--t-body-lg); line-height: 1.45; }
+.td-field textarea { max-width: 62ch; resize: vertical; }
+.td-field input:read-only, .td-field select:disabled, .td-field textarea:read-only { background: var(--surface-soft); }
+.td-field input:focus-visible, .td-field select:focus-visible, .td-field textarea:focus-visible { border-color: var(--forest); outline: 2px solid var(--forest); outline-offset: 1px; }
+/* Only after the browser has judged it, so a required field is not red before
+   anyone has had the chance to fill it in. */
+.td-field input:user-invalid, .td-field select:user-invalid, .td-field textarea:user-invalid { border-color: #9a3324; }
+
+/* The whole option is the target, not the 18px box: this is answered on a
+   phone, which is where most of these will be answered. */
+.td-options { display: grid; gap: 8px; margin-top: 2px; }
+.td-options-inline { grid-auto-flow: column; justify-content: start; gap: 10px; }
+.td-option { display: flex; gap: 11px; align-items: flex-start; min-height: 44px; padding: 10px 13px; background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); cursor: pointer; transition: border-color var(--m-quick) var(--m-ease); }
+.td-options-inline .td-option { min-width: 96px; }
+.td-option:hover { border-color: var(--forest); }
+.td-option:has(input:checked) { border-color: var(--forest); box-shadow: inset 0 0 0 1px var(--forest); }
+.td-option input { flex: none; width: 18px; height: 18px; margin: 2px 0 0; accent-color: var(--forest); }
+.td-option span { font-size: var(--t-meta-lg); line-height: 1.4; }
+
+.td-other { display: grid; gap: 6px; margin: 12px 0 0 13px; padding-left: 13px; border-left: 2px solid var(--forest); }
+.td-other label { color: var(--ink); font-size: var(--t-meta); font-weight: 700; }
+.td-other input { width: 100%; max-width: 38ch; padding: 9px 12px; color: var(--ink); background: var(--surface); border: 1px solid var(--muted); border-radius: var(--radius); font-family: inherit; font-size: var(--t-body-lg); }
+
+/* The sentence a person is agreeing to, set as the thing it is rather than as
+   help text under a question. */
+.td-statement { max-width: 62ch; margin: 0 0 4px; padding: 12px 14px; color: var(--ink); background: var(--paper); border-left: 2px solid var(--line); font-size: var(--t-meta-lg); line-height: 1.55; }
+
+.td-file { max-width: 46ch; font-size: var(--t-meta-lg); }
+.td-file::file-selector-button { min-height: 40px; margin-right: 12px; padding: 9px 16px; color: var(--forest); background: var(--surface); border: 1px solid var(--muted); border-radius: var(--radius); font-family: inherit; font-size: var(--t-meta-lg); font-weight: 700; cursor: pointer; }
+.td-file::file-selector-button:hover { border-color: var(--forest); }
+
+.td-photo-state { display: block; }
+.td-photo-state:empty { display: none; }
+.td-photo-line { display: inline-flex; gap: 8px; align-items: center; color: var(--muted); font-size: var(--t-meta); line-height: 1.5; }
+.td-photo-line svg { flex: none; width: 16px; height: 16px; }
+.td-photo-line[data-state='error'] { color: #9a3324; }
+/* The preview is what will be stored, so nobody finds out afterwards that
+   they sent the wrong picture. */
+.td-photo-ready { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: center; margin-top: 10px; }
+.td-photo-ready img { width: 72px; height: 72px; object-fit: cover; border: 1px solid var(--line); border-radius: var(--radius); }
+.td-photo-ready button { display: inline-flex; gap: 7px; align-items: center; min-height: 40px; padding: 9px 14px; color: var(--forest); background: var(--surface); border: 1px solid var(--muted); border-radius: var(--radius); font-family: inherit; font-size: var(--t-meta); font-weight: 700; cursor: pointer; }
+.td-photo-ready button svg { width: 15px; height: 15px; }
+.td-photo-ready button:hover { border-color: var(--forest); }
+
+.td-error { margin: 2px 0 0; color: #9a3324; font-size: var(--t-meta); font-weight: 650; }
+
+.td-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.td-actions button { display: inline-flex; gap: 9px; align-items: center; min-height: 46px; padding: 11px 22px; color: #fff; background: var(--forest); border: 0; border-radius: var(--radius); font-family: inherit; font-size: var(--t-body); font-weight: 750; cursor: pointer; transition: background var(--m-quick) var(--m-ease); }
+.td-actions button:hover:not(:disabled) { background: var(--forest-dark); }
+.td-actions button:disabled { opacity: .7; cursor: default; }
+.td-actions svg { width: 17px; height: 17px; }
+
+.td-status { display: flex; gap: 9px; align-items: flex-start; color: var(--muted); font-size: var(--t-meta-lg); line-height: 1.5; }
+.td-status:empty { display: none; }
+.td-status svg { flex: none; width: 18px; height: 18px; margin-top: 1px; }
+.td-status[data-state='success'] { color: var(--forest); }
+.td-status[data-state='error'] { color: #9a3324; }
+
+@media screen and (max-width: 760px) {
+  .td-head { padding: 18px; }
+  .td-body { padding: 18px 18px 22px; }
+  .td-form { gap: 20px; }
+  .td-toggle { width: 100%; justify-content: center; }
+  .td-card[data-open] .td-toggle { width: auto; }
+  .td-field input[type='text'], .td-field input[type='email'], .td-field select, .td-field textarea, .td-file { max-width: none; }
+  .td-options-inline { grid-auto-flow: row; }
+}
+
+/* A form on paper is a form nobody can send. */
+@media print { .team-directory { display: none !important; } }

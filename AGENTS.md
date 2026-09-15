@@ -2475,3 +2475,100 @@ While a deck is in flux, a PDF is the one version nobody can correct: it is a
 file a participant keeps. Omit `pdfCopy`, and if a viewer is published without
 one, delete the `PDF` line from its bar — the template carries one now, and
 it would point at a file that does not exist.
+
+## The team directory — 15 September 2026
+
+The project asked for a directory of who is on Time2Graze and what each person
+works on, and for the form to be on this site rather than in Google Forms. The
+questions, their wording, their order and which of them are required come from
+the organiser's specification and are reproduced verbatim: `data/directory.ts`
+**is** the form, not a paraphrase of it. Ten questions, three of them a
+dropdown, a checkbox group and a multiple choice, one of them a file upload.
+
+**Running it needs one thing this repository cannot do: `clasp push` and a
+redeploy of the existing Apps Script deployment.** Until that happens the form
+renders, validates and refuses to pretend — a send answers "That did not send."
+[`docs/team-directory.md`](docs/team-directory.md) is the whole procedure and
+the only document that step needs.
+
+**It is not a fifth destination.** The questions belong to the project rather
+than to a day, a venue or a file, so the form sits on the home page addressed
+by `/#team-directory`, between the overview and the institutions — people,
+then the bodies they belong to. It is folded until someone opens it: ten
+questions expanded would add about three screens to a phone, on the page that
+was split into four to stop exactly that.
+
+**It is the first POST the site makes on its own behalf.** Calendar sharing,
+recap flagging and the split-session choices are a field each and travel as
+JSONP in a query string; a directory entry carries a paragraph and a
+photograph, and both would be refused by a URL long before the script refused
+them. So `lib/directory.ts` uses the transport the recap publisher established
+on 14 September 2026 — a `text/plain` POST, which the browser treats as a
+simple request and sends with no preflight Apps Script could not answer. Apps
+Script answers it with a 302 the browser follows as a GET, and both hops carry
+`access-control-allow-origin: *`. Re-checked against the live endpoint on
+15 September 2026 before any of this was written.
+
+**The photograph is resized in the browser, and is allowed to fail on its
+own.** Ten megabytes is not a portrait, it is whatever a phone camera
+produced, so `lib/directory-photo.ts` accepts the stated size and sends a
+1000px JPEG — about 20 kB from a 141 kB original in the test. A file the canvas
+cannot decode (an iPhone HEIC, most often) is refused with that reason rather
+than stored as an empty image under somebody's name. On the server the row is
+written first and the file attempted afterwards: Drive refusing a photograph
+must never cost a person the nine answers they typed, and they are told exactly
+which of the two happened.
+
+**One row per e-mail address, not one row per send.** The address is the key,
+matched lower-cased, so someone correcting their job title rewrites their row
+instead of leaving the organiser two entries to reconcile — the same decision
+`tracks.gs` makes about a name. An update carrying no new file keeps the
+photograph already on the sheet. The browser remembers the entry it sent
+(`hooks/use-directory-entry.ts`, the photograph excepted, being too large), so
+a correction opens with every answer already in it.
+
+**A "no" to the permission question is recorded, not discarded.** The question
+asks whether the information *may be included*, so the answer is the
+organiser's to act on and the sheet carries it in its own column. The site says
+the same thing before and after sending. Nothing written here is ever read back
+on the site: a participant sees their own submission from their own browser and
+never anyone else's.
+
+**The endpoint is bounded on the same three sides as the others.** Every choice
+has to name an option the form offers — an unknown id is a malformed request,
+not a new area of expertise, because the sheet's columns are only comparable
+while every row names the same list. The volume is capped per day. And it
+closes on 31 October 2026, in two places: `DIRECTORY_CLOSES` in
+`data/directory.ts` takes the form off the page, and the same constant in
+`apps-script/directory.gs` refuses the write.
+`scripts/directory.test.mjs` fails if either copy of the questions, the limits
+or the closing date drifts from the other.
+
+### How it was checked
+
+`scripts/directory.test.mjs` runs the real `apps-script/directory.gs` against
+fake Google services and the real `lib/directory.ts` against a fake `fetch`:
+33 tests over the row keying, the option lists, the caps, the window and the
+photograph's independent failure. `scripts/apps-script-fixture.mjs` grew a
+second transport for it, and resolves `data/` as well as `lib/` now.
+
+Beyond that, the form was driven in Chromium against the **static export** —
+what Pages actually serves — with the request to `script.google.com`
+intercepted and forwarded to a local server running the real `directory.gs` and
+answering with the same 302 the web app answers with, so the redirect-following
+and the CORS read are the browser's own. 91 checks: every question present and
+worded as the document words it, an empty form refused with focus on the first
+unanswered question, the checkbox group refused where the browser cannot refuse
+it, a complete entry with a photograph landing as a sheet row and a JPEG, a
+correction replacing that row, a second person adding a second one, "Other"
+demanding its own field, the Drive failure, the daily cap, a cut connection, a
+double-pressed send sending once, and the whole thing again at 390px. That
+harness is not in the repository — it needs a browser download — but it is what
+the claim that this works rests on, next to the deploy step above, which is
+still outstanding.
+
+**The assistant knows about it.** `scripts/build-assistant-corpus.mjs` adds one
+entry pointing at `/#team-directory`, so a participant asking where to add
+themselves — in Portuguese or Spanish, which is what the panel is for — is sent
+to the form rather than told a directory exists. `components/team-directory.tsx`
+joined the page sources `scripts/assistant.test.mjs` checks anchors against.

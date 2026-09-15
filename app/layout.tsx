@@ -8,6 +8,7 @@ import './globals.css';
 import './travel.css';
 import './stories.css';
 import './assistant.css';
+import './directory.css';
 
 const sans = Manrope({ variable: '--font-sans', subsets: ['latin'] });
 const serif = Cormorant_Garamond({
