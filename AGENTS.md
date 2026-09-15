@@ -2403,3 +2403,27 @@ A local `npx serve` is not a faithful preview of these decks: it redirects
 `…/index.html` to `…/index`, which re-bases every relative `slides/NN.webp`
 and 404s the lot. GitHub Pages serves the file as asked. Preview with
 `python3 -m http.server` inside `out/`.
+
+## A PDF copy behind every deck — 15 September 2026
+
+Each published deck now ships a PDF of the same pages beside its viewer
+(`deck.pdf` in the deck's folder), declared on the session as a second
+material titled `Full deck`. It is the fallback: it opens in any browser with
+no JavaScript, it can be kept on a phone before the room loses wi-fi, and it
+survives whatever happens to the viewer.
+
+- **The PDF is built from the published WebP pages, not from the source
+  file.** What it shows is exactly what the viewer shows, and the deck folder
+  stays the single origin — no second export to keep in step. JPEG at 1800px
+  wide keeps Laerte's 29 pages at 3.9 MB against 11 MB for the original
+  export; the text stops being selectable, which is the price of a fallback a
+  phone will actually finish downloading.
+- **`materialAction` names a hosted PDF by its format** (`Open PDF`), not by
+  its kind. A session publishing both the deck and its PDF copy otherwise
+  shows two links reading `Open slides`, which tells a reader nothing.
+- The viewer's own bar carries the same file as `PDF`, next to `Full screen`.
+
+Laerte's deck also exists as a Google Slides link, and it is deliberately not
+published: that presentation is shared `Anyone with the link → Editor`, and
+this site is public. The PDF is the plan B instead — see the note on his deck
+above.

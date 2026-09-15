@@ -139,6 +139,13 @@ export const AGENDA: Day[] = [
             href: '/files/field-protocol-alignment/index.html',
             format: 'HTML',
           },
+          /* The same pages as one PDF, for reading offline or keeping a copy. */
+          {
+            kind: 'slides',
+            title: 'Full deck',
+            href: '/files/field-protocol-alignment/deck.pdf',
+            format: 'PDF',
+          },
           /* Teles et al. (2025), Land Degradation & Development 36:6539–6548,
              doi:10.1002/ldr.70089 — open access under CC BY, so it is hosted
              here as published. Supplied 14 September 2026. */
@@ -213,6 +220,13 @@ export const AGENDA: Day[] = [
             kind: 'slides',
             href: '/files/time2graze-vision/index.html',
             format: 'HTML',
+          },
+          /* The same pages as one PDF, for reading offline or keeping a copy. */
+          {
+            kind: 'slides',
+            title: 'Full deck',
+            href: '/files/time2graze-vision/deck.pdf',
+            format: 'PDF',
           },
         ],
       },
@@ -302,6 +316,13 @@ export const AGENDA: Day[] = [
             kind: 'slides',
             href: '/files/field-lessons-brazil/index.html',
             format: 'HTML',
+          },
+          /* The same pages as one PDF, for reading offline or keeping a copy. */
+          {
+            kind: 'slides',
+            title: 'Full deck',
+            href: '/files/field-lessons-brazil/deck.pdf',
+            format: 'PDF',
           },
         ],
       },
