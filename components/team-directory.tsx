@@ -38,12 +38,10 @@ import { preparePhoto, type PhotoError } from '@/lib/directory-photo';
 /**
  * The Time2Graze team directory form.
  *
- * **At an unlisted route, not on the home page.** The organiser wanted it
- * published where a link can be shared with the people who should answer it,
- * and checked by them, without advertising it to every visitor: it lives at
- * `/team-directory/`, which is in neither the navigation nor the assistant's
- * corpus and asks search engines not to index it. Putting it back on the home
- * page is a decision for the organiser, not a tidy-up.
+ * **At a route of its own, `/team-directory/`.** It was first published there
+ * unlisted, so the organiser could share the link before announcing it; it is
+ * now linked from the home page (`components/team-directory-invite.tsx`) and
+ * from the assistant, and that address is the one people already have.
  *
  * **Open on arrival.** Anyone on this page followed a link to answer it, so
  * the questions are already showing; the button still folds them away, which

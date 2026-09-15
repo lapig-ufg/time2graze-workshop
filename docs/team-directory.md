@@ -6,11 +6,11 @@ specification (`TIME2GRAZE TEAM DIRECTORY`, 15 September 2026) and are
 reproduced on the site word for word.
 
 The form is at **`/team-directory/`** — on Pages,
-`https://lapig-ufg.github.io/time2graze-workshop/team-directory/`. The route is
-unlisted: it is not in the navigation, not linked from the home page, not in
-the assistant's corpus, and it asks search engines not to index it. It is
-reached by the link the organiser shares. Moving it onto the home page is the
-organiser's call, not a tidy-up.
+`https://lapig-ufg.github.io/time2graze-workshop/team-directory/`. The home
+page has a card for it at `/#team-directory`, and the assistant knows where it
+is. It is not in the navigation. It was unlisted for its first hours so the
+link could be shared and checked before it was announced; that address is
+kept so those links still work.
 
 ## Deploying the script
 

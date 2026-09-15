@@ -2493,15 +2493,17 @@ later change, and says why the manifest now carries the full Drive scope:
 `DriveApp` refused the photograph under `drive.file`, and a new scope breaks
 every endpoint on the web app until the owner accepts it in the editor.
 
-**It is unlisted, at `/team-directory/`.** The organiser asked for it to be
-published where a link can be shared with the people who should answer and
-check it, but not anywhere obvious. So it is a route of its own that nothing
-on the site points to: not the navigation, not the home page, not the
-assistant's corpus, and `robots: noindex`. That is also why it does not break
-the four-destination rule — it is not a destination, it is a link. Its first
-version sat folded on the home page at `/#team-directory`; the folding is
-gone, because anyone arriving at the route came to answer it. Surfacing it on
-the home page or in the assistant is the organiser's decision to make.
+**It is at `/team-directory/`, linked from the home page.** It was published
+unlisted first (15 September 2026), so the organiser could share the link and
+have people check it before announcing it; the same day it was made visible.
+The route stayed, because that address is the one people already had. The home
+page carries a card for it — the lede and one link, `#team-directory`, between
+the overview and the institutions: people, then the bodies they belong to — in
+`components/team-directory-invite.tsx`. The form is not inlined there: ten
+questions would add about three screens to a phone, on the page that was split
+into four to stop exactly that. It is not a fifth destination either, and is
+not in the navigation. On its own page the form opens expanded, because anyone
+arriving there came to answer it.
 
 **It is the first POST the site makes on its own behalf.** Calendar sharing,
 recap flagging and the split-session choices are a field each and travel as
@@ -2572,7 +2574,9 @@ harness is not in the repository — it needs a browser download — but it is w
 the claim that this works rests on, next to the live check of the deployed
 endpoint.
 
-**The assistant does not know about it, deliberately.** An entry pointing at
-the form would be the most obvious place of all to find it, since the panel is
-on every page. Add one to `scripts/build-assistant-corpus.mjs` when the
-organiser decides the directory should be found rather than shared.
+**The assistant knows about it.** `scripts/build-assistant-corpus.mjs` adds
+one entry pointing at `/#team-directory` — the home card, since the assistant
+test only admits links to the four destinations — so a participant asking
+where to add themselves is sent to it rather than told a directory exists.
+`components/team-directory-invite.tsx` is among the page sources
+`scripts/assistant.test.mjs` checks anchors against.

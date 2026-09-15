@@ -19,6 +19,7 @@ import { withBasePath } from '@/lib/base-path';
 import { materialsByDay } from '@/lib/materials';
 import { OptionalStory } from '@/components/optional-story';
 import { StoryLink } from '@/components/story-link';
+import { TeamDirectoryInvite } from '@/components/team-directory-invite';
 import { WhatsAppMark } from '@/components/whatsapp-mark';
 
 const SCHEDULED_ITEMS = AGENDA.reduce(
@@ -290,6 +291,11 @@ export function HomeLanding() {
           </dl>
         </div>
       </section>
+
+      {/* Who is on the project. After the overview because it is about
+          Time2Graze rather than the week, before the institutions because it
+          is people, then the bodies they belong to. */}
+      <TeamDirectoryInvite />
 
       <Institutions />
     </>

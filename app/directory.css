@@ -28,6 +28,9 @@
 
 .td-toggle { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; min-height: 44px; margin-top: 16px; padding: 10px 20px; color: #fff; background: var(--forest); border: 0; border-radius: var(--radius); font-family: inherit; font-size: var(--t-meta-lg); font-weight: 750; cursor: pointer; transition: background var(--m-quick) var(--m-ease); }
 .td-toggle:hover { background: var(--forest-dark); }
+/* On the home page the control is a link to the form's own page. */
+a.td-toggle { align-items: center; text-decoration: none; }
+.td-toggle-arrow { width: 17px; height: 17px; }
 .td-toggle-note { color: var(--accent); font-size: var(--t-label); font-weight: 600; letter-spacing: .04em; }
 /* Open, the control is no longer the thing being offered — "Send entry" is.
    A second filled button beside it would ask the reader which one is the way

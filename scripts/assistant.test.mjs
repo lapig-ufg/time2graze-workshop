@@ -85,6 +85,7 @@ const pageSources = [
   'components/friday-visit.tsx',
   'components/farm-map.tsx',
   'app/materials/page.tsx',
+  'components/team-directory-invite.tsx',
 ].map((file) => readFileSync(new URL(`../${file}`, import.meta.url), 'utf8'));
 
 function pageRendersAnchor(anchor) {

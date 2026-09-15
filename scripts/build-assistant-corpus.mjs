@@ -31,6 +31,7 @@ import {
   TOWN_INTRO,
 } from '../data/geography.ts';
 import { RECAPS } from '../data/recaps.ts';
+import { DIRECTORY_EXPERTISE, DIRECTORY_TITLE } from '../data/directory.ts';
 import { VISUAL_INSPECTION_MODULE } from '../data/assistant-materials.ts';
 import { dayLabel, presenterLabel, timeLabel } from '../lib/schedule.ts';
 
@@ -104,6 +105,24 @@ const PAGE_TEXT = {
 for (const { href, label } of DESTINATIONS) {
   add(`page-${href}`, 'page', label, PAGE_TEXT[href] ?? '', href);
 }
+
+/* The team directory. The form is at /team-directory/, which is not one of
+   the four destinations, so the link lands on the home page's card for it. */
+add(
+  'team-directory',
+  'page',
+  DIRECTORY_TITLE,
+  `An internal directory of who is on the Time2Graze project and what each ` +
+    `person works on, filled in from a form on this site, linked from the home ` +
+    `page. It asks for a full name, organization, job title, the countries or ` +
+    `regions you support, which Time2Graze team you are part of, your role in ` +
+    `two or three sentences, your areas of expertise (${DIRECTORY_EXPERTISE.map((o) => o.label).join('; ')}), ` +
+    `an e-mail address, an optional profile photo, and whether you agree to ` +
+    `be included. One entry is kept per e-mail address: sending again from ` +
+    `the same address replaces your earlier answers rather than adding a ` +
+    `second entry.`,
+  '/#team-directory',
+);
 
 /* The programme. A session's anchor is its id, and the day panel resolves it
    from the hash on load — so a session link lands on the open day. */
