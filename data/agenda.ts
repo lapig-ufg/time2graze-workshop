@@ -240,6 +240,12 @@ export const AGENDA: Day[] = [
             format: 'HTML',
             pdfCopy: '/files/priorities-barriers/deck.pdf',
           },
+          {
+            kind: 'document',
+            title: 'Workshop boards · 71 contributions',
+            href: '/files/workshop-boards/',
+            format: '3D',
+          },
         ],
       },
       /**

@@ -6,9 +6,9 @@
     "node": ">=22.13.0"
   },
   "scripts": {
-    "predev": "node scripts/build-calendar.mjs && node scripts/build-assistant-corpus.mjs",
+    "predev": "node scripts/build-workshop-boards.mjs && node scripts/build-calendar.mjs && node scripts/build-assistant-corpus.mjs",
     "dev": "next dev",
-    "prebuild": "node scripts/build-calendar.mjs && node scripts/build-assistant-corpus.mjs",
+    "prebuild": "node scripts/build-workshop-boards.mjs && node scripts/build-calendar.mjs && node scripts/build-assistant-corpus.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "oxlint",
@@ -28,10 +28,13 @@
     "@types/node": "22.19.19",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
+    "@types/three": "0.186.0",
+    "esbuild": "0.28.2",
     "oxfmt": "0.61.0",
     "oxlint": "1.76.0",
     "oxlint-tsgolint": "7.0.2001",
     "tailwindcss": "4.2.1",
+    "three": "0.186.0",
     "typescript": "5.9.3"
   },
   "type": "module"

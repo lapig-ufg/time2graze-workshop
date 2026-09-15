@@ -86,6 +86,7 @@ export function materialDetail(entry: MaterialEntry) {
  * promised a file that never arrives.
  */
 export function materialAction(material: Material) {
+  if (material.format === '3D') return 'Open boards';
   const opens =
     material.format === 'HTML' ||
     isPdf(material) ||
