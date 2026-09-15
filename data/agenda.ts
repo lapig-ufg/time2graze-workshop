@@ -284,7 +284,16 @@ export const AGENDA: Day[] = [
         speakers: [{ name: 'Laerte', org: 'LAPIG' }],
         venueId: null,
         kind: 'technical',
-        materials: [{ kind: 'slides' }],
+        /* Laerte's deck, supplied 15 September 2026 as Google Slides; exported
+           to PDF and rendered page by page to WebP, as Nathália's was, so the
+           site serves it without depending on that deck's sharing. */
+        materials: [
+          {
+            kind: 'slides',
+            href: '/files/field-lessons-brazil/index.html',
+            format: 'HTML',
+          },
+        ],
       },
       {
         id: 'd2-daily-summary',

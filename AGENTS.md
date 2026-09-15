@@ -2341,3 +2341,22 @@ The live model adds `document?: string` while retaining `sections` for backwards
 The organiser replaced the in-site rich-text editor with **one Google Doc per day**, shared "Anyone with the link → Commenter", with editors named by email. The site and the repository are public, so link access must never be Editor. The Doc is the official text, and the site displays only accepted text, with a "Comment or suggest edits" link. `apps-script/recap-docs.gs` exports each doc anonymously and caches it for 60 s. `lib/recap-doc.ts` converts the export into the summary's own typography. The Tiptap editor, `components/recap-editor.tsx`, and the `@tiptap/*` and `mammoth` dependencies were removed. Do not restore an in-site editor or a password workflow. See `docs/daily-recap.md` for the doc links and the procedure.
 
 The Ask assistant reads the same summaries live and in full. The worker and the panel both turn the Apps Script response into corpus entries with `lib/recap-corpus.ts`, so the ids the model cites resolve in the panel. Do not move that conversion into only one of them.
+
+## Laerte's field-campaigns deck — 15 September 2026
+
+The Day 2 talk *A few lessons from recent field campaigns in Brazil*
+(`d2-open-agenda-afternoon`) was supplied as a Google Slides link. It ships as
+a copy, not as a link: exported to PDF, each of its 29 pages rendered to WebP
+at 2400px and served by the same full-screen viewer as the Field Protocol
+deck (`public/files/field-lessons-brazil/`).
+
+**Self-hosting is the default for a deck, and here it was also the safe
+option.** The supplied presentation was shared "Anyone with the link →
+Editor", and the site and repository are public: publishing that URL would
+have handed every reader write access to the presenter's file. The rule
+already written for the daily summaries — link access is never Editor —
+applies to slides as well. Ask for a Viewer link, or do what was done here and
+serve a copy, which also survives the deck being moved, renamed or reshared.
+
+A revised deck is republished by rerunning the same export and render over it,
+not by patching the images in place.
