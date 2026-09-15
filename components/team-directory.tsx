@@ -38,23 +38,22 @@ import { preparePhoto, type PhotoError } from '@/lib/directory-photo';
 /**
  * The Time2Graze team directory form.
  *
- * It is not a fifth destination. The questions belong to the project rather
- * than to a day, a venue or a file, so they sit on the home page, addressed by
- * `/#team-directory` — the arrangement the optional stories and the assistant
- * already established.
+ * **At an unlisted route, not on the home page.** The organiser wanted it
+ * published where a link can be shared with the people who should answer it,
+ * and checked by them, without advertising it to every visitor: it lives at
+ * `/team-directory/`, which is in neither the navigation nor the assistant's
+ * corpus and asks search engines not to index it. Putting it back on the home
+ * page is a decision for the organiser, not a tidy-up.
  *
- * **Folded until someone opens it.** Ten questions expanded on the home page
- * would add about three screens to a phone, on the one page that was split
- * into four to stop exactly that. Closed it is a card with the sentence that
- * says what the directory is and what answering costs; open it is a form, and
- * it is allowed the room a form needs.
+ * **Open on arrival.** Anyone on this page followed a link to answer it, so
+ * the questions are already showing; the button still folds them away, which
+ * is how someone who has sent an entry reads what they sent.
  *
- * **An answer already sent is a statement, not a blank form.** Most returns to
- * this card are to check what was sent, as they are on the split-session
- * chooser. Correcting it reopens the form with every answer already in it,
- * because nobody on hotel wi-fi should retype a paragraph to fix a job title —
- * the entry is keyed by e-mail address on the organiser's sheet, so the
- * correction replaces the row rather than adding a second one.
+ * **An answer already sent is a statement, not a blank form.** Correcting it
+ * reopens the form with every answer already in it, because nobody on hotel
+ * wi-fi should retype a paragraph to fix a job title — the entry is keyed by
+ * e-mail address on the organiser's sheet, so the correction replaces the row
+ * rather than adding a second one.
  */
 
 const MESSAGES: Record<DirectoryStatus | 'sending', string> = {
@@ -123,7 +122,7 @@ export function TeamDirectory() {
   const sent = useSentEntry();
   const id = useId();
 
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const [draft, setDraft] = useState<Draft>(EMPTY);
   /* Null until this reader touches the form, so a remembered entry is what the
      fields show until then — the same shape as the split-session chooser. */
@@ -246,7 +245,7 @@ export function TeamDirectory() {
     >
       <div className="section-title">
         <p>Time2Graze</p>
-        <h2 id="team-directory-title">{DIRECTORY_TITLE}</h2>
+        <h1 id="team-directory-title">{DIRECTORY_TITLE}</h1>
       </div>
 
       <div className="td-card" data-open={open ? '' : undefined}>

@@ -2485,18 +2485,23 @@ the organiser's specification and are reproduced verbatim: `data/directory.ts`
 **is** the form, not a paraphrase of it. Ten questions, three of them a
 dropdown, a checkbox group and a multiple choice, one of them a file upload.
 
-**Running it needs one thing this repository cannot do: `clasp push` and a
-redeploy of the existing Apps Script deployment.** Until that happens the form
-renders, validates and refuses to pretend — a send answers "That did not send."
-[`docs/team-directory.md`](docs/team-directory.md) is the whole procedure and
-the only document that step needs.
+**It is deployed.** The Apps Script side went live on 15 September 2026
+(`clasp push`, then a redeploy of the existing deployment — never a new one)
+and was checked against the published endpoint, photograph included.
+[`docs/team-directory.md`](docs/team-directory.md) is the procedure for any
+later change, and says why the manifest now carries the full Drive scope:
+`DriveApp` refused the photograph under `drive.file`, and a new scope breaks
+every endpoint on the web app until the owner accepts it in the editor.
 
-**It is not a fifth destination.** The questions belong to the project rather
-than to a day, a venue or a file, so the form sits on the home page addressed
-by `/#team-directory`, between the overview and the institutions — people,
-then the bodies they belong to. It is folded until someone opens it: ten
-questions expanded would add about three screens to a phone, on the page that
-was split into four to stop exactly that.
+**It is unlisted, at `/team-directory/`.** The organiser asked for it to be
+published where a link can be shared with the people who should answer and
+check it, but not anywhere obvious. So it is a route of its own that nothing
+on the site points to: not the navigation, not the home page, not the
+assistant's corpus, and `robots: noindex`. That is also why it does not break
+the four-destination rule — it is not a destination, it is a link. Its first
+version sat folded on the home page at `/#team-directory`; the folding is
+gone, because anyone arriving at the route came to answer it. Surfacing it on
+the home page or in the assistant is the organiser's decision to make.
 
 **It is the first POST the site makes on its own behalf.** Calendar sharing,
 recap flagging and the split-session choices are a field each and travel as
@@ -2564,11 +2569,10 @@ correction replacing that row, a second person adding a second one, "Other"
 demanding its own field, the Drive failure, the daily cap, a cut connection, a
 double-pressed send sending once, and the whole thing again at 390px. That
 harness is not in the repository — it needs a browser download — but it is what
-the claim that this works rests on, next to the deploy step above, which is
-still outstanding.
+the claim that this works rests on, next to the live check of the deployed
+endpoint.
 
-**The assistant knows about it.** `scripts/build-assistant-corpus.mjs` adds one
-entry pointing at `/#team-directory`, so a participant asking where to add
-themselves — in Portuguese or Spanish, which is what the panel is for — is sent
-to the form rather than told a directory exists. `components/team-directory.tsx`
-joined the page sources `scripts/assistant.test.mjs` checks anchors against.
+**The assistant does not know about it, deliberately.** An entry pointing at
+the form would be the most obvious place of all to find it, since the panel is
+on every page. Add one to `scripts/build-assistant-corpus.mjs` when the
+organiser decides the directory should be found rather than shared.

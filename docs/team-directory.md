@@ -5,15 +5,21 @@ project and what each person works on. The questions come from the organiser's
 specification (`TIME2GRAZE TEAM DIRECTORY`, 15 September 2026) and are
 reproduced on the site word for word.
 
-The form is on the home page, at `/#team-directory`. It is not a fifth
-destination and does not appear in the navigation.
+The form is at **`/team-directory/`** — on Pages,
+`https://lapig-ufg.github.io/time2graze-workshop/team-directory/`. The route is
+unlisted: it is not in the navigation, not linked from the home page, not in
+the assistant's corpus, and it asks search engines not to index it. It is
+reached by the link the organiser shares. Moving it onto the home page is the
+organiser's call, not a tidy-up.
 
-## One step is still yours: deploy the script
+## Deploying the script
 
-The site is ready and the code is on the branch, but the endpoint that stores
-the answers lives in the Apps Script project, and only its owner can deploy it.
-**Until that is done, the form renders and validates but every send answers
-"That did not send."**
+The endpoint that stores the answers lives in the Apps Script project, and
+only its owner can deploy it. It was deployed on 15 September 2026 (version 13
+of the existing deployment) and checked live: a first entry, a correction from
+the same address, a refused option and a photograph stored in Drive.
+
+After any change under `apps-script/`:
 
 ```
 cd apps-script
@@ -25,36 +31,38 @@ clasp deploy -i <deploymentId>          # the existing deployment, never a new o
 talking to the old version. `-i` keeps the URL that `lib/apps-script.ts`
 already holds, so nothing in the site has to change.
 
-Then, once, in the Apps Script editor:
+The spreadsheet and the photo folder are created by the first entry that
+arrives; `directorySetup`, run from the editor, does the same on demand and
+logs the address of both.
 
-1. Run `directorySetup`. It creates the spreadsheet and the photo folder and
-   logs the address of both. Doing it now means the first participant to answer
-   is not also the first to find out whether Drive will cooperate.
-2. Accept the authorisation prompt if one appears. The manifest's scopes are
-   unchanged — `spreadsheets` and `drive.file` were already there for the
-   corrections sheet — so it normally will not.
+### The Drive scope is required
+
+`DriveApp` is refused under `drive.file` alone — the first live test stored the
+row and answered `photo: failed`. The manifest therefore carries the full
+`https://www.googleapis.com/auth/drive` scope as well. A scope added to the
+manifest is not granted by deploying it: the web app runs as its owner, so
+**until the owner runs a function in the editor and accepts the new consent,
+every request to the web app fails** — calendar sharing, recaps and split
+sessions included. Push, deploy and accept in one sitting.
 
 The sheet is **Time2Graze team directory**, private to the account running the
 script. The photographs go to a Drive folder called **Time2Graze team directory
 photos**, and the sheet's last-but-one column carries each file's link.
 
-### Check it once, from the live site
+### Check it from the live site
 
-Open the published home page, fill the form in with your own details and send
-it. You should see "Sent. Your entry is with the Time2Graze organisers." and a
-row in the sheet within a second or two. Send it again with a changed job title
+Open `/team-directory/`, fill the form in with your own details and send it.
+You should see "Sent. Your entry is with the Time2Graze organisers." and a row
+in the sheet within a second or two. Send it again with a changed job title
 from the same address: the answer becomes "Updated" and the row is rewritten
 rather than a second one appearing.
 
 ### If a photograph does not arrive
 
-The row is written first and the photograph attempted afterwards, so a Drive
-failure never costs anyone their answers — the participant is told "Your photo
-could not be stored" and the rest of the entry is on the sheet. If it happens
-to everyone rather than to one person, `DriveApp` is being refused under the
-`drive.file` scope: add `https://www.googleapis.com/auth/drive` to
-`oauthScopes` in `apps-script/appsscript.json`, push, redeploy, and re-run
-`directorySetup` to accept the new consent.
+The participant is told "Your photo could not be stored" and the rest of the
+entry is on the sheet regardless. If it happens to everyone rather than to one
+person, look first at the scope above: whether `appsscript.json` still carries
+`auth/drive`, and whether the owner has accepted it since it was last pushed.
 
 ## What the sheet holds
 

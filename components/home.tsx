@@ -19,7 +19,6 @@ import { withBasePath } from '@/lib/base-path';
 import { materialsByDay } from '@/lib/materials';
 import { OptionalStory } from '@/components/optional-story';
 import { StoryLink } from '@/components/story-link';
-import { TeamDirectory } from '@/components/team-directory';
 import { WhatsAppMark } from '@/components/whatsapp-mark';
 
 const SCHEDULED_ITEMS = AGENDA.reduce(
@@ -291,13 +290,6 @@ export function HomeLanding() {
           </dl>
         </div>
       </section>
-
-      {/* Who is on the project, asked for rather than published: the one
-          section on the site that collects something. It follows the overview
-          because it is about Time2Graze rather than about the week, and it
-          precedes the institutions for the same reason — people, then the
-          bodies they belong to. */}
-      <TeamDirectory />
 
       <Institutions />
     </>
