@@ -138,13 +138,9 @@ export const AGENDA: Day[] = [
             title: 'Field Protocol Alignment',
             href: '/files/field-protocol-alignment/index.html',
             format: 'HTML',
-          },
-          /* The same pages as one PDF, for reading offline or keeping a copy. */
-          {
-            kind: 'slides',
-            title: 'Full deck',
-            href: '/files/field-protocol-alignment/deck.pdf',
-            format: 'PDF',
+            /* The same pages as one PDF: offline, and a fallback if the
+               viewer fails a reader. */
+            pdfCopy: '/files/field-protocol-alignment/deck.pdf',
           },
           /* Teles et al. (2025), Land Degradation & Development 36:6539–6548,
              doi:10.1002/ldr.70089 — open access under CC BY, so it is hosted
@@ -220,13 +216,9 @@ export const AGENDA: Day[] = [
             kind: 'slides',
             href: '/files/time2graze-vision/index.html',
             format: 'HTML',
-          },
-          /* The same pages as one PDF, for reading offline or keeping a copy. */
-          {
-            kind: 'slides',
-            title: 'Full deck',
-            href: '/files/time2graze-vision/deck.pdf',
-            format: 'PDF',
+            /* The same pages as one PDF: offline, and a fallback if the
+               viewer fails a reader. */
+            pdfCopy: '/files/time2graze-vision/deck.pdf',
           },
         ],
       },
@@ -316,13 +308,9 @@ export const AGENDA: Day[] = [
             kind: 'slides',
             href: '/files/field-lessons-brazil/index.html',
             format: 'HTML',
-          },
-          /* The same pages as one PDF, for reading offline or keeping a copy. */
-          {
-            kind: 'slides',
-            title: 'Full deck',
-            href: '/files/field-lessons-brazil/deck.pdf',
-            format: 'PDF',
+            /* The same pages as one PDF: offline, and a fallback if the
+               viewer fails a reader. */
+            pdfCopy: '/files/field-lessons-brazil/deck.pdf',
           },
         ],
       },

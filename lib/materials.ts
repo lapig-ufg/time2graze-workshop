@@ -84,10 +84,6 @@ export function materialDetail(entry: MaterialEntry) {
  * What pressing the file does. A deck published as a web page, or hosted
  * elsewhere (Google Slides), opens in the browser; calling that `Download`
  * promised a file that never arrives.
- *
- * A hosted PDF is named by its format rather than its kind. A session that
- * publishes both the deck and a PDF copy of it otherwise shows two links
- * reading `Open slides`, which says nothing about which is which.
  */
 export function materialAction(material: Material) {
   const opens =
@@ -95,8 +91,7 @@ export function materialAction(material: Material) {
     isPdf(material) ||
     /^https?:\/\//.test(material.href ?? '');
   const verb = opens ? 'Open' : 'Download';
-  const noun = isPdf(material) ? 'PDF' : KIND_LABEL[material.kind].toLowerCase();
-  return `${verb} ${noun}`;
+  return `${verb} ${KIND_LABEL[material.kind].toLowerCase()}`;
 }
 
 /**

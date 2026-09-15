@@ -137,6 +137,15 @@ export default function MaterialsPage() {
                             Download PDF
                           </a>
                         )}
+                        {entry.material.pdfCopy && (
+                          <a
+                            className="resource-file"
+                            href={withBasePath(entry.material.pdfCopy)}
+                            download
+                          >
+                            Download PDF
+                          </a>
+                        )}
                       </span>
                     ) : (
                       <em>To be published</em>

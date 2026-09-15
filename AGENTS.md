@@ -2406,11 +2406,18 @@ and 404s the lot. GitHub Pages serves the file as asked. Preview with
 
 ## A PDF copy behind every deck — 15 September 2026
 
-Each published deck now ships a PDF of the same pages beside its viewer
-(`deck.pdf` in the deck's folder), declared on the session as a second
-material titled `Full deck`. It is the fallback: it opens in any browser with
-no JavaScript, it can be kept on a phone before the room loses wi-fi, and it
-survives whatever happens to the viewer.
+Each published deck ships a PDF of the same pages beside its viewer
+(`deck.pdf` in the deck's folder). It is the fallback: it opens in any browser
+with no JavaScript, it can be kept on a phone before the room loses wi-fi, and
+it survives whatever happens to the viewer.
+
+**It is a second button on the deck, not a material of its own.**
+`Material.pdfCopy` holds its path, and `/materials/`, the programme and the
+home band each add one download next to the deck's own link. Declared as a
+separate material — which is how it shipped first — the page listed the same
+presentation twice under the same session title and counted it as two
+expected files. A PDF earns a row of its own only when it is a different
+document, as Teles et al. (2025) is.
 
 - **The PDF is built from the published WebP pages, not from the source
   file.** What it shows is exactly what the viewer shows, and the deck folder
@@ -2418,9 +2425,6 @@ survives whatever happens to the viewer.
   wide keeps Laerte's 29 pages at 3.9 MB against 11 MB for the original
   export; the text stops being selectable, which is the price of a fallback a
   phone will actually finish downloading.
-- **`materialAction` names a hosted PDF by its format** (`Open PDF`), not by
-  its kind. A session publishing both the deck and its PDF copy otherwise
-  shows two links reading `Open slides`, which tells a reader nothing.
 - The viewer's own bar carries the same file as `PDF`, next to `Full screen`.
 
 Laerte's deck also exists as a Google Slides link, and it is deliberately not

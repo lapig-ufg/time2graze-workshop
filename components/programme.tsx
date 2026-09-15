@@ -161,6 +161,16 @@ function MaterialLinks(
               Download PDF ↓
             </a>
           )}
+          {m.pdfCopy && (
+            <a
+              className="session-file"
+              href={withBasePath(m.pdfCopy)}
+              download
+              tabIndex={silent ? -1 : undefined}
+            >
+              PDF ↓
+            </a>
+          )}
         </Fragment>
       ))}
     </p>

@@ -17,6 +17,15 @@ export type Material = {
   format?: string;
   /** Open to workshop participants only, rather than to anyone with the link. */
   restricted?: boolean;
+  /**
+   * A PDF of the same pages, published beside the file itself — the fallback
+   * behind a deck that is served as a web page.
+   *
+   * It is an extra button on this material, never a material of its own:
+   * declared separately, `/materials/` listed the same presentation twice and
+   * counted it as two expected files.
+   */
+  pdfCopy?: string;
 };
 
 export type Speaker = {
