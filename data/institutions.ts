@@ -60,3 +60,19 @@ export const DISPLAYED_INSTITUTIONS: Institution[] = [
     height: 71,
   },
 ];
+
+/**
+ * LAPIG's own channels, taken from the row in the header of
+ * lapig.iesa.ufg.br on 15 September 2026.
+ *
+ * That row opens with a Facebook icon pointing at UFG's page rather than the
+ * laboratory's, so it is not repeated here: these are the host laboratory's
+ * accounts, and the workshop has none of its own to imply. The LinkedIn link
+ * is stored without the `?originalSubdomain=br` parameter the site carries —
+ * that records how a reader happened to reach the page, not the company.
+ */
+export const LAPIG_CHANNELS = [
+  { name: 'Instagram', href: 'https://www.instagram.com/lapigufg/' },
+  { name: 'YouTube', href: 'https://www.youtube.com/@LAPIGUFG' },
+  { name: 'LinkedIn', href: 'https://www.linkedin.com/company/lapig-ufg' },
+] as const;

@@ -13,6 +13,7 @@ import { PARTICIPANT_GROUP } from '@/data/contact';
 import {
   DISPLAYED_INSTITUTIONS,
   type Institution,
+  LAPIG_CHANNELS,
 } from '@/data/institutions';
 import { withBasePath } from '@/lib/base-path';
 import { materialsByDay } from '@/lib/materials';
@@ -169,6 +170,27 @@ function Institutions() {
             />
           </a>
         ))}
+      </div>
+      {/* The host laboratory's own channels, written out rather than drawn as
+          brand glyphs. Two reasons: the workshop has no accounts of its own,
+          and an unlabelled icon row would read as if it did; and lucide
+          carries no brand marks, while Simple Icons has dropped LinkedIn's at
+          the company's request — so a complete set does not exist to draw. */}
+      <div className="institution-social">
+        <span>LAPIG, the host laboratory</span>
+        <p>
+          {LAPIG_CHANNELS.map((channel) => (
+            <a
+              href={channel.href}
+              key={channel.name}
+              rel="noreferrer"
+              target="_blank"
+            >
+              {channel.name}
+              <ArrowUpRight aria-hidden="true" />
+            </a>
+          ))}
+        </p>
       </div>
       <div className="institution-stories">
         <OptionalStory id="ufg" />

@@ -139,6 +139,13 @@ export const AGENDA: Day[] = [
             href: '/files/field-protocol-alignment/index.html',
             format: 'HTML',
           },
+          /* The same pages as one PDF, for reading offline or keeping a copy. */
+          {
+            kind: 'slides',
+            title: 'Full deck',
+            href: '/files/field-protocol-alignment/deck.pdf',
+            format: 'PDF',
+          },
           /* Teles et al. (2025), Land Degradation & Development 36:6539–6548,
              doi:10.1002/ldr.70089 — open access under CC BY, so it is hosted
              here as published. Supplied 14 September 2026. */
@@ -204,7 +211,24 @@ export const AGENDA: Day[] = [
         speakers: [{ name: 'Santiago', org: 'GMH' }],
         venueId: null,
         kind: 'technical',
-        materials: [{ kind: 'slides' }],
+        /* Santiago's deck, supplied 15 September 2026 as a 22-slide PowerPoint;
+           converted to PDF and rendered page by page to WebP, as the others
+           were. The file's own two hidden slides stay hidden: the export
+           carries the 20 the presenter shows. */
+        materials: [
+          {
+            kind: 'slides',
+            href: '/files/time2graze-vision/index.html',
+            format: 'HTML',
+          },
+          /* The same pages as one PDF, for reading offline or keeping a copy. */
+          {
+            kind: 'slides',
+            title: 'Full deck',
+            href: '/files/time2graze-vision/deck.pdf',
+            format: 'PDF',
+          },
+        ],
       },
       {
         id: 'd2-priorities-barriers',
@@ -284,7 +308,23 @@ export const AGENDA: Day[] = [
         speakers: [{ name: 'Laerte', org: 'LAPIG' }],
         venueId: null,
         kind: 'technical',
-        materials: [{ kind: 'slides' }],
+        /* Laerte's deck, supplied 15 September 2026 as Google Slides; exported
+           to PDF and rendered page by page to WebP, as Nathália's was, so the
+           site serves it without depending on that deck's sharing. */
+        materials: [
+          {
+            kind: 'slides',
+            href: '/files/field-lessons-brazil/index.html',
+            format: 'HTML',
+          },
+          /* The same pages as one PDF, for reading offline or keeping a copy. */
+          {
+            kind: 'slides',
+            title: 'Full deck',
+            href: '/files/field-lessons-brazil/deck.pdf',
+            format: 'PDF',
+          },
+        ],
       },
       {
         id: 'd2-daily-summary',

@@ -2341,3 +2341,89 @@ The live model adds `document?: string` while retaining `sections` for backwards
 The organiser replaced the in-site rich-text editor with **one Google Doc per day**, shared "Anyone with the link → Commenter", with editors named by email. The site and the repository are public, so link access must never be Editor. The Doc is the official text, and the site displays only accepted text, with a "Comment or suggest edits" link. `apps-script/recap-docs.gs` exports each doc anonymously and caches it for 60 s. `lib/recap-doc.ts` converts the export into the summary's own typography. The Tiptap editor, `components/recap-editor.tsx`, and the `@tiptap/*` and `mammoth` dependencies were removed. Do not restore an in-site editor or a password workflow. See `docs/daily-recap.md` for the doc links and the procedure.
 
 The Ask assistant reads the same summaries live and in full. The worker and the panel both turn the Apps Script response into corpus entries with `lib/recap-corpus.ts`, so the ids the model cites resolve in the panel. Do not move that conversion into only one of them.
+
+## Laerte's field-campaigns deck — 15 September 2026
+
+The Day 2 talk *A few lessons from recent field campaigns in Brazil*
+(`d2-open-agenda-afternoon`) was supplied as a Google Slides link. It ships as
+a copy, not as a link: exported to PDF, each of its 29 pages rendered to WebP
+at 2400px and served by the same full-screen viewer as the Field Protocol
+deck (`public/files/field-lessons-brazil/`).
+
+**Self-hosting is the default for a deck, and here it was also the safe
+option.** The supplied presentation was shared "Anyone with the link →
+Editor", and the site and repository are public: publishing that URL would
+have handed every reader write access to the presenter's file. The rule
+already written for the daily summaries — link access is never Editor —
+applies to slides as well. Ask for a Viewer link, or do what was done here and
+serve a copy, which also survives the deck being moved, renamed or reshared.
+
+A revised deck is republished by rerunning the same export and render over it,
+not by patching the images in place.
+
+## LAPIG's own channels — 15 September 2026
+
+The host laboratory's Instagram, YouTube and LinkedIn were requested on the
+site and sit in the `Institutional affiliations` band on the home page, under
+the marks and above the stories, labelled `LAPIG, the host laboratory`
+(`LAPIG_CHANNELS` in `data/institutions.ts`).
+
+Three decisions there are deliberate:
+
+- **Not in the footer.** Site-wide chrome would read as the workshop's own
+  accounts, and the workshop has none — the same reason it has no badge. Next
+  to LAPIG's mark, they are plainly the laboratory's.
+- **Names, not brand glyphs.** lucide carries no brand marks, and Simple Icons
+  has dropped LinkedIn's at the company's request, so a complete set does not
+  exist to draw. The names carry the site's external-link arrow instead.
+- **Facebook is left out.** The icon row on lapig.iesa.ufg.br opens with one,
+  but it points at UFG's page rather than the laboratory's.
+
+## Santiago's Time2Graze vision deck — 15 September 2026
+
+The Day 2 opening talk `Project Overview & Theory of Change`
+(`d2-overview-toc`) was supplied as a PowerPoint file and ships like the
+others: converted to PDF, rendered to WebP at 2400px, served by the
+full-screen viewer (`public/files/time2graze-vision/`).
+
+Two things about converting a `.pptx` that are easy to get wrong:
+
+- **Install the fonts before converting.** LibreOffice needs
+  `libreoffice-impress` (the core package alone refuses the file with "source
+  file could not be loaded"), and the deck's Arial, Calibri, Montserrat and
+  Roboto need `fonts-liberation`, `fonts-crosextra-carlito`,
+  `fonts-montserrat` and `fonts-roboto`. Without them the export silently
+  substitutes and the line breaks move.
+- **Hidden slides stay hidden.** The file holds 22 slides, two of them hidden
+  by the presenter; the PDF export drops those on its own and the published
+  deck is the 20 that are shown. Check the count against
+  `p:sld … show="0"` before assuming an export lost something.
+
+A local `npx serve` is not a faithful preview of these decks: it redirects
+`…/index.html` to `…/index`, which re-bases every relative `slides/NN.webp`
+and 404s the lot. GitHub Pages serves the file as asked. Preview with
+`python3 -m http.server` inside `out/`.
+
+## A PDF copy behind every deck — 15 September 2026
+
+Each published deck now ships a PDF of the same pages beside its viewer
+(`deck.pdf` in the deck's folder), declared on the session as a second
+material titled `Full deck`. It is the fallback: it opens in any browser with
+no JavaScript, it can be kept on a phone before the room loses wi-fi, and it
+survives whatever happens to the viewer.
+
+- **The PDF is built from the published WebP pages, not from the source
+  file.** What it shows is exactly what the viewer shows, and the deck folder
+  stays the single origin — no second export to keep in step. JPEG at 1800px
+  wide keeps Laerte's 29 pages at 3.9 MB against 11 MB for the original
+  export; the text stops being selectable, which is the price of a fallback a
+  phone will actually finish downloading.
+- **`materialAction` names a hosted PDF by its format** (`Open PDF`), not by
+  its kind. A session publishing both the deck and its PDF copy otherwise
+  shows two links reading `Open slides`, which tells a reader nothing.
+- The viewer's own bar carries the same file as `PDF`, next to `Full screen`.
+
+Laerte's deck also exists as a Google Slides link, and it is deliberately not
+published: that presentation is shared `Anyone with the link → Editor`, and
+this site is public. The PDF is the plan B instead — see the note on his deck
+above.
