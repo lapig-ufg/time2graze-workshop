@@ -56,7 +56,10 @@ function resolveHash() {
     const index=WORKSHOP_BOARDS.findIndex(b=>b.id===value.slice(6));
     if(index>=0) {select(index,undefined,false);return;}
   } else if(value==='all'||!value) {
+    // Phones open on the first board; the overview is too small to choose from there.
     select(!value&&innerWidth<600?0:null,undefined,false);return;
+  } else if(value==='reading') {
+    setReading(true);return;
   }
   feedback.textContent='This board or note link was not found. All contributions are available below.';
   select(null,undefined,false);
@@ -67,6 +70,7 @@ function setReading(value:boolean) {
   document.body.classList.toggle('has-note',Boolean(noteId)&&!value);
   workspace.hidden=value;
   reading.hidden=!value;
+  scene?.setPaused(value);
   toggle.textContent=value?'3D view':'Reading view';
   toggle.setAttribute('aria-pressed',String(value));
   reading.querySelectorAll<HTMLElement>(':scope > section').forEach(section=>section.hidden=false);
@@ -162,6 +166,7 @@ async function start() {
     await Promise.all([document.fonts.load('600 20px Manrope'),document.fonts.load('600 20px "Cormorant Garamond"')]);
     const {BoardScene:Scene}=await import('./scene');
     scene=new Scene(get('scene'),(index,id)=>select(index,id),failure);
+    scene.setPaused(readingMode);
     ready=true;document.body.classList.add('scene-ready');get('loading').hidden=true;resolveHash();
   } catch(error) {console.error('Workshop boards could not start.',error);failure();}
 }

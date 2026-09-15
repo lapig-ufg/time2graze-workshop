@@ -58,9 +58,9 @@ Three.js's MIT license is copied from the installed package at build time.
 Ink is now its own transparent, unlit material, attached to the same curved
 geometry as the paper. Its near-black colour is not changed by lighting, fog,
 or filmic tone mapping. The paper itself remains physically shaded. Text uses
-Manrope 600, with larger type where it fits; overview ink is 512px, the active
-board upgrades to 1024px, and only the selected note receives a 2048px texture.
-Paper grain textures are shared by colour, and superseded ink maps are disposed.
+Manrope 600, with larger type where it fits; a mounted note's ink is 512px and
+only the selected note receives a 1024px texture. Paper grain textures are
+shared by colour, and superseded ink maps are disposed.
 
 A translucent plane behind the selected paper softens surrounding boards, with
 a small contact shadow to retain depth. The plane sits just behind the lifted
@@ -71,3 +71,38 @@ is enabled. Fit note restores the current note's framing without closing it;
 clicking outside returns to the board. The selected note keeps full contrast
 even when it does not match a retained search query. Link-copy feedback is
 visible in the phone view, including the manual-copy fallback.
+
+## Performance — 15 September 2026
+
+The first version kept all four boards in full: 77 notes, each with its own
+curved 20×24 mesh, shadow and ink map. On a desktop GPU that was 465 draw
+calls, 254,000 triangles and 168 textures per frame, and it was reported as
+sluggish. A first optimisation mounted one board at a time, which fixed the
+speed but removed the four boards standing side by side — which was the view
+that showed they are different sheets.
+
+The room is now two layers:
+
+- **The four easels are always present, and cheap.** Wood, backing, tape and
+  floor shadows are merged across all four easels into one mesh per material.
+  Each sheet is one plane carrying the whole board — heading, notes and marks —
+  painted into a single 768×1152 texture (`overviewTexture` in `paper.ts`).
+  The overview costs about 10 draw calls.
+- **One board at a time is real.** Choosing a board builds its notes and hides
+  its painted sheet; the previous board is destroyed. Neighbours stay visible
+  as painted sheets.
+
+Building a board's notes takes roughly 100 ms. When the camera flies to a
+board, the build runs a few milliseconds per frame during the flight
+(`buildBoard` is a generator, and each step uploads what it created) and the
+painted sheet is swapped for the real one when the camera arrives. A note link
+or a move without animation builds at once.
+
+Search dims a board as a whole when nothing on it matches, since a painted
+sheet cannot dim single notes; the mounted board follows the same rule so the
+four look alike.
+
+Measured at 1440×900, GPU time per frame: overview 465 calls / 4.7 ms before,
+10 calls / under 0.1 ms after; one board 465 calls / 5.4 ms before, 66 calls /
+0.3 ms after. Board switches after the first show no long tasks. Re-measure
+with `renderer.info` after changing what the stands or a mounted board draw.
