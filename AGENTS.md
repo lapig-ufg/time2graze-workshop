@@ -2497,13 +2497,17 @@ every endpoint on the web app until the owner accepts it in the editor.
 unlisted first (15 September 2026), so the organiser could share the link and
 have people check it before announcing it; the same day it was made visible.
 The route stayed, because that address is the one people already had. The home
-page carries a card for it — the lede and one link, `#team-directory`, between
-the overview and the institutions: people, then the bodies they belong to — in
-`components/team-directory-invite.tsx`. The form is not inlined there: ten
-questions would add about three screens to a phone, on the page that was split
-into four to stop exactly that. It is not a fifth destination either, and is
-not in the navigation. On its own page the form opens expanded, because anyone
-arriving there came to answer it.
+page carries a panel for it, `#team-directory`, in
+`components/team-directory-invite.tsx`: the lede and one link, after the
+participants' group and before "Purpose and format", where the organiser asked
+for it. It closes the block the hero opens, on that block's paper and rail, and
+it is forest with the lime rule — the pairing the hero's date and the "now" band
+use — because it is the one thing on the page that asks the reader for
+something. The form is not inlined there: ten questions would add about three
+screens to a phone, on the page that was split into four to stop exactly that.
+It is not a fifth destination either, and is not in the navigation. On its own
+page the form is always open and has no close control — the organiser found
+one pointless, since anyone arriving there came to answer it.
 
 **It is the first POST the site makes on its own behalf.** Calendar sharing,
 recap flagging and the split-session choices are a field each and travel as

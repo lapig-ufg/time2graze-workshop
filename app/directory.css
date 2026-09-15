@@ -9,15 +9,13 @@
    because a room has to be sized before an hour that is already in the
    programme, and a directory has no such hour.
 
-   Folded, the card is its lede and one button. Ten questions expanded on the
-   home page would add about three screens to a phone, on the page that was
-   split into four to stop exactly that. */
+   On its own page the form is always open: there is nothing to fold it into.
+   The home page carries a panel that links to it, at the end of this file. */
 
 .team-directory .section-title { margin-bottom: 26px; }
 
 .td-card { max-width: 780px; background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--forest); scroll-margin-top: 110px; }
-.td-head { padding: 22px clamp(18px, 2.2vw, 26px); background: var(--surface-soft); }
-.td-card[data-open] .td-head { border-bottom: 1px solid var(--line); }
+.td-head { padding: 22px clamp(18px, 2.2vw, 26px); background: var(--surface-soft); border-bottom: 1px solid var(--line); }
 .td-intro { max-width: 62ch; margin: 0; color: var(--text); font-size: var(--t-body); line-height: 1.6; }
 
 /* An answer already sent is a statement, not a blank form: most returns to
@@ -26,23 +24,14 @@
 .td-sent svg { flex: none; width: 19px; height: 19px; margin-top: 1px; color: var(--forest); }
 .td-sent strong { overflow-wrap: anywhere; }
 
-.td-toggle { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; min-height: 44px; margin-top: 16px; padding: 10px 20px; color: #fff; background: var(--forest); border: 0; border-radius: var(--radius); font-family: inherit; font-size: var(--t-meta-lg); font-weight: 750; cursor: pointer; transition: background var(--m-quick) var(--m-ease); }
-.td-toggle:hover { background: var(--forest-dark); }
-/* On the home page the control is a link to the form's own page. */
-a.td-toggle { align-items: center; text-decoration: none; }
-.td-toggle-arrow { width: 17px; height: 17px; }
-.td-toggle-note { color: var(--accent); font-size: var(--t-label); font-weight: 600; letter-spacing: .04em; }
-/* Open, the control is no longer the thing being offered — "Send entry" is.
-   A second filled button beside it would ask the reader which one is the way
-   forward, so this one steps back to an outline. */
-.td-card[data-open] .td-toggle { color: var(--forest); background: var(--surface); border: 1px solid var(--muted); }
-.td-card[data-open] .td-toggle:hover { color: #fff; background: var(--forest); border-color: var(--forest); }
-
 .td-body { padding: 24px clamp(18px, 2.2vw, 26px) 26px; }
-.td-form { display: grid; gap: 22px; }
+/* minmax(0, 1fr) and min-width: 0 on the fields: a grid track and a fieldset
+   both grow to an input's intrinsic width otherwise, which pushed every field
+   past the card's edge on a 375px phone. */
+.td-form { display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; }
 .td-required-note { margin: 0; color: var(--muted); font-size: var(--t-meta); }
 
-.td-field { display: grid; gap: 7px; margin: 0; padding: 0; border: 0; }
+.td-field { display: grid; grid-template-columns: minmax(0, 1fr); gap: 7px; min-width: 0; margin: 0; padding: 0; border: 0; }
 .td-field > label, .td-field > legend { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; padding: 0; color: var(--ink); font-size: var(--t-meta-lg); font-weight: 700; line-height: 1.45; }
 /* A legend is not a grid item, so the gap above does not apply to it. */
 .td-group > legend { margin-bottom: 7px; }
@@ -112,11 +101,44 @@ a.td-toggle { align-items: center; text-decoration: none; }
   .td-head { padding: 18px; }
   .td-body { padding: 18px 18px 22px; }
   .td-form { gap: 20px; }
-  .td-toggle { width: 100%; justify-content: center; }
-  .td-card[data-open] .td-toggle { width: auto; }
   .td-field input[type='text'], .td-field input[type='email'], .td-field select, .td-field textarea, .td-file { max-width: none; }
   .td-options-inline { grid-auto-flow: row; }
 }
 
+/* --- The home page's panel --------------------------------------------------
+   The last piece of the block the hero opens, on the same paper and the same
+   rail as the destinations and the participants' group, before the overview's
+   tint begins. Forest with the lime rule, as the hero's date and the "now" band
+   pair them: this is the one thing on the page that asks for something. */
+@media screen {
+  .td-invite { max-width: var(--wide); margin: 0 auto; padding: clamp(40px, 4.6vw, 72px) var(--gutter) clamp(56px, 6vw, 96px); background: var(--paper); scroll-margin-top: 70px; }
+  .tdi-panel { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 30px clamp(40px, 7vw, 120px); padding: clamp(34px, 4vw, 58px) clamp(24px, 4vw, 58px); color: #fff; background: radial-gradient(120% 140% at 100% 0%, rgba(220, 232, 155, .13), transparent 55%), var(--forest-dark); border-top: 4px solid var(--accent); box-shadow: 0 18px 40px -34px rgba(16, 56, 43, .55); }
+  .tdi-eyebrow { display: flex; align-items: center; gap: 12px; margin: 0 0 22px; color: var(--accent); font-size: var(--t-label); font-weight: 800; letter-spacing: .08em; line-height: 1.35; text-transform: uppercase; }
+  .tdi-eyebrow::before { content: ''; flex: 0 0 30px; height: 2px; background: var(--accent); }
+  .tdi-text h2 { margin: 0; font-family: var(--font-serif), Georgia, serif; font-size: clamp(36px, 3.8vw, 56px); font-weight: 600; line-height: .98; letter-spacing: -.035em; }
+  .tdi-intro { max-width: 62ch; margin: 20px 0 0; color: rgba(255, 255, 255, .84); font-size: var(--t-body); line-height: 1.6; }
+  .tdi-aside { display: grid; justify-items: start; gap: 12px; }
+  .tdi-action { display: inline-flex; align-items: center; justify-content: space-between; gap: 28px; min-width: 210px; padding: 15px 18px; color: var(--forest-dark); background: var(--accent); border: 1px solid var(--accent); border-radius: var(--radius); font-size: var(--t-meta); font-weight: 800; letter-spacing: .035em; white-space: nowrap; transition: background var(--m-quick) var(--m-ease), border-color var(--m-quick) var(--m-ease), transform var(--m-quick) var(--m-ease); }
+  .tdi-action svg { width: 16px; height: 16px; transition: transform var(--m-quick) var(--m-ease); }
+  .tdi-action:hover { background: #fff; border-color: #fff; transform: translateY(-2px); }
+  .tdi-action:hover svg { transform: translateX(3px); }
+  .tdi-action:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .tdi-note { margin: 0; color: rgba(255, 255, 255, .72); font-size: var(--t-label); letter-spacing: .02em; }
+  .tdi-sent { display: flex; gap: 9px; align-items: flex-start; margin: 0; color: rgba(255, 255, 255, .9); font-size: var(--t-meta); line-height: 1.45; }
+  .tdi-sent svg { flex: none; width: 17px; height: 17px; margin-top: 1px; color: var(--accent); }
+  .tdi-sent strong { overflow-wrap: anywhere; }
+}
+
+@media screen and (max-width: 900px) {
+  .tdi-panel { grid-template-columns: 1fr; align-items: start; }
+}
+
+@media screen and (max-width: 760px) {
+  .td-invite { padding: 36px 16px 52px; }
+  .tdi-panel { padding: 32px 22px; }
+  .tdi-aside { justify-items: stretch; }
+  .tdi-action { min-width: 0; }
+}
+
 /* A form on paper is a form nobody can send. */
-@media print { .team-directory { display: none !important; } }
+@media print { .team-directory, .td-invite { display: none !important; } }

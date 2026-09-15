@@ -43,12 +43,11 @@ import { preparePhoto, type PhotoError } from '@/lib/directory-photo';
  * now linked from the home page (`components/team-directory-invite.tsx`) and
  * from the assistant, and that address is the one people already have.
  *
- * **Open on arrival.** Anyone on this page followed a link to answer it, so
- * the questions are already showing; the button still folds them away, which
- * is how someone who has sent an entry reads what they sent.
+ * **Always open.** Anyone on this page came to answer it, so the questions are
+ * simply there; there is nothing to fold them into.
  *
- * **An answer already sent is a statement, not a blank form.** Correcting it
- * reopens the form with every answer already in it, because nobody on hotel
+ * **An answer already sent is not a blank form.** The page says what was sent
+ * and shows the form with every answer already in it, because nobody on hotel
  * wi-fi should retype a paragraph to fix a job title — the entry is keyed by
  * e-mail address on the organiser's sheet, so the correction replaces the row
  * rather than adding a second one.
@@ -120,7 +119,6 @@ export function TeamDirectory() {
   const sent = useSentEntry();
   const id = useId();
 
-  const [open, setOpen] = useState(true);
   const [draft, setDraft] = useState<Draft>(EMPTY);
   /* Null until this reader touches the form, so a remembered entry is what the
      fields show until then — the same shape as the split-session chooser. */
@@ -232,7 +230,6 @@ export function TeamDirectory() {
 
   const otherPicked = values.expertise.includes(DIRECTORY_OTHER);
   const roleLeft = DIRECTORY_LIMITS.role - values.role.length;
-  const summary = sent ? 'Your entry is with the organisers' : 'Add your entry';
   const stamp = sent ? sentDate(sent.sentAt) : null;
 
   return (
@@ -246,31 +243,22 @@ export function TeamDirectory() {
         <h1 id="team-directory-title">{DIRECTORY_TITLE}</h1>
       </div>
 
-      <div className="td-card" data-open={open ? '' : undefined}>
+      <div className="td-card">
         <div className="td-head">
           <p className="td-intro">{DIRECTORY_INTRO}</p>
-          {sent && !open && (
+          {sent && (
             <p className="td-sent">
               <CheckCircle2 aria-hidden="true" />
               <span>
                 Sent as <strong>{sent.email}</strong>
-                {stamp ? ` on ${stamp}` : ''}.
+                {stamp ? ` on ${stamp}` : ''}. Sending again from that address
+                replaces it.
               </span>
             </p>
           )}
-          <button
-            type="button"
-            className="td-toggle"
-            aria-expanded={open}
-            aria-controls={`${id}-form`}
-            onClick={() => setOpen(!open)}
-          >
-            {open ? 'Close' : sent ? 'Update your entry' : summary}
-            {!open && !sent && <span className="td-toggle-note">Ten questions</span>}
-          </button>
         </div>
 
-        <div className="td-body" id={`${id}-form`} hidden={!open}>
+        <div className="td-body">
           <form className="td-form" onSubmit={send} aria-busy={sending}>
             <p className="td-required-note">
               Every question is required except where it says otherwise.

@@ -253,6 +253,10 @@ export function HomeLanding() {
 
       <ParticipantGroup />
 
+      {/* Who is on the project. It closes the block the hero opens and comes
+          before the overview: the one thing the page asks of the reader. */}
+      <TeamDirectoryInvite />
+
       <section className="overview section-pad" id="about">
         <div className="section-title">
           <p>Workshop overview</p>
@@ -291,11 +295,6 @@ export function HomeLanding() {
           </dl>
         </div>
       </section>
-
-      {/* Who is on the project. After the overview because it is about
-          Time2Graze rather than the week, before the institutions because it
-          is people, then the bodies they belong to. */}
-      <TeamDirectoryInvite />
 
       <Institutions />
     </>
