@@ -2431,3 +2431,20 @@ Laerte's deck also exists as a Google Slides link, and it is deliberately not
 published: that presentation is shared `Anyone with the link → Editor`, and
 this site is public. The PDF is the plan B instead — see the note on his deck
 above.
+
+## Two more Day 2 decks — 15 September 2026
+
+Lindsey's `Priorities and Barriers` (9 slides, a PowerPoint held in Drive) went
+onto `d2-priorities-barriers`, which had been expecting it.
+
+Emily Moberg's `Decision Support Tools` (17 slides, Google Slides) fills the
+11:00 hour, so `d2-open-agenda` is no longer open: the title, the presenter and
+the deck are hers now. **The id keeps its old name**, exactly as
+`d2-open-agenda-afternoon` did in the afternoon — an id is the address a shared
+link, a recap and the `.ics` point at, and the slot did not move; only what
+happens in it. The calendar feed rebuilt itself from the agenda and no longer
+mentions an Open Agenda on Day 2.
+
+Emily's deck is shared `Anyone with the link → Editor`, like Laerte's. Serving a
+copy is what keeps that off a public page; Lindsey's is `Anyone with the link →
+Viewer`, which is the setting to ask for.

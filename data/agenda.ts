@@ -231,16 +231,40 @@ export const AGENDA: Day[] = [
         speakers: [{ name: 'Lindsey', org: 'WRI' }],
         venueId: null,
         kind: 'technical',
-        materials: [{ kind: 'slides' }],
+        /* Lindsey's deck, supplied 15 September 2026 as a PowerPoint held in
+           Drive; converted and rendered like the others. */
+        materials: [
+          {
+            kind: 'slides',
+            href: '/files/priorities-barriers/index.html',
+            format: 'HTML',
+            pdfCopy: '/files/priorities-barriers/deck.pdf',
+          },
+        ],
       },
+      /**
+       * The id still says open-agenda, as the afternoon one does: this hour
+       * was one until Emily's talk filled it on 15 September 2026, and an id
+       * is the address a shared link and a recap point at. The slot did not
+       * move; only what happens in it.
+       */
       {
         id: 'd2-open-agenda',
         date: '2026-09-15',
         start: '11:00',
         end: '12:00',
-        title: 'Open Agenda',
+        title: 'Decision Support Tools',
+        speakers: [{ name: 'Emily', org: 'WWF' }],
         venueId: null,
         kind: 'technical',
+        materials: [
+          {
+            kind: 'slides',
+            href: '/files/decision-support-tools/index.html',
+            format: 'HTML',
+            pdfCopy: '/files/decision-support-tools/deck.pdf',
+          },
+        ],
       },
       {
         id: 'd2-lunch',
