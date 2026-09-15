@@ -2360,3 +2360,21 @@ serve a copy, which also survives the deck being moved, renamed or reshared.
 
 A revised deck is republished by rerunning the same export and render over it,
 not by patching the images in place.
+
+## LAPIG's own channels — 15 September 2026
+
+The host laboratory's Instagram, YouTube and LinkedIn were requested on the
+site and sit in the `Institutional affiliations` band on the home page, under
+the marks and above the stories, labelled `LAPIG, the host laboratory`
+(`LAPIG_CHANNELS` in `data/institutions.ts`).
+
+Three decisions there are deliberate:
+
+- **Not in the footer.** Site-wide chrome would read as the workshop's own
+  accounts, and the workshop has none — the same reason it has no badge. Next
+  to LAPIG's mark, they are plainly the laboratory's.
+- **Names, not brand glyphs.** lucide carries no brand marks, and Simple Icons
+  has dropped LinkedIn's at the company's request, so a complete set does not
+  exist to draw. The names carry the site's external-link arrow instead.
+- **Facebook is left out.** The icon row on lapig.iesa.ufg.br opens with one,
+  but it points at UFG's page rather than the laboratory's.

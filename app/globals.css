@@ -360,6 +360,14 @@ button { color: inherit; font: inherit; }
 /* --mark-h comes from the page: every mark is drawn to the same optical area,
    and the width follows the file's own proportion. */
 .institution-mark img { display: block; width: auto; max-width: 100%; height: var(--mark-h); }
+.institution-social { display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; gap: 8px clamp(18px, 3vw, 34px); margin: 26px auto 0; }
+.institution-social > span { color: var(--muted); font-size: var(--t-label); font-weight: 750; letter-spacing: .06em; text-transform: uppercase; }
+.institution-social > p { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px clamp(18px, 3vw, 34px); margin: 0; }
+.institution-social a { display: inline-flex; align-items: center; gap: 8px; color: var(--forest); font-size: var(--t-meta); font-weight: 650; transition: color var(--m-quick) var(--m-ease); }
+.institution-social a:hover { color: var(--forest-dark); text-decoration: underline; text-underline-offset: 4px; }
+.institution-social svg { width: 13px; height: 13px; transition: transform var(--m-move) var(--m-ease); }
+.institution-social a:hover svg { transform: translate(2px, -2px); }
+
 .institution-source { margin: 18px auto 0; color: var(--muted); font-size: var(--t-meta); line-height: 1.6; }
 
 .agenda-section { background: var(--surface); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
@@ -690,6 +698,7 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
   .calendar-actions,
   .materials-notice,
   .split-title > span,
+  .institution-social,
   footer > a,
   footer > .brand { display: none !important; }
 
