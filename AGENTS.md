@@ -2456,9 +2456,22 @@ Viewer`, which is the setting to ask for.
 went up as viewers only: both were still being edited when they were supplied,
 and the organiser asked for no PDF copy.
 
-That is the right default for a deck in flux. A PDF is a file a participant
-keeps, so it is the one version nobody can correct afterwards; the viewer is
-re-rendered in place from the same folder. `Material.pdfCopy` is simply
-omitted, and the viewer is copied without the `PDF` link in its bar — the
-template carries one now, so delete that line rather than leaving it pointing
-at a file that does not exist. Add both when the decks are final.
+**Hours later both were switched to the presentation itself**
+(`docs.google.com/presentation/d/…/preview`, `format: 'Google Slides'`), and
+the rendered copies were deleted. The viewer is a copy too: it does not follow
+the edits, it only differs from a PDF in that the stale version can be
+replaced in place rather than sitting on someone's phone. While a deck is
+still moving, the link is the honest thing to publish, and it is what the
+organiser asked for.
+
+`/preview` rather than `/edit`: it opens the read-only view, and nothing on
+this site should invite a reader into someone's editor. Whether it opens at
+all depends on that deck's own sharing — both are `Anyone with the link →
+Viewer` — not on the site.
+
+When the organiser says a deck is final, rerun the same export and render, put
+the folder back under `public/files/<slug>/`, and add the `pdfCopy` then.
+While a deck is in flux, a PDF is the one version nobody can correct: it is a
+file a participant keeps. Omit `pdfCopy`, and if a viewer is published without
+one, delete the `PDF` line from its bar — the template carries one now, and
+it would point at a file that does not exist.

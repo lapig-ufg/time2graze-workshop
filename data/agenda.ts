@@ -285,15 +285,18 @@ export const AGENDA: Day[] = [
         speakers: [{ name: 'Leandro', org: 'OGH' }],
         venueId: null,
         kind: 'technical',
-        /* Leandro's deck, supplied 15 September 2026 as Google Slides and
-           still being edited, so no PDF copy goes up with it: a downloaded
-           fallback would be the one version nobody could correct. Rerun the
-           same export when the deck is final. */
+        /* Leandro's deck, still being edited on 15 September 2026, so the
+           site links the presentation itself rather than serving a copy:
+           a copy taken today is a version of the talk that no longer
+           exists, and nobody can correct the one already downloaded.
+           Swap it for a rendered deck once the organiser says it is
+           final. Whether it opens for a participant depends on that
+           deck's own sharing, not on this site. */
         materials: [
           {
             kind: 'slides',
-            href: '/files/remote-sensing-biomass/index.html',
-            format: 'HTML',
+            href: 'https://docs.google.com/presentation/d/1Clyc1WjzC9ig2TuMB-K7yKjQF37-L8DJrF3dX3r_x6w/preview',
+            format: 'Google Slides',
           },
         ],
       },
@@ -318,15 +321,18 @@ export const AGENDA: Day[] = [
         ],
         venueId: null,
         kind: 'technical',
-        /* Leandro's deck, supplied 15 September 2026 as Google Slides and
-           still being edited, so no PDF copy goes up with it: a downloaded
-           fallback would be the one version nobody could correct. Rerun the
-           same export when the deck is final. */
+        /* Leandro's deck, still being edited on 15 September 2026, so the
+           site links the presentation itself rather than serving a copy:
+           a copy taken today is a version of the talk that no longer
+           exists, and nobody can correct the one already downloaded.
+           Swap it for a rendered deck once the organiser says it is
+           final. Whether it opens for a participant depends on that
+           deck's own sharing, not on this site. */
         materials: [
           {
             kind: 'slides',
-            href: '/files/pasto-legal/index.html',
-            format: 'HTML',
+            href: 'https://docs.google.com/presentation/d/1ODx-eduta8mzqfMLkMk-muaOio1T3lC80OIX2ppw0Fs/preview',
+            format: 'Google Slides',
           },
         ],
       },
