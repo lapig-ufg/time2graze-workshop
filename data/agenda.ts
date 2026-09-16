@@ -456,7 +456,7 @@ export const AGENDA: Day[] = [
         id: 'd3-country-colombia',
         date: '2026-09-16',
         start: '11:15',
-        end: '12:00',
+        end: '12:30',
         title: 'Country Presentation: Colombia',
         speakers: [{ name: 'CIAT' }],
         venueId: null,
