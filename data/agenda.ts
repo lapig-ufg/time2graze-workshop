@@ -377,6 +377,14 @@ export const AGENDA: Day[] = [
         title: 'Brief check-in',
         venueId: null,
         kind: 'technical',
+        materials: [
+          {
+            kind: 'document',
+            title: 'Tuesday reflections',
+            href: '/files/tuesday-reflections/',
+            format: 'HTML',
+          },
+        ],
       },
       /**
        * The id still says state-of-the-art: an id is the address a shared link
