@@ -2656,3 +2656,12 @@ with a `deck.pdf` built from those pages.
 No LibreOffice on this machine: the slides were exported with PowerPoint
 itself over COM (`Slide.Export`, skipping `SlideShowTransition.Hidden`), so
 fonts are the presenter's own. Animated builds render in their final state.
+fonts are the presenter's own. Animated builds render in their final state.
+
+**Two more on the same day.** CIAT's *Decision Support System Advances for
+Colombia and Brazil* (`Time2Graze_DSS_overview_workshop.pptx`, 20 slides) is on
+`d3-country-colombia`, in `public/files/dss-colombia-brazil/`. WWF-Tanzania's
+*Towards Rangeland Decision Support Tool* (13 slides) is on
+`d3-country-tanzania`, in `public/files/country-tanzania/`. It came as a Drive
+link to a 100 MB `.pptx` — three photographs account for 74 MB — and ships as
+the rendered copy (8 MB with its PDF), not as the link.

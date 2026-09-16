@@ -469,7 +469,19 @@ export const AGENDA: Day[] = [
         speakers: [{ name: 'CIAT' }],
         venueId: null,
         kind: 'technical',
-        materials: [{ kind: 'slides' }],
+        /* "Time2Graze: Decision Support System Advances for Colombia and
+           Brazil" (Alliance of Bioversity International and CIAT), supplied
+           16 September 2026 as a 20-slide PowerPoint. */
+        materials: [
+          {
+            kind: 'slides',
+            href: '/files/dss-colombia-brazil/index.html',
+            format: 'HTML',
+            /* The same pages as one PDF: offline, and a fallback if the
+               viewer fails a reader. */
+            pdfCopy: '/files/dss-colombia-brazil/deck.pdf',
+          },
+        ],
       },
       {
         id: 'd3-lunch',
@@ -488,7 +500,19 @@ export const AGENDA: Day[] = [
         title: 'Country Presentation: Tanzania',
         venueId: null,
         kind: 'technical',
-        materials: [{ kind: 'slides' }],
+        /* WWF-Tanzania's "Towards Rangeland Decision Support Tool", supplied
+           16 September 2026 as a 13-slide PowerPoint in Drive (100 MB, mostly
+           full-size photographs); served as a rendered copy, not the link. */
+        materials: [
+          {
+            kind: 'slides',
+            href: '/files/country-tanzania/index.html',
+            format: 'HTML',
+            /* The same pages as one PDF: offline, and a fallback if the
+               viewer fails a reader. */
+            pdfCopy: '/files/country-tanzania/deck.pdf',
+          },
+        ],
       },
       {
         id: 'd3-country-nigeria',
