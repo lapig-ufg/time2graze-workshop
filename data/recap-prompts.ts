@@ -107,7 +107,7 @@ function sessionLines(day: Day): string {
 const DAY_NOTES: Record<number, string> = {
   1: 'There is no summary session today; the day ends with the Welcome Dinner. The field visit was outdoors, so its audio is likely poor.',
   2: 'The last session runs straight into the 17:30 Daily Summary. If its recording is not in the notebook yet, cover it from the notes, or leave it out and say so.',
-  3: 'Seven country presentations. Keep them in the order they were held and on the same headings. Uganda and Zimbabwe run straight into the 17:30 Daily Summary; if their recordings are not in the notebook yet, cover them from the notes or say they are missing.',
+  3: 'Six country presentations. Keep them in the order they were held and on the same headings. Laerte’s talk moved to 17:00 and runs straight into the 17:45 Daily Summary; if its recording is not in the notebook yet, cover it from the notes or say it is missing.',
   4: 'The 17:30 wrap-up and this record are the same content: the takeaways in the wrap-up should come from the sessions below, not from new statements.',
   5: 'A field day. Audio outdoors will be poor or missing; the notes and photographs are the main source. The city tour and the lookout are not technical and are not recorded.',
 };

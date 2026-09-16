@@ -396,35 +396,6 @@ export const AGENDA: Day[] = [
           },
         ],
       },
-      /**
-       * The id still says state-of-the-art: an id is the address a shared link
-       * and a recap point at. Nathália's biomass talk was dropped on
-       * 15 September 2026 and Laerte's moved here from Day 2, 16:45.
-       */
-      {
-        id: 'd3-state-of-the-art',
-        date: '2026-09-16',
-        start: '09:00',
-        end: '09:45',
-        title: 'A few lessons from recent field campaigns in Brazil',
-        speakers: [{ name: 'Laerte', org: 'LAPIG' }],
-        venueId: null,
-        kind: 'technical',
-        /* Laerte's deck, supplied 15 September 2026 as Google Slides; exported
-           to PDF and rendered page by page to WebP, as Nathália's Field
-           Protocol deck was, so the site serves it without depending on that
-           deck's sharing. */
-        materials: [
-          {
-            kind: 'slides',
-            href: '/files/field-lessons-brazil/index.html',
-            format: 'HTML',
-            /* The same pages as one PDF: offline, and a fallback if the
-               viewer fails a reader. */
-            pdfCopy: '/files/field-lessons-brazil/deck.pdf',
-          },
-        ],
-      },
       {
         id: 'd3-country-uruguay',
         date: '2026-09-16',
@@ -496,17 +467,38 @@ export const AGENDA: Day[] = [
       {
         id: 'd3-lunch',
         date: '2026-09-16',
-        start: '12:00',
+        start: '12:30',
         end: '14:00',
         title: 'Lunch',
         venueId: null,
         kind: 'meal',
       },
       {
-        id: 'd3-country-tanzania',
+        id: 'd3-country-nigeria',
         date: '2026-09-16',
         start: '14:00',
         end: '14:45',
+        title: 'Country Presentation: Nigeria',
+        venueId: null,
+        kind: 'technical',
+        /* Stella Egbe's deck (Nigerian Conservation Foundation), supplied
+           16 September 2026 as a 34-slide PowerPoint. */
+        materials: [
+          {
+            kind: 'slides',
+            href: '/files/country-nigeria/index.html',
+            format: 'HTML',
+            /* The same pages as one PDF: offline, and a fallback if the
+               viewer fails a reader. */
+            pdfCopy: '/files/country-nigeria/deck.pdf',
+          },
+        ],
+      },
+      {
+        id: 'd3-country-tanzania',
+        date: '2026-09-16',
+        start: '14:45',
+        end: '15:30',
         title: 'Country Presentation: Tanzania',
         venueId: null,
         kind: 'technical',
@@ -525,50 +517,10 @@ export const AGENDA: Day[] = [
         ],
       },
       {
-        id: 'd3-country-nigeria',
-        date: '2026-09-16',
-        start: '14:45',
-        end: '15:30',
-        title: 'Country Presentation: Nigeria',
-        venueId: null,
-        kind: 'technical',
-        /* Stella Egbe's deck (Nigerian Conservation Foundation), supplied
-           16 September 2026 as a 34-slide PowerPoint. */
-        materials: [
-          {
-            kind: 'slides',
-            href: '/files/country-nigeria/index.html',
-            format: 'HTML',
-            /* The same pages as one PDF: offline, and a fallback if the
-               viewer fails a reader. */
-            pdfCopy: '/files/country-nigeria/deck.pdf',
-          },
-        ],
-      },
-      {
-        id: 'd3-coffee',
-        date: '2026-09-16',
-        start: '15:30',
-        end: '16:00',
-        title: 'Coffee Break',
-        venueId: null,
-        kind: 'break',
-      },
-      {
-        id: 'd3-country-uganda',
-        date: '2026-09-16',
-        start: '16:00',
-        end: '16:45',
-        title: 'Country Presentation: Uganda',
-        venueId: null,
-        kind: 'technical',
-        materials: [{ kind: 'slides' }],
-      },
-      {
         id: 'd3-country-zimbabwe',
         date: '2026-09-16',
-        start: '16:45',
-        end: '17:30',
+        start: '15:30',
+        end: '16:15',
         title: 'Country Presentation: Zimbabwe',
         venueId: null,
         kind: 'technical',
@@ -586,10 +538,49 @@ export const AGENDA: Day[] = [
         ],
       },
       {
+        id: 'd3-coffee',
+        date: '2026-09-16',
+        start: '16:15',
+        end: '17:00',
+        title: 'Coffee Break',
+        venueId: null,
+        kind: 'break',
+      },
+      /**
+       * The id still says state-of-the-art: an id is the address a shared link
+       * and a recap point at. Nathália's biomass talk was dropped on
+       * 15 September 2026 and Laerte's moved here from Day 2, 16:45; on
+       * 16 September 2026 it moved again, from 09:00 to 17:00 the same day.
+       */
+      {
+        id: 'd3-state-of-the-art',
+        date: '2026-09-16',
+        start: '17:00',
+        end: '17:45',
+        title: 'A few lessons from recent field campaigns in Brazil',
+        speakers: [{ name: 'Laerte', org: 'LAPIG' }],
+        venueId: null,
+        kind: 'technical',
+        /* Laerte's deck, supplied 15 September 2026 as Google Slides; exported
+           to PDF and rendered page by page to WebP, as Nathália's Field
+           Protocol deck was, so the site serves it without depending on that
+           deck's sharing. */
+        materials: [
+          {
+            kind: 'slides',
+            href: '/files/field-lessons-brazil/index.html',
+            format: 'HTML',
+            /* The same pages as one PDF: offline, and a fallback if the
+               viewer fails a reader. */
+            pdfCopy: '/files/field-lessons-brazil/deck.pdf',
+          },
+        ],
+      },
+      {
         id: 'd3-daily-summary',
         date: '2026-09-16',
-        start: '17:30',
-        end: '18:00',
+        start: '17:45',
+        end: '18:15',
         title: 'Daily Summary',
         venueId: null,
         kind: 'technical',
