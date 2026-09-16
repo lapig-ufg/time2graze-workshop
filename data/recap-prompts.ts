@@ -43,6 +43,8 @@ const FOCUS: Record<string, string> = {
   'd2-pasto-legal':
     'What Pasto Legal is, what it delivers, and how it relates to Time2Graze data and users.',
   'd3-checkin': 'Only anything that changes the day or the week. Omit if there is nothing.',
+  'd3-mattermost':
+    'What Mattermost is for in the project, how participants join and use it, and anything agreed about how the team will communicate there.',
   'd3-state-of-the-art':
     'The concrete lessons from the field campaigns: logistics, sampling, data quality and what should be done differently.',
   'd4-checkin': 'Only anything that changes the day or the week. Omit if there is nothing.',

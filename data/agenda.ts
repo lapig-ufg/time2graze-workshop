@@ -396,6 +396,17 @@ export const AGENDA: Day[] = [
           },
         ],
       },
+      /* Took the 09:00 slot Laerte's talk left on 16 September 2026. */
+      {
+        id: 'd3-mattermost',
+        date: '2026-09-16',
+        start: '09:00',
+        end: '09:45',
+        title: 'Mattermost',
+        speakers: [{ name: 'Leandro', org: 'OGH' }],
+        venueId: null,
+        kind: 'technical',
+      },
       {
         id: 'd3-country-uruguay',
         date: '2026-09-16',
