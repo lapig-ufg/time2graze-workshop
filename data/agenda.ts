@@ -506,10 +506,31 @@ export const AGENDA: Day[] = [
         ],
       },
       {
-        id: 'd3-country-tanzania',
+        id: 'd3-country-zimbabwe',
         date: '2026-09-16',
         start: '14:45',
         end: '15:30',
+        title: 'Country Presentation: Zimbabwe',
+        venueId: null,
+        kind: 'technical',
+        /* WWF-Zimbabwe's deck, supplied 16 September 2026 as a 21-slide
+           PowerPoint. */
+        materials: [
+          {
+            kind: 'slides',
+            href: '/files/country-zimbabwe/index.html',
+            format: 'HTML',
+            /* The same pages as one PDF: offline, and a fallback if the
+               viewer fails a reader. */
+            pdfCopy: '/files/country-zimbabwe/deck.pdf',
+          },
+        ],
+      },
+      {
+        id: 'd3-country-tanzania',
+        date: '2026-09-16',
+        start: '15:30',
+        end: '16:15',
         title: 'Country Presentation: Tanzania',
         venueId: null,
         kind: 'technical',
@@ -524,27 +545,6 @@ export const AGENDA: Day[] = [
             /* The same pages as one PDF: offline, and a fallback if the
                viewer fails a reader. */
             pdfCopy: '/files/country-tanzania/deck.pdf',
-          },
-        ],
-      },
-      {
-        id: 'd3-country-zimbabwe',
-        date: '2026-09-16',
-        start: '15:30',
-        end: '16:15',
-        title: 'Country Presentation: Zimbabwe',
-        venueId: null,
-        kind: 'technical',
-        /* WWF-Zimbabwe's deck, supplied 16 September 2026 as a 21-slide
-           PowerPoint. */
-        materials: [
-          {
-            kind: 'slides',
-            href: '/files/country-zimbabwe/index.html',
-            format: 'HTML',
-            /* The same pages as one PDF: offline, and a fallback if the
-               viewer fails a reader. */
-            pdfCopy: '/files/country-zimbabwe/deck.pdf',
           },
         ],
       },
