@@ -1,8 +1,9 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { ExternalLink } from 'lucide-react';
 import { RecapReader } from './recap-reader';
+import { AGENDA } from '@/data/agenda';
 import { RECAPS } from '@/data/recaps';
 import type { Day, DayRecap as Recap } from '@/data/types';
 import type { Clock } from '@/lib/now';
@@ -30,11 +31,16 @@ function summaryFor(state: RecapsState | null, dayIndex: number) {
   return { doc: null, html: recapDocument(recap), recap };
 }
 
-/** Whether a day has a published summary, for the "happening today" band. */
-export function useLiveRecap(dayIndex: number): boolean {
-  const [state, setState] = useState<RecapsState | null>(null);
+/**
+ * The days whose summary has text, in programme order, or null until the
+ * endpoint has answered. One shared fetch feeds the home page's band and
+ * record, and the programme's summary links.
+ */
+export function usePublishedRecapDays(): number[] | null {
+  const [state, setState] = useState<RecapsState | null | undefined>(undefined);
   useEffect(() => { let active = true; void recaps().then(s => { if (active) setState(s); }); return () => { active = false; }; }, []);
-  return state !== null && summaryFor(state, dayIndex).html !== '';
+  return useMemo(() => state === undefined ? null
+    : AGENDA.map(day => day.index).filter(index => summaryFor(state, index).html !== ''), [state]);
 }
 
 export function DayRecap({ day }: { day: Day; clock: Clock | null }) {

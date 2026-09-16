@@ -7,7 +7,7 @@ import { withBasePath } from '@/lib/base-path';
 import { isPdf, materialAction, publishedMaterials } from '@/lib/materials';
 import { nextSessionId, stateOf, todayIndex } from '@/lib/now';
 import { recapForDay } from '@/lib/recap';
-import { useLiveRecap } from '@/components/recap';
+import { usePublishedRecapDays } from '@/components/recap';
 import { dayLabel, sessionTitle, timeLabel } from '@/lib/schedule';
 
 /**
@@ -29,14 +29,16 @@ export function NowNext() {
   // The recap is published live on /programme/; the repository copy is the
   // fallback for a reader arriving before the fetch answers. The hook runs
   // before the early return: rules of hooks, and the fetch is shared anyway.
-  const liveRecap = useLiveRecap(today === null ? 0 : AGENDA[today].index);
+  const published = usePublishedRecapDays();
   if (!clock || today === null) return null;
 
   const day = AGENDA[today];
   const running = day.sessions.find((s) => stateOf(s, clock) === 'running');
   const nextId = nextSessionId(day, clock);
   const session = running ?? day.sessions.find((s) => s.id === nextId);
-  const recap = liveRecap || recapForDay(day.index) !== null;
+  // Only once the day's schedule is over: while sessions are running the band
+  // is about them, and every summary is on the home page's record anyway.
+  const recap = !session && (published?.includes(day.index) || recapForDay(day.index) !== null);
   // The deck for the hour in the room, one line per activity that has one.
   const files = session
     ? [session, ...(session.tracks ?? [])].flatMap((item) =>

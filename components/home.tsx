@@ -21,6 +21,7 @@ import { OptionalStory } from '@/components/optional-story';
 import { StoryLink } from '@/components/story-link';
 import { TeamDirectoryInvite } from '@/components/team-directory-invite';
 import { WhatsAppMark } from '@/components/whatsapp-mark';
+import { WorkshopRecord } from '@/components/workshop-record';
 
 const SCHEDULED_ITEMS = AGENDA.reduce(
   (total, day) => total + day.sessions.length,
@@ -256,6 +257,10 @@ export function HomeLanding() {
       {/* Who is on the project. It closes the block the hero opens and comes
           before the overview: the one thing the page asks of the reader. */}
       <TeamDirectoryInvite />
+
+      {/* The summaries and the boards, before the overview: during the week
+          and after it, they are what a returning reader comes back for. */}
+      <WorkshopRecord />
 
       <section className="overview section-pad" id="about">
         <div className="section-title">

@@ -17,18 +17,25 @@ function load(file, dependencies) {
 const days = [1, 2, 3, 4, 5].map(index => ({ index, date: `2026-09-${13 + index}`, sessions: [] }));
 const now = load('lib/now.ts', {});
 
-test('Home checks the current document on all five workshop days', () => {
+test('Home mentions today’s summary only once the day’s schedule is over', () => {
   for (const day of days) {
-    let requested;
-    const { NowNext } = load('components/now-next.tsx', {
-      '@/data/agenda': { AGENDA: days },
-      '@/hooks/use-workshop-clock': { useWorkshopClock: () => ({ date: day.date, minutes: 1380 }) },
-      '@/lib/now': { todayIndex: now.todayIndex, nextSessionId: () => null },
-      '@/components/recap': { useLiveRecap: index => { requested = index; return false; } },
-      '@/lib/recap': { recapForDay: () => null },
-    });
-    NowNext();
-    assert.equal(requested, day.index);
+    const band = next => {
+      const { NowNext } = load('components/now-next.tsx', {
+        '@/data/agenda': { AGENDA: days.map(d => ({ ...d, sessions: [{ id: `d${d.index}-s`, date: d.date, start: '08:00', end: '09:00' }] })) },
+        '@/hooks/use-workshop-clock': { useWorkshopClock: () => ({ date: day.date, minutes: 1380 }) },
+        '@/lib/now': { todayIndex: now.todayIndex, nextSessionId: () => next, stateOf: () => null },
+        '@/components/recap': { usePublishedRecapDays: () => days.map(d => d.index) },
+        '@/lib/recap': { recapForDay: () => null },
+        '@/lib/schedule': { dayLabel: date => date, timeLabel: () => '', sessionTitle: s => s.id },
+        '@/lib/materials': { publishedMaterials: () => [] },
+        'next/link': { default: ({ href, children }) => jsx.jsx('a', { href, children }) },
+      });
+      const result = NowNext();
+      return result ? renderToStaticMarkup(result) : '';
+    };
+    const evening = band(null);
+    assert.match(evening, new RegExp(`href="/programme/#recap-day-${day.index}"`));
+    assert.doesNotMatch(band(`d${day.index}-s`), /recap-day/);
   }
 });
 

@@ -26,6 +26,12 @@ export type Material = {
    * counted it as two expected files.
    */
   pdfCopy?: string;
+  /**
+   * A still of the material itself, site-rooted, for the one surface that
+   * shows it as a picture rather than a line: the home page's record. Only a
+   * render or page of the file — never a decorative image.
+   */
+  preview?: string;
 };
 
 export type Speaker = {

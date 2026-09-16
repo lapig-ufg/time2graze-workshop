@@ -2599,3 +2599,38 @@ Brazil* (Laerte) from Day 2, 16:45–17:30, into that hour.
 - **Nathália's biomass deck is not published.** It was built as
   `public/files/on-the-ground-biomass/` but never shipped, and nothing
   references it. Her Day 1 Field Protocol session and deck are unaffected.
+
+## The workshop record — 15 September 2026
+
+The organiser reported two things hard to find: a past day's summary (on
+Tuesday, Monday's was reachable only by knowing to pick Day 1 on the
+programme and scroll past the grid), and the 3D workshop boards, which were
+one link among a session's files. Neither became a destination; both gained
+an index.
+
+- **Home: `WorkshopRecord`** (`components/workshop-record.tsx`,
+  `app/record.css`), titled *Summaries and boards*, after the team directory
+  invite and before *Purpose and format*. Left, the five days with their
+  summary status (`RecapDayList` in `components/recap-index.tsx`): only a
+  published day is a link, to `/programme/#recap-day-N`; the rest read
+  "To be published"; nothing is shown before the endpoint answers. Right, the
+  boards: a still, the session and presenter, the four boards with their
+  contribution counts and facilitators, and *Open 3D boards*, *Reading view*
+  (`#reading`) and *View session*. It is hidden in print.
+- **The still is a render of the tool, not an illustration.**
+  `public/images/workshop-boards/overview.webp` was cropped from a headless
+  Chrome screenshot of `/files/workshop-boards/` at 1440×900 @2x. It is
+  declared on the material as `Material.preview`, so the band reads it from
+  the agenda. Re-shoot it if the boards' layout changes.
+- **The now band mentions the summary only once the day's schedule is over.**
+  A first version listed every summary so far, all day; the organiser found
+  it did not need to be there the whole time. While a session is running or
+  due, the band is about that session; past summaries live in the record.
+- **The programme's tool row carries "Daily summaries: Day 1 · Day 2"**
+  (`RecapJumpLinks`). The link switches day in place and scrolls to the
+  summary; it does not rely on `hashchange`, which would not fire when the
+  hash already names that summary.
+- `usePublishedRecapDays` in `components/recap.tsx` replaced `useLiveRecap`
+  and feeds all three from the one shared fetch.
+  `scripts/recap-display.test.mjs` checks, on all five days, that the band
+  names the summary in the evening and not while a session is due.

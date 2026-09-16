@@ -245,6 +245,8 @@ export const AGENDA: Day[] = [
             title: 'Workshop boards · 71 contributions',
             href: '/files/workshop-boards/',
             format: '3D',
+            /* A render of the room's overview, cropped from the tool itself. */
+            preview: '/images/workshop-boards/overview.webp',
           },
         ],
       },

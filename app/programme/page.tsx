@@ -6,6 +6,7 @@ import { FileText, Printer } from 'lucide-react';
 import { AddToCalendar } from '@/components/add-to-calendar';
 import { Programme, ProgrammeForPrint } from '@/components/programme';
 import { DayRecap } from '@/components/recap';
+import { RecapJumpLinks } from '@/components/recap-index';
 import { SplitChoice, SplitNotice } from '@/components/split-choice';
 import { AGENDA } from '@/data/agenda';
 import { useTabKeys } from '@/hooks/use-tab-keys';
@@ -55,6 +56,17 @@ export default function ProgrammePage() {
   const selectDay = useCallback((index: number) => {
     setPicked(index);
     history.replaceState(null, '', `#day-${AGENDA[index].index}`);
+    setHashNotFound(false);
+  }, []);
+
+  /** A summary link in the tool row: open its day, then land on the summary. */
+  const openRecap = useCallback((dayNumber: number) => {
+    const index = AGENDA.findIndex((d) => d.index === dayNumber);
+    if (index < 0) return;
+    history.scrollRestoration = 'manual';
+    history.replaceState(null, '', `#recap-day-${dayNumber}`);
+    setPicked(index);
+    setPending({ recap: true });
     setHashNotFound(false);
   }, []);
 
@@ -168,6 +180,7 @@ export default function ProgrammePage() {
           <FileText aria-hidden="true" />
           Day {day.index} materials
         </Link>
+        <RecapJumpLinks onOpen={openRecap} />
       </div>
 
       {/* Paper loses the header and the day tabs, so the printed agenda has to
