@@ -306,6 +306,16 @@ export const AGENDA: Day[] = [
             href: 'https://docs.google.com/presentation/d/1Clyc1WjzC9ig2TuMB-K7yKjQF37-L8DJrF3dX3r_x6w/preview',
             format: 'Google Slides',
           },
+          /* Leandro's inventory of biomass studies and data, requested on
+             16 September 2026. A link, not a copy: he is still editing it.
+             Shared "Anyone with the link → Viewer", checked the same day; if
+             that ever becomes Editor, this link must come off the site. */
+          {
+            kind: 'document',
+            title: 'Grassland biomass inventory: data, studies and LUE factor',
+            href: 'https://docs.google.com/spreadsheets/d/1C2FSyCCmjtCMBgA-ikM16VVCcDSgfjrLz91bOGB_EXk/edit',
+            format: 'Google Sheets',
+          },
         ],
       },
       {

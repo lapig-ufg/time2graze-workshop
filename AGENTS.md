@@ -2671,3 +2671,30 @@ The Nigerian Conservation Foundation's deck (Stella Egbe,
 
 WWF-Zimbabwe's deck (`Time2graze September Brazil 2026.pptx`, 21 slides) is on
 `d3-country-zimbabwe`, in `public/files/country-zimbabwe/`.
+
+## Materials reads like the programme — 16 September 2026
+
+The organiser found `/materials/` hard to match against the programme: a row
+carried the session title and "Slides · HTML", but not when it ran or who
+presented it, and a session with two files (Field Protocol Alignment with its
+deck and Teles et al.) showed up as two rows with the same title.
+
+- **One row per session or track**, in programme order, with the time
+  (`timeLabel`) and the presenter under the same `Presenter / institution`
+  label the programme uses (`presenterLabel`). `MaterialEntry` carries both;
+  `groupBySession` in `lib/materials.ts` folds neighbouring entries of the same
+  session. The files are listed inside the row, each with its own buttons.
+- **The anchors stay on the files** (`#material-<session>-<n>`), because the
+  programme's day list links to those.
+- **"HTML" is no longer shown** as a format: it is how the site serves a deck,
+  not something a reader chooses by. The value stays in the data, since
+  `materialAction` reads it.
+- The "files expected" counts still count files, not rows.
+
+Leandro's *Grassland biomass inventory* spreadsheet went onto
+`d2-biomass-methodology` the same day, as a link: he is still editing it, and
+it is shared `Anyone with the link → Viewer`, checked in Drive before
+publishing. If it ever becomes Editor, the link comes off the site.
+
+Turbopack's dev cache in this OneDrive folder served stale CSS across restarts
+while this was built; `rm -rf .next` before trusting a preview of a CSS change.

@@ -445,7 +445,7 @@ button { color: inherit; font: inherit; }
 .resource-group > header h2 { margin: 5px 0 0; font-family: var(--font-serif), Georgia, serif; font-size: 27px; font-weight: 600; letter-spacing: -.02em; }
 .resource-group > header small { display: block; margin-top: 9px; color: var(--muted); font-size: var(--t-meta); }
 .resource-group > div { display: grid; gap: 0; border-top: 1px solid var(--line); }
-.resource-item { display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; align-items: center; gap: 14px; min-height: 78px; padding: 15px 10px; background: transparent; border-bottom: 1px solid var(--line); transition: background var(--m-quick) var(--m-ease); }
+.resource-item { display: grid; grid-template-columns: 28px minmax(0, 1fr); align-items: start; gap: 14px; min-height: 78px; padding: 15px 10px; background: transparent; border-bottom: 1px solid var(--line); transition: background var(--m-quick) var(--m-ease); }
 .resource-item:hover { background: rgba(255,255,255,.55); }
 .resource-item > svg { width: 19px; height: 19px; color: var(--forest); }
 .resource-item > span { display: grid; }
@@ -765,6 +765,13 @@ footer > a:last-child:hover svg { transform: translateY(-3px); }
 .resource-session:hover { text-decoration-color: var(--forest); }
 .resource-actions { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; }
 .resource-file { padding: 5px 12px; color: #fff; background: var(--forest); border-radius: 99px; font-size: var(--t-label); font-weight: 800; letter-spacing: .05em; text-transform: uppercase; white-space: nowrap; }
+.resource-time { white-space: nowrap; color: var(--muted); font-size: var(--t-meta); font-weight: 700; font-variant-numeric: lining-nums tabular-nums; }
+.resource-item .tl-who { margin-top: 4px; }
+.resource-item .resource-files { grid-column: 2; display: grid; gap: 6px; }
+.resource-item { row-gap: 8px; }
+.resource-item > .resource-session { grid-column: 2; min-height: 32px; margin-top: 0; }
+.resource-file-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 16px; }
+.resource-item .resource-file-row small { margin-top: 0; min-width: 0; flex: 1 1 260px; }
 
 /* --- Scroll entrances -------------------------------------------------------
    No JavaScript at all: `animation-timeline: view()` ties the animation's

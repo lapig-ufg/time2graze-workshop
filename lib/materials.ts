@@ -1,5 +1,6 @@
 import { AGENDA } from '@/data/agenda';
 import type { Day, Material, MaterialKind } from '@/data/types';
+import { presenterLabel, timeLabel } from '@/lib/schedule';
 
 const KIND_LABEL: Record<MaterialKind, string> = {
   slides: 'Slides',
@@ -19,6 +20,10 @@ export type MaterialEntry = {
   context: string;
   /** Anchor of the session to link back to. Absent for day-level files. */
   sessionId?: string;
+  /** The session's time, as the programme prints it. Absent for day-level files. */
+  time?: string;
+  /** The session's or track's presenter, as the programme prints it. */
+  presenter?: string | null;
 };
 
 export type DayMaterials = { day: Day; entries: MaterialEntry[] };
@@ -50,6 +55,8 @@ export function materialsByDay(): DayMaterials[] {
           material,
           context: session.title,
           sessionId: session.id,
+          time: timeLabel(session),
+          presenter: presenterLabel(session),
         });
       }
       for (const track of session.tracks ?? []) {
@@ -59,6 +66,8 @@ export function materialsByDay(): DayMaterials[] {
             material,
             context: track.title,
             sessionId: session.id,
+            time: timeLabel(session),
+            presenter: presenterLabel(track),
           });
         }
       }
@@ -68,6 +77,25 @@ export function materialsByDay(): DayMaterials[] {
   }).filter((group) => group.entries.length > 0);
 }
 
+/**
+ * A day's entries, one group per session or track, in programme order: the
+ * deck and the paper of the same session are one row, as they are one session
+ * on the programme. Entries of a session are declared together, so grouping
+ * neighbours is enough.
+ */
+export function groupBySession(entries: MaterialEntry[]) {
+  const groups: MaterialEntry[][] = [];
+  for (const entry of entries) {
+    const last = groups.at(-1)?.[0];
+    if (last?.sessionId && last.sessionId === entry.sessionId && last.context === entry.context) {
+      groups.at(-1)!.push(entry);
+    } else {
+      groups.push([entry]);
+    }
+  }
+  return groups;
+}
+
 /** The line under the title: what the file is, and how it is reached. */
 export function materialDetail(entry: MaterialEntry) {
   const parts = [
@@ -75,7 +103,11 @@ export function materialDetail(entry: MaterialEntry) {
       ? materialLabel(entry.material)
       : KIND_LABEL[entry.material.kind],
   ];
-  if (entry.material.format) parts.push(entry.material.format);
+  /* 'HTML' is how the site serves a deck, not something a reader chooses by;
+     the button already says it opens. */
+  if (entry.material.format && entry.material.format !== 'HTML') {
+    parts.push(entry.material.format);
+  }
   if (entry.material.restricted) parts.push('Participants only');
   return parts.join(' · ');
 }

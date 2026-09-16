@@ -10,10 +10,12 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import type { MaterialKind } from '@/data/types';
 import {
+  groupBySession,
   isPdf,
   materialAction,
   materialDetail,
   materialsByDay,
+  type MaterialEntry,
 } from '@/lib/materials';
 import { withBasePath } from '@/lib/base-path';
 import { dayLabel } from '@/lib/schedule';
@@ -96,59 +98,39 @@ export default function MaterialsPage() {
               </div>
             </header>
             <div>
-              {entries.map((entry) => {
-                const KindIcon = KIND_ICON[entry.material.kind];
+              {groupBySession(entries).map((group) => {
+                const [first] = group;
+                const KindIcon = KIND_ICON[first.material.kind];
                 return (
-                  <article
-                    className="resource-item"
-                    key={entry.id}
-                    id={entry.id}
-                  >
+                  <article className="resource-item" key={first.id}>
                     <KindIcon aria-hidden="true" />
                     <span>
-                      <strong>{entry.context}</strong>
-                      <small>{materialDetail(entry)}</small>
-                      {entry.sessionId && (
-                        <Link
-                          className="resource-session"
-                          href={`/programme/#${entry.sessionId}`}
-                          aria-label={`View session: ${entry.context}`}
-                        >
-                          View session →
-                        </Link>
+                      {first.time && (
+                        <span className="resource-time">{first.time}</span>
+                      )}
+                      <strong>{first.context}</strong>
+                      {first.presenter && (
+                        <span className="tl-who">
+                          <span className="tl-meta-label">
+                            Presenter / institution
+                          </span>
+                          <span>{first.presenter}</span>
+                        </span>
                       )}
                     </span>
-                    {entry.material.href ? (
-                      <span className="resource-actions">
-                        <a
-                          className="resource-file"
-                          href={withBasePath(entry.material.href)}
-                          target={isPdf(entry.material) ? '_blank' : undefined}
-                          rel={isPdf(entry.material) ? 'noopener' : undefined}
-                        >
-                          {materialAction(entry.material)}
-                        </a>
-                        {isPdf(entry.material) && (
-                          <a
-                            className="resource-file"
-                            href={withBasePath(entry.material.href)}
-                            download
-                          >
-                            Download PDF
-                          </a>
-                        )}
-                        {entry.material.pdfCopy && (
-                          <a
-                            className="resource-file"
-                            href={withBasePath(entry.material.pdfCopy)}
-                            download
-                          >
-                            Download PDF
-                          </a>
-                        )}
-                      </span>
-                    ) : (
-                      <em>To be published</em>
+                    <span className="resource-files">
+                      {group.map((entry) => (
+                        <ResourceFile key={entry.id} entry={entry} />
+                      ))}
+                    </span>
+                    {first.sessionId && (
+                      <Link
+                        className="resource-session"
+                        href={`/programme/#${first.sessionId}`}
+                        aria-label={`View session: ${first.context}`}
+                      >
+                        View session →
+                      </Link>
                     )}
                   </article>
                 );
@@ -179,5 +161,48 @@ export default function MaterialsPage() {
         </article>
       </div>
     </section>
+  );
+}
+
+/** One file of a session: what it is, and its buttons. The anchor the
+ *  programme's day list links to sits here, on the file. */
+function ResourceFile({ entry }: { entry: MaterialEntry }) {
+  const { material } = entry;
+  return (
+    <span className="resource-file-row" id={entry.id}>
+      <small>{materialDetail(entry)}</small>
+      {material.href ? (
+        <span className="resource-actions">
+          <a
+            className="resource-file"
+            href={withBasePath(material.href)}
+            target={isPdf(material) ? '_blank' : undefined}
+            rel={isPdf(material) ? 'noopener' : undefined}
+          >
+            {materialAction(material)}
+          </a>
+          {isPdf(material) && (
+            <a
+              className="resource-file"
+              href={withBasePath(material.href)}
+              download
+            >
+              Download PDF
+            </a>
+          )}
+          {material.pdfCopy && (
+            <a
+              className="resource-file"
+              href={withBasePath(material.pdfCopy)}
+              download
+            >
+              Download PDF
+            </a>
+          )}
+        </span>
+      ) : (
+        <em>To be published</em>
+      )}
+    </span>
   );
 }
