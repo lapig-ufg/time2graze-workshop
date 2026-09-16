@@ -424,7 +424,19 @@ export const AGENDA: Day[] = [
         speakers: [{ name: 'INIA' }],
         venueId: null,
         kind: 'technical',
-        materials: [{ kind: 'slides' }],
+        /* Fernando Lattanzi's "DSS 3R web" deck, supplied 16 September 2026 as
+           a 46-slide PowerPoint; rendered page by page to WebP, as the others
+           were. */
+        materials: [
+          {
+            kind: 'slides',
+            href: '/files/dss-3r-web/index.html',
+            format: 'HTML',
+            /* The same pages as one PDF: offline, and a fallback if the
+               viewer fails a reader. */
+            pdfCopy: '/files/dss-3r-web/deck.pdf',
+          },
+        ],
       },
       {
         id: 'd3-country-argentina',
@@ -435,7 +447,18 @@ export const AGENDA: Day[] = [
         speakers: [{ name: 'UIB - INTA & UNMdP' }],
         venueId: null,
         kind: 'technical',
-        materials: [{ kind: 'slides' }],
+        /* Germán Berone's deck, supplied 16 September 2026 as a 16-slide
+           PowerPoint; the one hidden slide stays hidden, so 15 are published. */
+        materials: [
+          {
+            kind: 'slides',
+            href: '/files/country-argentina/index.html',
+            format: 'HTML',
+            /* The same pages as one PDF: offline, and a fallback if the
+               viewer fails a reader. */
+            pdfCopy: '/files/country-argentina/deck.pdf',
+          },
+        ],
       },
       {
         id: 'd3-country-colombia',

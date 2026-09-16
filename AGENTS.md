@@ -2634,3 +2634,25 @@ an index.
   and feeds all three from the one shared fetch.
   `scripts/recap-display.test.mjs` checks, on all five days, that the band
   names the summary in the evening and not while a session is due.
+- `usePublishedRecapDays` in `components/recap.tsx` replaced `useLiveRecap`
+  and feeds all three from the one shared fetch.
+  `scripts/recap-display.test.mjs` checks, on all five days, that the band
+  names the summary in the evening and not while a session is due.
+
+## Argentina and 3R web decks — 16 September 2026
+
+Two PowerPoint files arrived on the morning of Day 3 and ship like the other
+decks: slides rendered to WebP at 2400px, served by the full-screen viewer,
+with a `deck.pdf` built from those pages.
+
+- `ARGENTINA Time2Graze Goiania 2026-09-16.pptx` (Germán Berone, UNMdP) is on
+  `d3-country-argentina`, in `public/files/country-argentina/`. The file holds
+  16 slides, one hidden by the presenter; the 15 shown are published.
+- `T2G Workshop 3R basis.pptx` (*DSS 3R web*, Fernando Lattanzi, INIA — 46
+  slides) is on `d3-country-uruguay`, in `public/files/dss-3r-web/`. It was
+  supplied without a session; INIA's slot is the one it was attached to. Move
+  the material if the organiser places it elsewhere.
+
+No LibreOffice on this machine: the slides were exported with PowerPoint
+itself over COM (`Slide.Export`, skipping `SlideShowTransition.Hidden`), so
+fonts are the presenter's own. Animated builds render in their final state.
