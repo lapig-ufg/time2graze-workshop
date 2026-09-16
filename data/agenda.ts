@@ -522,7 +522,18 @@ export const AGENDA: Day[] = [
         title: 'Country Presentation: Nigeria',
         venueId: null,
         kind: 'technical',
-        materials: [{ kind: 'slides' }],
+        /* Stella Egbe's deck (Nigerian Conservation Foundation), supplied
+           16 September 2026 as a 34-slide PowerPoint. */
+        materials: [
+          {
+            kind: 'slides',
+            href: '/files/country-nigeria/index.html',
+            format: 'HTML',
+            /* The same pages as one PDF: offline, and a fallback if the
+               viewer fails a reader. */
+            pdfCopy: '/files/country-nigeria/deck.pdf',
+          },
+        ],
       },
       {
         id: 'd3-coffee',

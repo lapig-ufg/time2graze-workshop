@@ -2664,3 +2664,7 @@ Colombia and Brazil* (`Time2Graze_DSS_overview_workshop.pptx`, 20 slides) is on
 `d3-country-tanzania`, in `public/files/country-tanzania/`. It came as a Drive
 link to a 100 MB `.pptx` — three photographs account for 74 MB — and ships as
 the rendered copy (8 MB with its PDF), not as the link.
+
+The Nigerian Conservation Foundation's deck (Stella Egbe,
+`Time2Graze_Nigeria (Workshop_Brazil).pptx`, 34 slides) is on
+`d3-country-nigeria`, in `public/files/country-nigeria/`.
