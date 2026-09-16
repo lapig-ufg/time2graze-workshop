@@ -1,0 +1,99 @@
+Tuesday Reflections
+
+Some issues raised yesterday and propositions for how we can address them in and beyond the workshop.
+
+# 1 Clarity on roles and responsibilities
+
+People want greater clarity about the roles of the remote sensing group and the decision support or country groups.
+
+We will communicate RS team roles and responsibilities. What we are and aren’t doing. “Come to us for…”
+
+Country sessions: Please touch on your roles and responsibilities
+
+We should summarize this and write it down somewhere before the end of the workshop for record and future reference.
+
+# Methane reduction is a consequence of better management
+
+No need or requirement to measure this output to demonstrate project success. All actions that improve production efficiency is a good outcome.
+
+# No universal decision support tool
+
+Yesterday clarified that there is no single project-level decision support tool.
+
+A top-down tool is unlikely to be adopted by countries.
+
+Country teams can choose or develop the delivery approach that best fits their users and decisions. This may involve an existing advisory platform, dashboard, WhatsApp service, extension system or another tool.
+
+The remote sensing data can be one input into these tools, but both the tool and the data will require regional customization.
+
+PastoLegal was demonstrated to show a solution in tropical LATAM, though the code is open and could potentially be adapted to the African context should it make sense.
+
+# 3 The NRT Data – What it is. Strengths and limitations
+
+The data are novel and producing them requires substantial methodological and technical work.
+
+Leandro invited others to co-author the technical work and this could offer a way to work together on the data for those interested.
+
+We believe they will be useful for livestock grazing decision support but have just started to gather evidence to support that.
+
+The 10 m resolution can provide information at a scale relevant to fields and paddocks.
+
+Initial thoughts about data use strengths:
+
+whether productivity is higher or lower than during the same period in a previous year;
+
+whether productivity has increased or decreased since the previous week or observation period; and
+
+whether one pasture or part of a farm has relatively more or less productivity than another.
+
+Potentially informative about the movement of animals over space, the prediction of supplemental feed requirements if you know what you had in previous years under similar conditions etc.
+
+Initial thoughts about data use limitations:
+
+The absolute value of the default estimates can be off when the model has not been customized or calibrated locally.
+
+Santiago, Fernando and others noted that better absolute values are important for decisions such as estimating carrying capacity.
+
+To do: We need to determine whether the current product represents a production rate, standing biomass stock or a proxy somewhere between the two. Technical side conversations are already happening. We should either resolve this question or leave the workshop with a clear plan, responsible people and next steps for resolving it
+
+Forage biomass under trees. The current approach masks trees and predicts biomass outside the canopy.
+
+Colleagues from the Africa offices noted that substantial grazing can occur under trees in some production systems.
+
+We have not yet tried to estimate a proxy of forage biomass beneath tree canopies. Could be a research question but likely difficult to address.
+
+Question for the African country teams: How large a limitation is this for the intended uses? where is it most important?
+
+# Existing information for customization
+
+The project has an in situ database containing values gathered from the literature, including light-use-efficiency and some preliminary biomass information.
+
+We can share the current spreadsheet/database with the wider team.
+
+We can continue to expand this. Emily may have an intern that could work on it as well.
+
+Country teams may also know of local datasets, experiments, monitoring sites or areas where expected biomass values are reasonably well understood.
+
+Information from field trials
+
+Can inform the match between RS data and biomass estimates and how they diverge seasonally
+
+# 5 Responsibility for improving and regionalizing the data
+
+The remote sensing team has taken responsibility for compiling literature values and initiating discussion about future field data collection.
+
+The current project does not include a deliverable requiring the African offices to collect field data or provide data to the remote sensing team
+
+Any country contribution are a collaboration based on what is useful and feasible. Collaboration on this is more likely to result in data that will support the intended decisions.
+
+# 6 Proposed process for regional improvement
+
+Need: Before the end of the workshop we should propose a process for improving the data regionally.
+
+Organize a short series of working sessions focused on improving the data regionally. Collect candidate test locations, RS team member pilots adjustments, gather feedback on if it’s making improvements, RS team helps with practical guidance on regional calibration
+
+# 7 Other actions
+
+Created a survey for input into team directory - you can find it on the website homepage
+
+OpenGeoHub can create a Mattermost site to connect the team and allow direct messages. This is like an open source version of Slack without the memory limits.
