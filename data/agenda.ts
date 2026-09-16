@@ -562,7 +562,18 @@ export const AGENDA: Day[] = [
         title: 'Country Presentation: Zimbabwe',
         venueId: null,
         kind: 'technical',
-        materials: [{ kind: 'slides' }],
+        /* WWF-Zimbabwe's deck, supplied 16 September 2026 as a 21-slide
+           PowerPoint. */
+        materials: [
+          {
+            kind: 'slides',
+            href: '/files/country-zimbabwe/index.html',
+            format: 'HTML',
+            /* The same pages as one PDF: offline, and a fallback if the
+               viewer fails a reader. */
+            pdfCopy: '/files/country-zimbabwe/deck.pdf',
+          },
+        ],
       },
       {
         id: 'd3-daily-summary',

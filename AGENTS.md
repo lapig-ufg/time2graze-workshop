@@ -2668,3 +2668,6 @@ the rendered copy (8 MB with its PDF), not as the link.
 The Nigerian Conservation Foundation's deck (Stella Egbe,
 `Time2Graze_Nigeria (Workshop_Brazil).pptx`, 34 slides) is on
 `d3-country-nigeria`, in `public/files/country-nigeria/`.
+
+WWF-Zimbabwe's deck (`Time2graze September Brazil 2026.pptx`, 21 slides) is on
+`d3-country-zimbabwe`, in `public/files/country-zimbabwe/`.
