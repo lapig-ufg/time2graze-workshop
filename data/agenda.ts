@@ -704,7 +704,17 @@ export const AGENDA: Day[] = [
         speakers: [{ name: 'Leandro', org: 'OGH' }],
         venueId: null,
         kind: 'technical',
-        materials: [{ kind: 'slides' }],
+        /* Leandro's deck, supplied 17 September 2026 as Google Slides and
+           edited the same afternoon, so the site links it as his other decks
+           are. Shared "Anyone with the link → Viewer"; /preview opens the
+           read-only view. */
+        materials: [
+          {
+            kind: 'slides',
+            href: 'https://docs.google.com/presentation/d/1sjIRijpsDJJ9n2qo_qxQAl3gzl8IAcLbLfdEoPsxKbs/preview',
+            format: 'Google Slides',
+          },
+        ],
       },
       {
         id: 'd4-coffee',
