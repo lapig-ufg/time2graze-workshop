@@ -1129,6 +1129,15 @@ a.recap-edit-toggle { text-decoration: none; }
 .recap-document ul { list-style: disc; }
 .recap-document ol { list-style: decimal; }
 .recap-document blockquote { border-left: 3px solid var(--line); padding-left: 1em; }
+/* A table from the doc keeps its columns and scrolls in its own frame: the
+   page itself must never scroll sideways on a phone. */
+.recap-document .recap-table { overflow-x: auto; }
+/* Wide enough to stay readable: past that the frame scrolls rather than
+   squeezing three columns into a phone. */
+.recap-document table { min-width: max(100%, 30rem); border-collapse: collapse; font-size: var(--t-body); }
+.recap-document th, .recap-document td { padding: 10px 14px; border: 1px solid var(--line); text-align: left; vertical-align: top; }
+.recap-document thead td, .recap-document th { font-weight: 750; background: var(--surface-soft); }
+.recap-document td > p:first-child, .recap-document th > p:first-child { margin-top: 0; }
 .recap-document a { text-decoration: underline; }
 
 /* The Google Doc's main headings form a compact, keyboard-accessible index. */

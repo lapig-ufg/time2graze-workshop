@@ -51,10 +51,15 @@ function plain(html: string): string {
   return decode(
     html
       .replace(/<li[^>]*>/gi, ' • ')
+      // A table read as one line needs its cells kept apart, or the last word
+      // of a cell runs into the first word of the next.
+      .replace(/<\/t[dh]>/gi, ' · ')
       .replace(/<\/(p|h[1-6]|li|div|tr)>|<br\s*\/?>/gi, ' ')
       .replace(/<[^>]+>/g, ''),
   )
     .replace(/\s+/g, ' ')
+    .replace(/·(?:\s*·)+/g, '·')
+    .replace(/\s*·\s*$/, '')
     .trim();
 }
 

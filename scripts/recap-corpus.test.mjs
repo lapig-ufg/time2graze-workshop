@@ -45,3 +45,10 @@ test('live summaries replace build-time recap entries for their day only', () =>
   assert.deepEqual(Array.from(merged.entries, (e) => e.id), ['recap-d2-r1', 'day-1', 'recap-d1-visual-inspection-workshop-ana-paula-lapig', 'recap-d1-gee-short-course-vinicius-lapig']);
   assert.equal(withRecaps(corpus, null), corpus);
 });
+
+test('a table in the doc reaches the model with its cells kept apart', () => {
+  const table = doc('<h2><span>Roadmap</span></h2><table><thead><tr><td><p><span>Team</span></p></td><td><p><span>By July 2027</span></p></td></tr></thead>' +
+    '<tbody><tr><td><p><span>Remote sensing</span></p></td><td><p><span>Operational data</span></p></td></tr></tbody></table>');
+  const [entry] = recapEntries({ docs: { 4: { url: 'u', html: table } } });
+  assert.equal(entry.text, 'Team · By July 2027 · Remote sensing · Operational data');
+});

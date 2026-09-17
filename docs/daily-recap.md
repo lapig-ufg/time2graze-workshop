@@ -24,7 +24,7 @@ The site reads each doc anonymously, as any visitor with the link would. That wo
 2. The group reads the doc and comments or suggests edits. Editors accept the suggestions.
 3. The site updates on its own. Exports are cached for one minute, and open pages check again every 30 seconds, so a change appears within about 90 seconds.
 
-A doc that has only its first line counts as unpublished. The site keeps headings, paragraphs, bold, italic, underline, lists and links. Images, tables, colours, comments and footnotes are left out.
+A doc that has only its first line counts as unpublished. The site keeps headings, paragraphs, bold, italic, underline, lists, links and tables. Images, colours, comments and footnotes are left out. A table keeps its columns and scrolls inside its own frame on a narrow screen; the assistant reads it as one line with ` · ` between cells.
 
 ## Implementation
 
