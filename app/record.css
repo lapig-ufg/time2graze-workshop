@@ -46,6 +46,31 @@
   .record-boards-actions svg { width: 15px; height: 15px; }
   .record-boards-actions .record-boards-open { gap: 24px; padding: 12px 18px; color: #fff; background: var(--forest-dark); border-radius: var(--radius); font-weight: 800; letter-spacing: .02em; text-decoration: none; transition: background var(--m-quick) var(--m-ease), color var(--m-quick) var(--m-ease), transform var(--m-quick) var(--m-ease); }
   .record-boards-actions .record-boards-open:hover { color: var(--forest-dark); background: var(--accent); transform: translateY(-2px); }
+
+  /* One tab per session with boards. The row takes the shape of "Daily
+     summaries" beside it — same type, same ink rule — so the two columns
+     still open on one line; the selected tab is the heading, the other a
+     quieter alternative. */
+  .record-boards-tablist { display: flex; flex-wrap: wrap; gap: 0 clamp(22px, 3vw, 40px); border-bottom: 1px solid var(--ink); }
+  .record-boards-tablist [role='tab'] { position: relative; display: inline-flex; align-items: baseline; gap: 10px; margin-bottom: -1px; padding: 0 0 14px; color: var(--muted); background: transparent; border: 0; border-bottom: 3px solid transparent; font: inherit; cursor: pointer; transition: color var(--m-quick) var(--m-ease), border-color var(--m-quick) var(--m-ease); }
+  .record-boards-tablist [role='tab'] span { font-size: var(--t-label); font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+  .record-boards-tablist [role='tab'] strong { font-size: var(--t-head-sm); font-weight: 800; }
+  .record-boards-tablist [role='tab']:hover { color: var(--ink); }
+  .record-boards-tablist [role='tab'][aria-selected='true'] { color: var(--forest); border-bottom-color: var(--forest); }
+  .record-boards-tablist + .record-boards-stack { margin-top: clamp(18px, 2vw, 26px); }
+
+  /* Both cards share one cell, so the band keeps the taller one's height and
+     switching never moves the overview below. */
+  .record-boards-stack { display: grid; }
+  .record-boards-stack > .record-boards { grid-area: 1 / 1; align-self: start; }
+  .record-boards[data-active='false'] { visibility: hidden; }
+  .record-boards-tabs[data-switched] .record-boards[data-active='true'] { animation: record-boards-in var(--m-move) var(--m-ease); }
+}
+
+@keyframes record-boards-in { from { opacity: 0; } }
+
+@media screen and (min-width: 561px) {
+  .record-boards-list[data-many='true'] { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
 @media screen and (max-width: 960px) {
@@ -58,6 +83,10 @@
   .record-day-status { grid-column: 2; justify-self: start; }
   .record-days li > * > .record-day-status:empty { display: none; }
   .record-boards-list { grid-template-columns: 1fr; }
+  /* One column makes the lists very different in height: no reserve here. */
+  .record-boards[data-active='false'] { display: none; }
+  .record-boards-tablist [role='tab'] { flex-direction: column; align-items: flex-start; gap: 4px; }
+  .record-boards-tablist [role='tab'] strong { font-size: var(--t-meta-lg); }
 }
 
 /* The programme's tool row: the published summaries, as the day's materials

@@ -658,6 +658,7 @@ export const AGENDA: Day[] = [
             title: 'Collaboration boards · 65 contributions',
             href: '/files/collaboration-boards/',
             format: '3D',
+            preview: '/images/collaboration-boards/overview.webp',
           },
         ],
       },

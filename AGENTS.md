@@ -2597,8 +2597,9 @@ Brazil* (Laerte) from Day 2, 16:45–17:30, into that hour.
   Pasto Legal runs 16:00–17:00 and the Daily Summary 17:00–18:00, as the
   organiser asked. Do not put an Open Agenda back there.
 - **Nathália's biomass deck is not published.** It was built as
-  `public/files/on-the-ground-biomass/` but never shipped, and nothing
-  references it. Her Day 1 Field Protocol session and deck are unaffected.
+  `public/files/on-the-ground-biomass/` but never shipped, and the organiser
+  had the folder removed on 17 September 2026. Her Day 1 Field Protocol
+  session and deck are unaffected.
 
 ## The workshop record — 15 September 2026
 
@@ -2622,6 +2623,20 @@ an index.
   Chrome screenshot of `/files/workshop-boards/` at 1440×900 @2x. It is
   declared on the material as `Material.preview`, so the band reads it from
   the agenda. Re-shoot it if the boards' layout changes.
+- **One tab per board collection** (17 September 2026, when Day 4's
+  collaboration boards arrived). `components/record-boards.tsx` takes every
+  `3D` material in the agenda; `BOARD_DATA` in `workshop-record.tsx` maps its
+  href to the board data. The tab row takes the type and ink rule of *Daily
+  summaries* beside it, so both columns still open on one line — the rules
+  must stay level (tab padding 14px plus its 3px bar equals the heading's
+  16px plus 1px). It opens on the most recent session. Both cards share one
+  grid cell with the inactive one `visibility: hidden` and `inert`, so the
+  band keeps the taller card's height and switching never moves the overview;
+  on a phone the reserve would be a long gap, so there the inactive card is
+  not displayed. A collection of more than four boards lists them in three
+  columns. `public/images/collaboration-boards/overview.webp` was shot like
+  the Day 2 still, from a 2600×1500 headless render of the published tool,
+  cropped to 1600×750.
 - **The now band mentions the summary only once the day's schedule is over.**
   A first version listed every summary so far, all day; the organiser found
   it did not need to be there the whole time. While a session is running or
