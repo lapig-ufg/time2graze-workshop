@@ -621,10 +621,22 @@ export const AGENDA: Day[] = [
         venueId: null,
         kind: 'technical',
       },
+      /* Taken off Day 3 on 16 September 2026 and held here on 17 September.
+         The id keeps its d3 prefix: it is the address shared links point at. */
+      {
+        id: 'd3-country-uganda',
+        date: '2026-09-17',
+        start: '09:00',
+        end: '10:00',
+        title: 'Country Presentation: Uganda',
+        venueId: null,
+        kind: 'technical',
+        materials: [{ kind: 'slides' }],
+      },
       {
         id: 'd4-collaboration-map',
         date: '2026-09-17',
-        start: '09:00',
+        start: '10:00',
         end: '12:00',
         title: 'Interactive workshop: Building a collaboration map and country uptake journey',
         speakers: [{ name: 'Beatriz', org: 'OGH' }],

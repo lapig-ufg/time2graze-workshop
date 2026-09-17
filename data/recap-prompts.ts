@@ -49,7 +49,7 @@ const FOCUS: Record<string, string> = {
     'The concrete lessons from the field campaigns: logistics, sampling, data quality and what should be done differently.',
   'd4-checkin': 'Only anything that changes the day or the week. Omit if there is nothing.',
   'd4-collaboration-map':
-    'A three-hour interactive workshop. Record, by country, the actors and partnerships identified, the steps of the uptake journey, and the gaps or dependencies found. Use the boards and group outputs in the notes as the main source.',
+    'A two-hour interactive workshop. Record, by country, the actors and partnerships identified, the steps of the uptake journey, and the gaps or dependencies found. Use the boards and group outputs in the notes as the main source.',
   'd4-dst-data-production':
     'The challenges and synergies between AI-based back-ends and the decision-support tool as presented, and anything agreed about how they connect.',
   'd4-methane-data':
@@ -110,7 +110,7 @@ const DAY_NOTES: Record<number, string> = {
   1: 'There is no summary session today; the day ends with the Welcome Dinner. The field visit was outdoors, so its audio is likely poor.',
   2: 'The last session runs straight into the 17:30 Daily Summary. If its recording is not in the notebook yet, cover it from the notes, or leave it out and say so.',
   3: 'Six country presentations. Keep them in the order they were held and on the same headings. Laerte’s talk moved to 17:00 and runs straight into the 17:45 Daily Summary; if its recording is not in the notebook yet, cover it from the notes or say it is missing.',
-  4: 'The 17:30 wrap-up and this record are the same content: the takeaways in the wrap-up should come from the sessions below, not from new statements.',
+  4: 'Uganda’s country presentation, moved from Day 3, opened the day at 09:00; give it the same headings as the Day 3 countries. The 17:30 wrap-up and this record are the same content: the takeaways in the wrap-up should come from the sessions below, not from new statements.',
   5: 'A field day. Audio outdoors will be poor or missing; the notes and photographs are the main source. The city tour and the lookout are not technical and are not recorded.',
 };
 
