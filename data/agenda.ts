@@ -630,7 +630,18 @@ export const AGENDA: Day[] = [
         speakers: [{ name: 'Beatriz', org: 'OGH' }],
         venueId: null,
         kind: 'technical',
-        materials: [{ kind: 'slides' }],
+        /* Beatriz's deck, supplied 17 September 2026 as Google Slides while
+           she was still editing it during the session, so the site links the
+           presentation rather than serving a copy. /preview, not /edit: the
+           deck is shared "Anyone with the link → Commenter", and this site
+           should not invite readers into it. */
+        materials: [
+          {
+            kind: 'slides',
+            href: 'https://docs.google.com/presentation/d/1iftFMGiPI1Uqf-Pq1ycbpJkqvbqafaOFVLDJWsxGj3Y/preview',
+            format: 'Google Slides',
+          },
+        ],
       },
       {
         id: 'd4-lunch',

@@ -2706,3 +2706,9 @@ while this was built; `rm -rf .next` before trusting a preview of a CSS change.
 Resolution.pdf`, 35 pages, 19.6 MB), so there was nothing to convert: PyMuPDF
 rendered each page to WebP at 2400px, and `deck.pdf` was rebuilt from those
 pages as JPEG at 1800px (7.7 MB).
+
+Beatriz's *Building a collaboration map and country uptake journey* deck went
+onto `d4-collaboration-map` on 17 September 2026 as a Google Slides
+`/preview` link: she was still editing it during the session, and it is
+shared `Anyone with the link → Commenter`. Swap it for a rendered copy with
+`pdfCopy` once she says it is final.
