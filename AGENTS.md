@@ -2698,3 +2698,11 @@ publishing. If it ever becomes Editor, the link comes off the site.
 
 Turbopack's dev cache in this OneDrive folder served stale CSS across restarts
 while this was built; `rm -rf .next` before trusting a preview of a CSS change.
+## Humberto's methane deck — 17 September 2026
+
+*Livestock Methane Emission Data* (Humberto Paiva Fonseca, LAPIG) is on
+`d4-methane-data`, in `public/files/livestock-methane/`. It arrived as a PDF
+(`LAPIG Global Livestock Methane Emissions Inventory at 1-km Spatial
+Resolution.pdf`, 35 pages, 19.6 MB), so there was nothing to convert: PyMuPDF
+rendered each page to WebP at 2400px, and `deck.pdf` was rebuilt from those
+pages as JPEG at 1800px (7.7 MB).

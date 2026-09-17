@@ -652,7 +652,18 @@ export const AGENDA: Day[] = [
         speakers: [{ name: 'Humberto', org: 'LAPIG' }],
         venueId: null,
         kind: 'technical',
-        materials: [{ kind: 'slides' }],
+        /* Humberto's deck, supplied 17 September 2026 as a PDF; rendered page
+           by page to WebP, like the other decks. */
+        materials: [
+          {
+            kind: 'slides',
+            href: '/files/livestock-methane/index.html',
+            format: 'HTML',
+            /* The same pages as one PDF: offline, and a fallback if the
+               viewer fails a reader. */
+            pdfCopy: '/files/livestock-methane/deck.pdf',
+          },
+        ],
       },
       {
         id: 'd4-dst-data-production',
