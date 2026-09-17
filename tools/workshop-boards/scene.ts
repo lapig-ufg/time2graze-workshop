@@ -1,8 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
-import { WORKSHOP_BOARDS } from '../../data/workshop-boards';
-import { BOARD_MARKS } from '../../data/workshop-board-marks';
+import { WORKSHOP_BOARDS, BOARD_MARKS } from './collection';
 import { boardTexture, contactShadow, noteTexture, overviewTexture, paperGeometry, paperTexture, inkMaterial, isPaperTexture, disposePaperTextures, COLORS } from './paper';
 import { DemandRenderer, drawingRatio } from './render-loop';
 import type { BoardNote } from './types';
@@ -79,7 +78,7 @@ export class BoardScene {
     this.buildStands();
     this.controls = new OrbitControls(this.camera, element);
     this.controls.enableDamping = !this.reducedMotion.matches; this.controls.dampingFactor = .12;
-    this.controls.minDistance = .25; this.controls.maxDistance = 35;
+    this.controls.minDistance = .25; this.controls.maxDistance = Math.max(35,WORKSHOP_BOARDS.length*12);
     this.controls.minPolarAngle = .65; this.controls.maxPolarAngle = Math.PI * .57;
     this.controls.minAzimuthAngle = -.6; this.controls.maxAzimuthAngle = .6;
     this.controls.rotateSpeed = .45; this.controls.zoomSpeed = .8;
@@ -129,8 +128,9 @@ export class BoardScene {
     const place = new THREE.Object3D();
     WORKSHOP_BOARDS.forEach((board,index) => {
       const stand = new THREE.Group();
-      stand.position.set((index - 1.5) * 3.85, 3.2, index === 0 || index === 3 ? -.1 : .15);
-      stand.rotation.y = [.055,.018,-.018,-.055][index];
+      const offset=index-(WORKSHOP_BOARDS.length-1)/2;
+      stand.position.set(offset * 3.85, 3.2, index === 0 || index === WORKSHOP_BOARDS.length-1 ? -.1 : .15);
+      stand.rotation.y = WORKSHOP_BOARDS.length===4 ? [.055,.018,-.018,-.055][index] : -offset*.025;
       stand.updateMatrix();
       this.stands.push(stand); this.scene.add(stand);
       const add = (list:THREE.BufferGeometry[], geometry:THREE.BufferGeometry, x:number, y:number, z:number, rx=0, rz=0) => {
@@ -343,11 +343,12 @@ export class BoardScene {
       const home = next.home.clone(); home.z += .72;
       target = stand.localToWorld(home);
       // The veil sits just behind the lifted note. The outer easels are turned
-      // towards the centre, so a veil near the board surface tilts behind the
-      // neighbouring board and leaves it unsoftened.
-      this.focusVeil.position.copy(stand.localToWorld(next.home.clone().add(new THREE.Vector3(0,0,.60))));
+      // towards the centre — by up to .075 rad with seven boards — so a veil
+      // nearer the board surface tilts behind the neighbouring board and
+      // leaves its notes unsoftened.
+      this.focusVeil.position.copy(stand.localToWorld(next.home.clone().add(new THREE.Vector3(0,0,.68))));
       this.focusVeil.quaternion.copy(stand.quaternion);
-      this.focusShadow.position.copy(stand.localToWorld(next.home.clone().add(new THREE.Vector3(.025,-.025,.66))));
+      this.focusShadow.position.copy(stand.localToWorld(next.home.clone().add(new THREE.Vector3(.025,-.025,.70))));
       this.focusShadow.quaternion.copy(stand.quaternion);
       this.focusShadow.scale.set(this.detailSize.x*1.35,this.detailSize.y*1.35,1);
       const normal = new THREE.Vector3(0,0,1).applyQuaternion(stand.quaternion);
@@ -359,7 +360,7 @@ export class BoardScene {
       position = target.clone().add(new THREE.Vector3(.06,.04,this.distance(3.2,4.9)));
     } else {
       target = new THREE.Vector3(0,2.65,0);
-      position = target.clone().add(new THREE.Vector3(.95,1.2,this.distance(15.4,6.6)));
+      position = target.clone().add(new THREE.Vector3(.95,1.2,this.distance(WORKSHOP_BOARDS.length*3.85,6.6)));
     }
     // When close to a board, dragging pans its surface. Overview allows orbit.
     this.controls.mouseButtons.LEFT = board===null ? THREE.MOUSE.ROTATE : THREE.MOUSE.PAN;
@@ -399,7 +400,7 @@ export class BoardScene {
   zoom(direction:number) {
     this.moving=undefined;
     const offset=this.camera.position.clone().sub(this.controls.target);
-    offset.setLength(THREE.MathUtils.clamp(offset.length()*(direction > 0 ? .8 : 1.25),.25,35));
+    offset.setLength(THREE.MathUtils.clamp(offset.length()*(direction > 0 ? .8 : 1.25),.25,this.controls.maxDistance));
     this.camera.position.copy(this.controls.target).add(offset); this.controls.update();this.invalidate();
   }
 

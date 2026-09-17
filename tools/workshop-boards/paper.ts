@@ -117,8 +117,17 @@ export function noteTexture(note: BoardNote, width = 512, detail = false) {
 function drawHeading(ctx: CanvasRenderingContext2D, board: WorkshopBoard) {
   ctx.textBaseline = 'alphabetic';
   ctx.fillStyle = '#142019';
+  if (!board.facilitator) {
+    // Country sheets carry nothing but the name, written large across the top;
+    // at overview distance it is the only way to tell seven sheets apart.
+    ctx.font = '600 190px "Cormorant Garamond", serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(board.title, 768, 205, 1326);
+    ctx.textAlign = 'left';
+    return;
+  }
   ctx.font = '600 105px "Cormorant Garamond", serif';
-  ctx.fillText(board.title, 105, 160);
+  ctx.fillText(board.title, 105, 160, 1326);
   ctx.font = '500 36px Manrope, sans-serif';
   ctx.fillStyle = '#374538'; ctx.fillText(board.facilitator, 110, 215);
   if (board.themes) {

@@ -30,6 +30,7 @@
     "dist/**",
     "coverage/**",
     "public/files/workshop-boards/**",
+    "public/files/collaboration-boards/**",
     "next-env.d.ts"
   ],
   "rules": {

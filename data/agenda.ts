@@ -653,6 +653,12 @@ export const AGENDA: Day[] = [
             href: 'https://docs.google.com/presentation/d/1iftFMGiPI1Uqf-Pq1ycbpJkqvbqafaOFVLDJWsxGj3Y/preview',
             format: 'Google Slides',
           },
+          {
+            kind: 'document',
+            title: 'Collaboration boards · 65 contributions',
+            href: '/files/collaboration-boards/',
+            format: '3D',
+          },
         ],
       },
       {

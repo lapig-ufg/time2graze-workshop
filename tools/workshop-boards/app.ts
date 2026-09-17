@@ -1,4 +1,4 @@
-import { WORKSHOP_BOARDS } from '../../data/workshop-boards';
+import { WORKSHOP_BOARDS } from './collection';
 import type { BoardScene } from './scene';
 
 const get = <T extends HTMLElement = HTMLElement>(id:string) => {
@@ -40,7 +40,7 @@ function select(index:number|null,note?:string,push=true) {
     const notes=current.notes.filter(n=>!n.label);
     get('note-position').textContent=selected.label?'Group heading':`${notes.findIndex(n=>n.id===noteId)+1} / ${notes.length}`;
     announce(`${current.title}. ${selected.text}`);
-  } else announce(current?`${current.title}. Facilitator: ${current.facilitator}. ${current.notes.filter(n=>!n.label).length} contributions.`:'All four workshop boards.');
+  } else announce(current?`${current.title}. ${current.facilitator ? `Facilitator: ${current.facilitator}. ` : ''}${current.notes.filter(n=>!n.label).length} contributions.`:`All ${WORKSHOP_BOARDS.length} workshop boards.`);
   get('gesture-hint').innerText=current?'Drag to move · Scroll or pinch to zoom · Select a note':'Drag to look around · Select a board to explore';
   if(readingMode) {
     reading.querySelectorAll<HTMLElement>(':scope > section').forEach(section=>section.hidden=Boolean(current)&&section.dataset.boardId!==current?.id);
@@ -88,7 +88,7 @@ function step(direction:number) {
     const notes=WORKSHOP_BOARDS[board].notes.filter(n=>!n.label);
     const index=notes.findIndex(n=>n.id===noteId);
     select(board,notes[(index+direction+notes.length)%notes.length].id);
-  } else select(((board??(direction>0?-1:0))+direction+4)%4);
+  } else select(((board??(direction>0?-1:0))+direction+WORKSHOP_BOARDS.length)%WORKSHOP_BOARDS.length);
 }
 
 toggle.addEventListener('click',()=>setReading(!readingMode));
@@ -157,7 +157,7 @@ function failure() {
   failed=true;ready=false;
   scene?.dispose();scene=undefined;
   setReading(true);toggle.hidden=true;nav.hidden=true;
-  feedback.textContent='3D is unavailable in this browser. All 71 contributions are available in the reading view.';
+  feedback.textContent=`3D is unavailable in this browser. All ${WORKSHOP_BOARDS.reduce((sum,b)=>sum+b.notes.filter(n=>!n.label).length,0)} contributions are available in the reading view.`;
   reading.querySelectorAll<HTMLAnchorElement>('a[data-note]').forEach(link=>link.hidden=true);
 }
 async function start() {

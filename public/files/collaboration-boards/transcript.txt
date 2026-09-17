@@ -1,0 +1,334 @@
+Argentina
+
+1. [Strength]
+STRENGHT
+• TRANSLATING SCIENTIFIC KNOWLEDGE INTO PRACTICAL RULES FOR DECISION MAKING
+ARGENTINA
+
+2. [Strength]
+STRENGHT
+• GOOD UNDERSTANDING OF HOW PRODUCTION SYSTEMS OPERATE
+ARGENTINA.
+
+3. [Missing]
+MISSING.
+IDENTIFY PARTNERS TO SCALE UP AND KEEP THE INITIATIVE ACTIVE.
+ARGENTINA.
+
+4. [Missing]
+MISSING
+• ACCURATE NRT SANTIND [standing] BIOMASS (AMOUNT AND QUALITY) DATA.
+[Crossed-out term]
+ARGENTINA.
+
+--------------------
+
+Nigeria
+
+1. [Skills]
+Skills we have
+• GIS
+• Stakeholders Engagement
+• Policy
+• Networking
+Adedamola (Nigeria)
+
+2. [Strength]
+What we are good at
+• Stakeholder Engagement:
+  1. Government
+  2. Academia
+  3. Communities.
+Nigeria
+
+3. [Strength]
+What we are good at
+• Influence policy at:
+  1. Government level.
+  2. Community level.
+• Effective communication
+Nigeria
+
+4. [Strength]
+• Protected Areas Management
+• Research.
+
+5. [Needs]
+What I need help with
+1. Development of the DST
+2. Translation of Biomass data on the ground.
+Nigeria
+
+6. [Needs]
+What We Need.
+• Domesticate DST
+[Pilot — crossed out]
+
+7. [Needs]
+What we need
+• Historical data on grazing systems
+
+--------------------
+
+Colombia
+
+1. [Strength]
+Colombia Strength
+• Relationship with private sector and access to field sites for piloting and testing with producers.
+
+2. [Strength]
+Colombia. Strength
+Tropical forage agronomy
+
+3. [Strength]
+Colombia. Strength
+Human centered design.
+
+4. [Strength]
+Colombia. Strenght
+• Trade-off analyses of a technological intervention (economic and ecological)
+
+5. [Strength]
+Colombia Strength.
+Environmental analyses (impacts of soil [Crossed-out term] health, for example)
+
+6. [Strength]
+Colombia Strength
+Sensitivity and respectful engagement with rural communities.
+
+7. [Strength]
+INTEGRATION OF DIFFERENT DATA SOURCES
+Strength Colombia
+
+8. [Strength]
+SOFTWARE DEVELOPMENT
+AI ENGINEERING
+Strength Colombia
+
+9. [Strength]
+COMPILED HISTORICAL RESEARCH DATA
+Strength Colombia
+
+10. [Strength]
+GEOSPATIAL PROCESSING
+Strength Colombia
+
+11. [Strength]
+AI FOR EARTH OBSERVATION
+Strength Colombia
+
+12. [Strength]
+RESEARCH IN LOW METHANE FORAGES
+Strength Colombia
+
+13. [Weakness]
+Weakness
+• Design of grazing management plans that are tailored to different value chains (Beef vs milk vs dual purpose)
+
+14. IMPROVE KNOWLEDGE ON GRAZING BEST PRACTICES
+
+15. [Missing]
+How to improve communication and information delivery?
+Missing Colombia
+
+--------------------
+
+Zimbabwe
+
+1. [Strength]
+TRAINING & CAPACITY BUILDING
+
+2. [Strength]
+COMMUNITY ENGAGEMENT
+
+3. [Strength]
+RANGELAND MODELLING
+
+4. [Strength]
+GIS CAPACITY
+
+5. [Strength]
+RANGELANDS MANAGEMENT
+
+6. [Strength]
+ECOLOGY
+
+7. [Strength]
+RESEARCH
+
+8. [Why]
+WHY
+LIMITED EXPERTISE
+
+9. [Why]
+WEAK INSTITUTIONAL INSIGHTS
+
+10. [Why]
+WEAK COLLABORATIVE FRAMEWORKS
+
+11. [Help with]
+HELP WITH
+• TOOL DVLPT.
+
+--------------------
+
+Tanzania
+
+1. [Strength]
+Strength
+DST:
+• Management
+• Trainings [Community Support — crossed out]
+• Citizen Science → Data collection → Decemination [dissemination]
+• Team Internal Capacity:
+  – Comms
+  – Advocacy
+  – Livestock Management (Partner / Practices)
+• Spatial Data.
+
+2. [Missing]
+What we are missing (Need)
+[Data — crossed out] Utilization
+• Open data hub
+• Biomass Data
+• ML model with Data driven model with citizen science model
+• Pastoralist's modus operandi
+
+3. [Missing]
+What we are missing?
+• USSD (Unstructured Supplementary Service Data)
+• Mobile APP
+• SMS bulk System.
+• GPS tracking
+
+--------------------
+
+Uruguay
+
+1. [Strength]
+Strenght (UY)
+• Good understanding of biophysical function of animal production system
+
+2. [Strength]
+Strenght (UY)
+• I can give good talks to technicians and to farmers
+
+3. [Strength]
+Strenght (UY)
+• Capable of identifying key drivers of impact, and design DST to manage them simply
+
+4. [Missing]
+Missing
+• [Crossed-out term] Near-real time measurement of [crossed-out term] amount & quality of standing biomass
+
+5. [Missing]
+Missing
+• $ to fund a PhD student that will assess integrating satellite + models + field data to estimate biomass
+
+6. [Missing]
+Missing
+• Knowledge to use chat bot [or chat box — uncertain reading]
+
+7. [Missing]
+Missing
+• Capability to map & understand users
+
+--------------------
+
+Brazil / RS Team
+
+1. [We can help]
+LEANDRO
+• I good in:
+  – Organize different types of Data
+  – Process Satellite data
+  – Develop AI / webmaps Applications
+
+2. [We can help]
+Emily @ WWF-US
+Strength
+• decision support tools & modelling
+• climate change account. & estimation
+
+3. [We can help]
+Vinicius LAPIG/UFG - 2. STRENGTHS
+• Remote Sensing and GIS Analyses
+• Google Earth Engine training and Apps
+• Impact Photography for storytelling (wildlife and landscapes)
+• Land use and land cover mapping of large areas (cloud computing)
+• Field Work planning
+
+4. [We can help]
+Research assistant and field lead in Brazil
+• I know how to communicate with farmers
+• Have connections with farmer and local agencies (extension)
+• Experience with institutional articulation and organizing events and capacity building
+Nathalia
+
+5. [We can help]
+We can contribute with translating technical RS information / data into practical / useful state / information
+Renata
+
+6. [We can help]
+I Can offer: Connection to (Some) other (Mostly global) Maps + Monitoring products.
+– Lindsey
+
+7. [We can help]
+I'm good at talking to people and try to find ways to collaborate;
+I'm good at translating technical knowledge / data into understandable / effective terms.
+Renata
+
+8. [We can help]
+• Research & Development of high-resolution Earth Observation data and remotesensing techniques.
+• Production of GPP → Biomass datasets.
+Serban
+
+9. [We can help]
+I'M GOOD AT CONNECT PEOPLE
+I'm a project coordinator, so I CAN UNDERSTAND THE NEEDS of projects and connect THE DOTS, AVOIDING WAST OF TIME AND RESOURCES.
+I HAVE A NETWORK OF RELEVANT STAKEHOLDERS that can be testers AND provide PILOT AREAS. (FOR LATAM)
+Maiara
+
+10. [We can help]
+I am skilled in:
+• working with geospatial data and remote sensing
+• estimating Methane emissions using various methods
+• working with various meteorological datasets
+Humberto
+
+11. [We miss]
+Bottlenecks (possible):
+NRT data might require country-wise calibration based on in-situ observations which is a [not a / non- — uncertain reading] trivial task and not easy to find for everywhere.
+Serban
+
+12. [We miss]
+LEANDRO
+• I need help with:
+  – access field data
+  – connect with users and forms [farms/farmers — uncertain reading], pastoralists for feedback
+
+13. [We miss]
+I NEED A PLATFORM WHERE THE END USER CAN OBTAIN INFO FOR A POLYGON / LIST OF POLYGONS AND GENERATE A REPORT.
+INFO: Pasture Degradation + OTHER LAYERS THAT WRI ALREADY WORK / MAKE SERVING AS 'PHOTOGRAPHY' AND MONITORING SYSTEM.
+MAIARA
+
+14. [We miss]
+I miss more systematic country to country discussion;
+I miss a clear understanding of each geography / respective realities;
+so in fact, I miss the opportunity to visit each country and learn from the local realities / invite me!
+
+15. [We miss]
+Come to me with ideas for joint fundraising for other parts of this project.
+– Lindsey
+
+16. [We miss]
+Need: Concrete User Stories to feature in a Time2Graze Webinar.
+– Lindsey
+
+17. [We miss]
+We need ground data or contact with those (institutions, universities) that detain ground data and local knowledge.
+
+18. [We miss]
+Vinicius LAPIG/UFG - MISSING:
+• Ground data for model calibration
+• Ground Photos for mapping validation and improvement

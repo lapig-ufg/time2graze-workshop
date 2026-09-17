@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f5f6f2">
-  <meta name="description" content="Explore the four Time2Graze workshop boards and read the group's contributions in 3D.">
-  <title>Workshop boards · Time2Graze</title>
+  <meta name="description" content="Explore {{BOARDS}} Time2Graze boards and read the group's {{COUNT}} contributions in 3D.">
+  <title>{{TITLE}} · Time2Graze</title>
   <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
   <link rel="preload" href="./assets/manrope.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="./boards.css">
@@ -13,18 +13,18 @@
 <body>
   <a class="skip" href="#reading">Read the contributions</a>
   <header class="topbar">
-    <a class="back-link" href="../../materials/#materials-day-2"><span aria-hidden="true">←</span> Materials</a>
+    <a class="back-link" href="../../materials/#materials-day-{{DAY}}"><span aria-hidden="true">←</span> Materials</a>
     <a class="brand" href="../../">Time2Graze <span>Brazil Workshop</span></a>
-    <a class="session-link" href="../../programme/#d2-priorities-barriers">View session <span aria-hidden="true">↗</span></a>
+    <a class="session-link" href="../../programme/#{{SESSION}}">View session <span aria-hidden="true">↗</span></a>
   </header>
   <main>
     <section class="heading" aria-labelledby="title">
-      <div><p class="eyebrow">15 September 2026 <span>·</span> Group contributions</p><h1 id="title">Workshop boards</h1></div>
-      <div class="heading-meta"><span>4 boards</span><span>71 contributions</span><button id="reading-toggle" hidden aria-pressed="false">Reading view</button></div>
+      <div><p class="eyebrow">{{DATE}} <span>·</span> Group contributions</p><h1 id="title">{{TITLE}}</h1></div>
+      <div class="heading-meta"><span>{{BOARDS}} boards</span><span>{{COUNT}} contributions</span><button id="reading-toggle" hidden aria-pressed="false">Reading view</button></div>
     </section>
     <section class="workspace" id="workspace" aria-label="Interactive workshop boards" hidden>
       <div class="scene-toolbar">
-        <div class="location"><button id="overview" aria-label="Show all four boards">All boards</button><span id="location-separator" hidden aria-hidden="true">/</span><span id="location-name"></span></div>
+        <div class="location"><button id="overview" aria-label="Show all {{BOARDS}} boards">All boards</button><span id="location-separator" hidden aria-hidden="true">/</span><span id="location-name"></span></div>
         <div class="search-wrap"><label for="search"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Search contributions" autocomplete="off"></label><div class="search-results" id="search-results" hidden><p id="search-count" role="status"></p><div id="search-items"></div></div></div>
       </div>
       <div id="scene" class="scene" tabindex="0" role="group" aria-label="3D boards. Select a board using the controls below. Use arrow keys to move between boards or notes, plus and minus to zoom, and Escape to return."></div>
@@ -36,7 +36,7 @@
       </div>
       <div class="scene-bottom"><p id="gesture-hint">Drag to look around <span>·</span> Select a board to explore</p><div class="view-controls"><button id="zoom-out" aria-label="Zoom out">−</button><button id="reset" aria-label="Reset view">Reset view</button><button id="zoom-in" aria-label="Zoom in">+</button><button id="fullscreen" aria-label="Enter fullscreen">⛶</button></div></div>
     </section>
-    <nav class="board-nav" id="board-nav" aria-label="Choose a workshop board" hidden><!--BOARD_NAV--></nav>
+    <nav class="board-nav{{NAV_CLASS}}" id="board-nav" aria-label="Choose a workshop board" hidden><!--BOARD_NAV--></nav>
     <p class="feedback" id="feedback" role="status" aria-live="polite"></p>
     <section class="reading" id="reading" aria-label="Workshop contributions" tabindex="-1"><!--READING--></section>
     <p class="sr-only" id="selection-announcement" role="status" aria-live="polite"></p>
