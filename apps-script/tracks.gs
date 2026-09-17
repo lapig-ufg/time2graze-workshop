@@ -41,10 +41,6 @@ const SPLIT_SESSIONS = {
     'd1-visual-inspection': 'Visual Inspection Workshop',
     'd1-gee-course': 'GEE / GEE App short course',
   },
-  'd4-split-dst-methane': {
-    'd4-dst-data-production': 'DST Data Production',
-    'd4-methane-data': 'Livestock Methane Emission Data',
-  },
 };
 
 /**

@@ -51,7 +51,7 @@ const FOCUS: Record<string, string> = {
   'd4-collaboration-map':
     'A three-hour interactive workshop. Record, by country, the actors and partnerships identified, the steps of the uptake journey, and the gaps or dependencies found. Use the boards and group outputs in the notes as the main source.',
   'd4-dst-data-production':
-    'What data the decision-support tool needs, how it is produced, who produces it where the notes say so, and what is missing.',
+    'The challenges and synergies between AI-based back-ends and the decision-support tool as presented, and anything agreed about how they connect.',
   'd4-methane-data':
     'The methane emission data and methods presented, their coverage and uncertainty, and how they enter the project.',
   'd4-roadmap':

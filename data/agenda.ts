@@ -641,27 +641,29 @@ export const AGENDA: Day[] = [
         venueId: null,
         kind: 'meal',
       },
+      /* A split session until 17 September 2026, when it became two plenary
+         sessions in sequence. The former track ids are kept as session ids. */
       {
-        id: 'd4-split-dst-methane',
+        id: 'd4-methane-data',
         date: '2026-09-17',
         start: '14:00',
-        end: '15:30',
-        title: 'Split Session',
+        end: '15:00',
+        title: 'Livestock Methane Emission Data',
+        speakers: [{ name: 'Humberto', org: 'LAPIG' }],
         venueId: null,
         kind: 'technical',
-        tracks: [
-          {
-            id: 'd4-dst-data-production',
-            title: 'DST Data Production',
-            materials: [{ kind: 'slides' }],
-          },
-          {
-            id: 'd4-methane-data',
-            title: 'Livestock Methane Emission Data',
-            speakers: [{ name: 'Humberto', org: 'LAPIG' }],
-            materials: [{ kind: 'slides' }],
-          },
-        ],
+        materials: [{ kind: 'slides' }],
+      },
+      {
+        id: 'd4-dst-data-production',
+        date: '2026-09-17',
+        start: '15:00',
+        end: '15:30',
+        title: 'Challenges and Synergies of AI-Based Back-Ends and DST',
+        speakers: [{ name: 'Leandro', org: 'OGH' }],
+        venueId: null,
+        kind: 'technical',
+        materials: [{ kind: 'slides' }],
       },
       {
         id: 'd4-coffee',

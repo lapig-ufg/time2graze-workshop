@@ -135,18 +135,6 @@ test('the name is matched loosely, since it is retyped on a phone', () => {
   assert.equal(app.rows.length, 2);
 });
 
-test('the second split session is a separate answer, not a change to the first', () => {
-  const app = endpoint();
-  app.choose(CHOICE);
-  const other = app.choose({
-    session: 'd4-split-dst-methane',
-    track: 'd4-methane-data',
-    name: 'Ana Paula',
-  });
-  assert.equal(other.status, 'recorded');
-  assert.equal(app.rows.length, 3);
-});
-
 test('two people choosing the same activity are two rows', () => {
   const app = endpoint();
   app.choose(CHOICE);
