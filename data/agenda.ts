@@ -727,7 +727,19 @@ export const AGENDA: Day[] = [
         ],
         venueId: null,
         kind: 'technical',
-        materials: [{ kind: 'slides' }],
+        /* The session's deck, supplied 17 September 2026 as a 6-slide
+           PowerPoint. Slide 5 is a frame the session fills in ("Add priority
+           questions from Bea's session here"), published as supplied. */
+        materials: [
+          {
+            kind: 'slides',
+            href: '/files/roadmap-session/index.html',
+            format: 'HTML',
+            /* The same pages as one PDF: offline, and a fallback if the
+               viewer fails a reader. */
+            pdfCopy: '/files/roadmap-session/deck.pdf',
+          },
+        ],
       },
       {
         id: 'd4-wrap-up',

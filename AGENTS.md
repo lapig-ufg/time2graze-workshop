@@ -2727,3 +2727,8 @@ onto `d4-collaboration-map` on 17 September 2026 as a Google Slides
 `/preview` link: she was still editing it during the session, and it is
 shared `Anyone with the link → Commenter`. Swap it for a rendered copy with
 `pdfCopy` once she says it is final.
+
+The Day 4 roadmap session's deck (`Time2Graze_Roadmap_Session_2026-09-17.pptx`,
+6 slides) is on `d4-roadmap`, in `public/files/roadmap-session/`. Slide 5 is an
+empty frame for the priority questions from Beatriz's session; it was published
+as supplied. If a filled-in version arrives, rerun the render over it.
