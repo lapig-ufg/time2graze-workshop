@@ -737,17 +737,16 @@ export const AGENDA: Day[] = [
         ],
         venueId: null,
         kind: 'technical',
-        /* The session's deck, supplied 17 September 2026 as a 6-slide
-           PowerPoint. Slide 5 is a frame the session fills in ("Add priority
-           questions from Bea's session here"), published as supplied. */
+        /* Lindsey's deck, a PowerPoint held in her Drive. Published as a
+           rendered copy on 17 September 2026, then switched the same
+           afternoon to the file itself at the organiser's request, because
+           Lindsey is still editing it. Shared "Anyone with the link → Viewer";
+           /preview opens the read-only view. */
         materials: [
           {
             kind: 'slides',
-            href: '/files/roadmap-session/index.html',
-            format: 'HTML',
-            /* The same pages as one PDF: offline, and a fallback if the
-               viewer fails a reader. */
-            pdfCopy: '/files/roadmap-session/deck.pdf',
+            href: 'https://docs.google.com/presentation/d/1hoZ2QR_8-TMGWQ_5ithLYPPPz2vYIYBE/preview',
+            format: 'Google Slides',
           },
         ],
       },

@@ -2737,3 +2737,8 @@ Leandro's *Challenges and Synergies of AI-Based Back-Ends and DST* deck went
 onto `d4-dst-data-production` on 17 September 2026 as a Google Slides
 `/preview` link, like his Day 2 decks: edited that afternoon, shared
 `Anyone with the link → Viewer`.
+
+**Same afternoon, the roadmap deck became a link.** Lindsey is still editing it,
+so `d4-roadmap` now points at the file in her Drive (`/preview`, shared
+`Anyone with the link → Viewer`) and `public/files/roadmap-session/` was
+deleted. When she says it is final, render it again and add the `pdfCopy`.
