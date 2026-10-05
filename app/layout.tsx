@@ -1,13 +1,11 @@
 import type { Metadata } from 'next';
 import { SiteFooter } from '@/components/site-footer';
 import { SiteHeader } from '@/components/site-header';
-import { Assistant } from '@/components/assistant';
 import { Cormorant_Garamond, Manrope } from 'next/font/google';
 import { withBasePath } from '@/lib/base-path';
 import './globals.css';
 import './travel.css';
 import './stories.css';
-import './assistant.css';
 import './directory.css';
 import './record.css';
 
@@ -55,8 +53,13 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <SiteHeader />
         <main id="content">{children}</main>
         <SiteFooter />
-        {/* Over the page, never a destination of its own. */}
-        <Assistant />
+        {/* The assistant is stood down now the workshop has ended: no page
+            renders it, so its client bundle, its stylesheet and the corpus
+            fetch ship nothing. Everything behind it is kept ready for reuse —
+            components/assistant.tsx, lib/assistant*.ts, the corpus build in
+            prebuild, the worker and its guards. To bring it back, restore
+            <Assistant /> here, its import above and './assistant.css'. See
+            docs/assistant-setup.md for the model behind it. */}
       </body>
     </html>
   );

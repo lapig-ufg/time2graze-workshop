@@ -141,6 +141,12 @@ worker refuses or is unreachable.
 
 ## Turning it off
 
+*(Added 5 October 2026: the whole panel — not just the model — was stood down
+when the workshop ended. `app/layout.tsx` no longer mounts it; the site does
+not serve the trigger, its bundle or the corpus fetch. See the dated entry in
+`AGENTS.md`. This document's model step below is unchanged and applies again
+whenever the panel is restored.)*
+
 Set `ASSISTANT_ENDPOINT` back to `''` and push. The model stops being called,
 the panel keeps answering from the site's own lines, and no key is spent. This
 needs no Cloudflare access, which is the point — it is the switch to reach for

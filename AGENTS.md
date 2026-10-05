@@ -2742,3 +2742,38 @@ onto `d4-dst-data-production` on 17 September 2026 as a Google Slides
 so `d4-roadmap` now points at the file in her Drive (`/preview`, shared
 `Anyone with the link → Viewer`) and `public/files/roadmap-session/` was
 deleted. When she says it is final, render it again and add the `pdfCopy`.
+
+## The assistant stood down — 5 October 2026
+
+The workshop is over and the site is an archive; the Ask panel no longer works.
+It was not deleted, on the working assumption that the machinery is useful to a
+future event on the same shape of site (a corpus built from typed data, a
+key-less search floor, and a worker holding every secret the pages cannot).
+
+How it was taken off, and how it would come back:
+
+- **Only the mount was removed.** `app/layout.tsx` no longer imports
+  `<Assistant />`, imports `./assistant.css` or renders the component, and
+  carries a comment at the mount point saying so. Nothing shipped carries the
+  trigger, the panel's client bundle, its stylesheet or the corpus fetch. A
+  stale deploy is the only way a page still shows an Ask button, and following
+  it does no harm the build has not already shipped.
+- **Everything behind the mount is kept in place, untouched.**
+  `components/assistant.tsx`, `lib/assistant.ts` (`ASSISTANT_ENDPOINT` still
+  points at the deployed worker), `lib/assistant-search.ts`,
+  `app/assistant.css`, `scripts/build-assistant-corpus.mjs` — which still runs
+  in `prebuild`, so the corpus on a future deploy stays a fresh projection of
+  `data/` — and the three test scripts, all still passing without the panel.
+- **Re-enabling is restoring three lines** in `app/layout.tsx`: the component
+  import, the stylesheet import and the mount. No data work, no worker work.
+  Re-adding a panel to the page later is a separate decision from this one.
+- **The worker remains deployed**, though nothing on the site calls it any
+  more; only a direct request carrying the site's Origin reaches it, and the
+  origin allowlist, burst limit and daily cap still hold. To stop it paying
+  even idle: `npx wrangler delete` from `worker/` — a decision with the model
+  account, not a change to this repository.
+- The panel's own affordances that survive it are inert by design:
+  `ASK_HIGHLIGHT_SESSION` is still written and read by the deep-link code on
+  `/programme/` and by the recap reader, and with no assistant writing the
+  key it is simply never set from outside. Do not "clean that up" until a
+  story, a session or a recap wants the highlight back.
